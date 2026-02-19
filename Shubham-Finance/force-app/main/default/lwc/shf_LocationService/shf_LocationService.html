@@ -1,0 +1,9 @@
+<template>
+    <lightning-card title="Update Location">
+        <lightning-button label="Use My Location" onclick={handleGetLocation}></lightning-button>
+        <template if:true={locationSet}>
+            <p>Latitude: {latitude}</p>
+            <p>Longitude: {longitude}</p>
+        </template>
+    </lightning-card>
+</template>

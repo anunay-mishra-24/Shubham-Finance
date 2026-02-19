@@ -1,0 +1,72 @@
+<template>
+
+    <!-- ================= APPLICATION DETAILS ================= -->
+    
+    <lightning-card title="Application Details">
+        <div class="slds-m-around_medium">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Negotiation</th>
+                        <th>Original</th>
+                        <th>Reason for Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicationRows} for:item="row">
+                        <tr key={row.key}>
+                            <td>{row.label}</td>
+                            <td>{row.negotiation}</td>
+                            <td>{row.original}</td>
+                            <td>{row.rfc}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+   
+
+    <!-- ================= APPLICANTS INSURANCE ================= -->
+    <template  if:false={isVisibleSection}>
+    <lightning-card title="Applicants Insurance">
+        <div class="slds-m-around_medium">
+
+            <template for:each={insuranceSections} for:item="section">
+                <div key={section.applicant} class="slds-m-bottom_large">
+
+                    <!-- Applicant Name -->
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">
+                        {section.applicant}
+                    </h3>
+
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Negotiation</th>
+                                <th>Original</th>
+                                <th>Reason for Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={section.rows} for:item="row">
+                                <tr key={row.key}>
+                                    <td>{row.label}</td>
+                                    <td>{row.negotiation}</td>
+                                    <td>{row.original}</td>
+                                    <td>{row.rfc}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+    </template>
+
+</template>

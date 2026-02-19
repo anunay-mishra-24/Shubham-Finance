@@ -1,0 +1,138 @@
+<template>
+    <lightning-card title="Financial Assets Management" icon-name="custom:custom108">
+        <div class="slds-m-around_medium">
+            
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+
+            <table class="slds-table slds-table_bordered slds-table_col-bordered slds-no-row-hover">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-text-align_center" style="width: 20%;">
+                            <abbr title="required" class="slds-required">*</abbr>Asset Name
+                        </th>
+                        <th class="slds-text-align_center" style="width: 15%;">
+                            <abbr title="required" class="slds-required">*</abbr>Type
+                        </th>
+                        <th class="slds-text-align_center" style="width: 15%;">
+                            <abbr title="required" class="slds-required">*</abbr>Category
+                        </th>
+                        <th class="slds-text-align_center" style="width: 30%;">
+                            <abbr title="required" class="slds-required">*</abbr>Description
+                        </th>
+                        <th class="slds-text-align_center" style="width: 15%;">
+                            <abbr title="required" class="slds-required">*</abbr>Value
+                        </th>
+                        <th class="slds-text-align_center" style="width: 5%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={rows} for:item="row">
+                        <tr key={row.tempId}>
+                            <td class="slds-p-around_xx-small">
+                                <lightning-input 
+                                    variant="label-hidden" 
+                                    value={row.Name} 
+                                    data-id={row.tempId} 
+                                    data-field="Name" 
+                                    required
+                                    maxlength="255"
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td class="slds-p-around_xx-small">
+                                <lightning-combobox 
+                                    variant="label-hidden" 
+                                    value={row.Asset_Type__c} 
+                                    options={typeOptions} 
+                                    data-id={row.tempId} 
+                                    data-field="Asset_Type__c" 
+                                    required
+                                    onchange={handleInputChange}>
+                                </lightning-combobox>
+                            </td>
+
+                            <td class="slds-p-around_xx-small">
+                                <lightning-combobox 
+                                    variant="label-hidden" 
+                                    value={row.Category__c} 
+                                    options={categoryOptions} 
+                                    data-id={row.tempId} 
+                                    data-field="Category__c" 
+                                    required
+                                    onchange={handleInputChange}>
+                                </lightning-combobox>
+                            </td>
+
+                            <td class="slds-p-around_xx-small">
+                                <lightning-textarea 
+                                    variant="label-hidden" 
+                                    value={row.Asset_Type_Description__c} 
+                                    data-id={row.tempId} 
+                                    data-field="Asset_Type_Description__c" 
+                                    required
+                                    onchange={handleInputChange}
+                                    maxlength="32000"
+                                    class="description-input">
+                                </lightning-textarea>
+                            </td>
+
+                            <td class="slds-p-around_xx-small">
+                                <lightning-input 
+                                    type="number" 
+                                    formatter="currency" 
+                                    step="0.01"
+                                    variant="label-hidden" 
+                                    value={row.Asset_Value__c} 
+                                    data-id={row.tempId} 
+                                    data-field="Asset_Value__c" 
+                                    required
+                                    maxlength="11"
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td class="slds-text-align_center slds-align-middle">
+                                <lightning-button-icon 
+                                    icon-name="utility:delete" 
+                                    variant="error" 
+                                    data-id={row.tempId} 
+                                    onclick={openDeleteModal}>
+                                </lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <div class="slds-m-top_medium slds-grid slds-grid_align-center slds-gutters">
+                <div class="slds-col">
+                    <lightning-button label="Add Asset" icon-name="utility:add" onclick={handleAddRow}></lightning-button>
+                </div>
+                <div class="slds-col">
+                    <lightning-button label="Save Assets" variant="brand" onclick={handleSave}></lightning-button>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+
+    <template if:true={isDeleteModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Confirm Deletion</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Are you sure you want to delete this asset?</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeDeleteModal} class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Delete" variant="destructive" onclick={confirmDelete}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

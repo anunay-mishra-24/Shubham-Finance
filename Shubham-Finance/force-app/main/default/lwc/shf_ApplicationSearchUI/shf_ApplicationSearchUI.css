@@ -1,0 +1,12 @@
+.custom-container{
+	color : black;
+}
+.my-large-modal {
+    max-width: 80% !important;    /* Increase width (default is ~50%) */
+    width: 80% !important;
+}
+
+.my-large-modal .slds-modal__content {
+    max-height: 70vh;             /* Optional: adjust height */
+    overflow-y: auto;
+}

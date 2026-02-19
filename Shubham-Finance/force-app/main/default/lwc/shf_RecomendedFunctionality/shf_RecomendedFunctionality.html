@@ -1,0 +1,120 @@
+<template>
+
+    <lightning-quick-action-panel title="Recommendation">
+
+        <!-- Spinner -->
+        <lightning-spinner if:true={isLoading} 
+                           alternative-text="Loading" 
+                           size="large">
+        </lightning-spinner>
+
+        <!-- ============================
+             RECOMMENDATION MODAL
+        ============================= -->
+        <template if:true={isRecomendationModal}>
+
+            <div class="slds-p-around_medium">
+
+                <lightning-layout multiple-rows="true">
+
+                    <!-- Authority -->
+                    <lightning-layout-item size="12" large-device-size="6" padding="around-small">
+                        <lightning-combobox name="Authority"
+                                            label="Recommended Authority"
+                                            placeholder="Select Authority"
+                                            options={filteredOptions}
+                                            onchange={handleChange}
+                                            required>
+                        </lightning-combobox>
+                    </lightning-layout-item>
+
+                    <!-- User -->
+                    <lightning-layout-item size="12" large-device-size="6" padding="around-small">
+                        <lightning-combobox name="User"
+                                            label="Recommended User"
+                                            value={userValue}
+                                            placeholder="Select User"
+                                            options={useOptions}
+                                            onchange={handleChange}
+                                            disabled={isdependencePicklist}
+                                            required>
+                        </lightning-combobox>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+
+                <lightning-layout multiple-rows="true">
+
+                    <!-- Recommendation -->
+                    <lightning-layout-item size="12" large-device-size="6" padding="around-small">
+                        <lightning-textarea name="Recommendation"
+                                            label="Recommendation"
+                                            required
+                                            placeholder="Enter some recommendation"
+                                            onchange={handleChange}
+                                            class="requiredField">
+                        </lightning-textarea>
+                    </lightning-layout-item>
+                     <!-- Recommended Loan Amount  -->
+                    <lightning-layout-item size="12" large-device-size="6" padding="around-small">
+                        <lightning-input name="Recommended Loan Amount"
+                                            label="Recommended Loan Amount"
+                                            disabled
+                                            value={recommendedLoanAmount}
+                                            onchange={handleChange}
+                                           >
+                        </lightning-input>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="slds-modal__footer slds-p-around_small" 
+                 style="display:flex; justify-content:flex-end; gap:1rem;">
+                <lightning-button variant="neutral" 
+                                  label="Close" 
+                                  onclick={closeModal}>
+                </lightning-button>
+
+                <lightning-button variant="brand" 
+                                  label="Save" 
+                                  onclick={handleSubmit}>
+                </lightning-button>
+            </div>
+
+        </template>
+
+        <!-- ============================
+             ERROR MODAL
+        ============================= -->
+        <template if:true={showErrorModal}>
+            <div class="slds-p-around_medium">
+
+                <header class="slds-modal__header slds-theme_error slds-p-around_small">
+                    <h2 class="slds-text-heading_medium">Required Field Error</h2>
+                </header>
+
+                <div class="slds-p-around_medium">
+                    <ul class="slds-list_dotted slds-p-left_medium">
+                        <template for:each={errorMessages} for:item="err">
+                            <li key={err} class="error-text">{err}</li>
+                        </template>
+                    </ul>
+                </div>
+
+                <footer class="slds-modal__footer slds-p-around_small"
+                        style="display:flex; justify-content:flex-end;">
+                    <lightning-button variant="neutral" 
+                                      label="Close" 
+                                      onclick={closeModal}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </template>
+
+    </lightning-quick-action-panel>
+
+</template>

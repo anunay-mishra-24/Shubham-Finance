@@ -1,0 +1,405 @@
+<template>
+    <template if:true={isFormalSalaried}>
+        <div class="slds-box slds-p-around_none">
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Food Expense" name="food_expense__c"
+                            value={pdRec.food_expense__c} onchange={handleChange} data-field="food_expense__c"
+                            disabled={isDisabled}>
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Clothing Expense" name="clothing_expense__c"
+                            disabled={isDisabled} value={pdRec.clothing_expense__c} onchange={handleChange}
+                            data-field="clothing_expense__c">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Rent" name="rent__c" value={pdRec.rent__c}
+                            disabled={isDisabled} onchange={handleChange} data-field="rent__c"></lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Water & Electricity" name="Age__c" disabled={isDisabled}
+                            value={pdRec.water_electricity__c} onchange={handleChange}
+                            data-field="water_electricity__c">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Telephone" name="telephone__c" value={pdRec.telephone__c}
+                            onchange={handleChange} data-field="telephone__c" disabled={isDisabled}>
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Transport" name="transport__c" value={pdRec.transport__c}
+                            onchange={handleChange} data-field="transport__c" disabled={isDisabled}>
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Education" name="education__c" value={pdRec.education__c}
+                            onchange={handleChange} data-field="education__c" disabled={isDisabled}>
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Medical Expenditure" name="medical_expenditure__c"
+                            value={pdRec.medical_expenditure__c} onchange={handleChange} disabled={isDisabled}
+                            data-field="medical_expenditure__c">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Entertainment" name="entertainment__c"
+                            disabled={isDisabled} value={pdRec.entertainment__c} onchange={handleChange}
+                            data-field="entertainment__c">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Insurance" name="insurance__c" value={pdRec.insurance__c}
+                            onchange={handleChange} data-field="insurance__c" disabled={isDisabled}>
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Chits/ Pigmy" name="chits_pigmy__c" disabled={isDisabled}
+                            value={pdRec.chits_pigmy__c} onchange={handleChange} data-field="chits_pigmy__c">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Total" name="total__c" value={pdRec.total__c} disabled
+                            data-field="total__c"></lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Total Expense as per Expense Policy Calculator"
+                            name="totalExpense" value={totalExpenseValue} disabled data-field="totalExpense">
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                    class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input type="number" label="Expenses Considered" name="expensesConsidered"
+                            value={pdRec.expensesConsidered} disabled data-field="expensesConsidered"></lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <c-shf_-credit-p-d-senp-profile section-name="House Hold" other-name="House Hold Other"
+                    record-id={recordId} is-fiancial-expense-calculator={isFiancialExpenseCalculator}
+                    onalldatacontentchange={handleAllData}>
+                </c-shf_-credit-p-d-senp-profile>
+
+            </lightning-layout>
+            <div class="slds-m-top_medium slds-text-align_center">
+                <lightning-button label="Save" variant="brand" onclick={handleSave} disabled={isDisabledSave}>
+                </lightning-button>
+            </div>
+
+        </div>
+    </template>
+
+    <template if:true={isCashSalaried}>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Food Expense" name="food_expense__c"
+                        value={pdRec.food_expense__c} onchange={handleChange} data-field="food_expense__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Clothing Expense" name="clothing_expense__c"
+                        value={pdRec.clothing_expense__c} onchange={handleChange} data-field="clothing_expense__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Rent" name="rent__c" value={pdRec.rent__c}
+                        onchange={handleChange} disabled={isDisabled} data-field="rent__c"></lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Water & Electricity" name="Age__c"
+                        value={pdRec.water_electricity__c} onchange={handleChange} data-field="water_electricity__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Telephone" name="telephone__c" value={pdRec.telephone__c}
+                        onchange={handleChange} data-field="telephone__c" disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Transport" name="transport__c" value={pdRec.transport__c}
+                        onchange={handleChange} data-field="transport__c" disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Education" name="education__c" value={pdRec.education__c}
+                        onchange={handleChange} data-field="education__c" disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Medical Expenditure" name="medical_expenditure__c"
+                        value={pdRec.medical_expenditure__c} onchange={handleChange} data-field="medical_expenditure__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Entertainment" name="entertainment__c"
+                        value={pdRec.entertainment__c} onchange={handleChange} data-field="entertainment__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Insurance" name="insurance__c" value={pdRec.insurance__c}
+                        disabled={isDisabled} onchange={handleChange} data-field="insurance__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Chits/ Pigmy" name="chits_pigmy__c"
+                        value={pdRec.chits_pigmy__c} disabled={isDisabled} onchange={handleChange}
+                        data-field="chits_pigmy__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Other" name="other__c" value={pdRec.other__c}
+                        disabled={isDisabled} onchange={handleChange} data-field="other__c"></lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Total" name="total__c" value={pdRec.total__c} disabled
+                        data-field="total__c"></lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Total Expense as per Expense Policy Calculator"
+                        name="totalExpense" value={totalExpenseValue} disabled data-field="totalExpense">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Expenses Considered" name="expensesConsidered"
+                        value={pdRec.expensesConsidered} disabled data-field="expensesConsidered"></lightning-input>
+                </div>
+            </lightning-layout-item>
+            <c-shf_-credit-p-d-senp-profile section-name="House Hold" other-name="House Hold Other" record-id={recordId}
+                is-fiancial-expense-calculator={isFiancialExpenseCalculator} onalldatacontentchange={handleAllData}>
+            </c-shf_-credit-p-d-senp-profile>
+
+        </lightning-layout>
+    </template>
+    <template if:true={isSenp}>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Food Expense" name="food_expense__c"
+                        value={pdRec.food_expense__c} disabled={isDisabled} onchange={handleChange}
+                        data-field="food_expense__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Clothing Expense" name="clothing_expense__c"
+                        value={pdRec.clothing_expense__c} onchange={handleChange} data-field="clothing_expense__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Rent" name="rent__c" value={pdRec.rent__c}
+                        onchange={handleChange} disabled={isDisabled} data-field="rent__c"></lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Water & Electricity" name="Age__c"
+                        value={pdRec.water_electricity__c} onchange={handleChange} data-field="water_electricity__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Telephone" name="telephone__c" value={pdRec.telephone__c}
+                        disabled={isDisabled} onchange={handleChange} data-field="telephone__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Transport" name="transport__c" value={pdRec.transport__c}
+                        disabled={isDisabled} onchange={handleChange} data-field="transport__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Education" name="education__c" value={pdRec.education__c}
+                        disabled={isDisabled} onchange={handleChange} data-field="education__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Medical Expenditure" name="medical_expenditure__c"
+                        value={pdRec.medical_expenditure__c} onchange={handleChange} data-field="medical_expenditure__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Entertainment" name="entertainment__c"
+                        value={pdRec.entertainment__c} onchange={handleChange} data-field="entertainment__c"
+                        disabled={isDisabled}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Insurance" name="insurance__c" value={pdRec.insurance__c}
+                        disabled={isDisabled} onchange={handleChange} data-field="insurance__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Chits/ Pigmy" name="chits_pigmy__c"
+                        value={pdRec.chits_pigmy__c} disabled={isDisabled} onchange={handleChange}
+                        data-field="chits_pigmy__c">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <!-- <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Other" name="other__c" value={pdRec.other__c}
+                    onchange={handleChange} data-field="other__c"></lightning-input>
+            </div>
+        </lightning-layout-item> -->
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Total" name="total__c" value={pdRec.total__c} disabled
+                        data-field="total__c"></lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Total Expense as per Expense Policy Calculator"
+                        name="totalExpense" value={totalExpenseValue} disabled data-field="totalExpense">
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+                class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input type="number" label="Expenses Considered" name="expensesConsidered"
+                        value={pdRec.expensesConsidered} disabled data-field="expensesConsidered"></lightning-input>
+                </div>
+            </lightning-layout-item>
+            <c-shf_-credit-p-d-senp-profile section-name="House Hold" other-name="House Hold Other" record-id={recordId}
+                is-fiancial-expense-calculator={isFiancialExpenseCalculator} onalldatacontentchange={handleAllData}>
+            </c-shf_-credit-p-d-senp-profile>
+
+        </lightning-layout>
+
+
+    </template>
+
+    <template if:false={isCreditPDCreated}>
+        <div class="slds-box slds-theme_warning slds-p-around_medium
+                slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+            <p class="slds-text-heading_small slds-text-color_inverse slds-text-align_center">
+                ⚠️ First create <strong>Credit PD</strong> to enter household expenses.
+            </p>
+        </div>
+    </template>
+</template>

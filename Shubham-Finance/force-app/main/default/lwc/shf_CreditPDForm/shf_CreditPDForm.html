@@ -1,0 +1,147 @@
+<!--
+  @description       : 
+  @author            : Gaurav Kumar
+  @group             : 
+  @last modified on  : 01-19-2026
+  @last modified by  : Gaurav Kumar
+-->
+<template>
+
+    <!-- Spinner -->
+    <template if:true={isUploading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="medium"></lightning-spinner>
+    </template>
+
+    <!-- Loan Applicants -->
+    <lightning-card title="Loan Applicants" icon-name="standard:contact">
+        <div class="slds-p-around_medium">
+
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+
+            <template if:true={hasData}>
+                <div class="slds-box slds-theme_default">
+                    <lightning-datatable key-field="Id" data={loanAplicantData} columns={columns}
+                        onrowaction={handleRowAction} hide-checkbox-column>
+                    </lightning-datatable>
+                </div>
+            </template>
+
+            <template if:true={hasError}>
+                <div class="slds-text-color_error slds-m-top_small">
+                    {errorMessage}
+                </div>
+            </template>
+
+            <template if:false={hasData}>
+                <template if:false={isLoading}>
+                    <p class="slds-text-body_regular slds-m-top_small">No applicants found.</p>
+                </template>
+            </template>
+
+        </div>
+    </lightning-card>
+
+    <!-- ================= MODAL ================= -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large">
+
+            <div class="slds-modal__container">
+
+                <!-- Header -->
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">
+                        New Personal Discussion
+                    </h2>
+
+                    <button
+                        class="slds-button slds-modal__close slds-button_icon"
+                        title="Close"
+                        onclick={closeModal}>
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Close"
+                            size="small">
+                        </lightning-icon>
+                    </button>
+                </header>
+
+                <div class="slds-modal__content slds-p-vertical_medium slds-p-horizontal_none">
+
+                    <!-- Top Controls (Keep padding ONLY here) -->
+                    <!-- <div class="slds-p-horizontal_medium">
+                        <div class="slds-grid slds-wrap slds-gutters">
+
+                            <div class="slds-col slds-size_2-of-4">
+                                <lightning-combobox label="PD Type Selection" value={selectedTemplateName}
+                                    options={vendorOptions} disabled>
+                                </lightning-combobox>
+                            </div>
+
+                            <div class="slds-col slds-size_2-of-4" if:true={isAplicant}>
+                                <lightning-combobox label="Loan Applicant" value={pdRec.Loan_Applicant__c}
+                                    options={loanApplicantOptions} required onchange={handlePicklistChange}>
+                                </lightning-combobox>
+                            </div>
+
+                            <div class="slds-col slds-size_2-of-4" if:true={isVendor}>
+                                <lightning-combobox label="External Vendor" value={selectedVendor}
+                                    options={branchMappingOptions} required onchange={handlePicklistChange}>
+                                </lightning-combobox>
+                            </div>
+
+                        </div>
+                    </div> -->
+
+                    <template if:true={formalTemplate}>
+                        <c-shf_-credit-pd-formal-salaried record-id={selectedLoanApplicantId} application-id={recordId} is-read-only={isChildDisabled}
+                            onchangeevent={handlePdTemplateEvent} onsendisvalid={requiredValidate}
+                            onsendfileevent={handleFileEvent} onalldatacontentchange={handleAllData}>
+                        </c-shf_-credit-pd-formal-salaried>
+                    </template>
+
+                    <template if:true={cashTemplate}>
+                        <c-shf_-credit-pd-cash-salaried record-id={selectedLoanApplicantId} application-id={recordId} is-read-only={isChildDisabled}
+                            onchangeevent={handlePdTemplateEvent} onsendisvalid={requiredValidate} 
+                            onsendfileevent={handleFileEvent} onalldatacontentchange={handleAllData}>
+                        </c-shf_-credit-pd-cash-salaried>
+                    </template>
+
+                    <template if:true={senpTemplate}>
+                        <c-shf_-credit-pd-s-e-n-p record-id={selectedLoanApplicantId} application-id={recordId} is-read-only={isChildDisabled}
+                            onchangeevent={handlePdTemplateEvent} onsendisvalid={requiredValidate} 
+                            onsendfileevent={handleFileEvent} onbusinessdatachange={businessDataChanges} onalldatacontentchange={handleAllData}>
+                        </c-shf_-credit-pd-s-e-n-p>
+                    </template>
+
+                    <!-- Hidden uploader -->
+                    <c-shf-upload-document application-id={recordId} case-id={recordId} linked-document-for={forApplicant} branch-code={branchCode}
+                        context="lwc" ondmsresponse={handleDmsResponse} style="display:none">
+                    </c-shf-upload-document>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeModal}>
+                    </lightning-button>
+
+                    <!-- <lightning-button class="slds-m-left_small" variant="brand" label="Send DMS" if:true={sendDMS}
+                        onclick={sendToDMSHandler}>
+                    </lightning-button> -->
+                    
+                    <lightning-button class="slds-m-left_small" variant="brand" label="Save" onclick={saveEVerification}
+                        disabled={isSaveDisabled} if:false={isChildDisabled}>
+                    </lightning-button>
+                    <!-- <lightning-button class="slds-m-left_small" variant="brand" label="Save PD Details" onclick={saveProfileRetails}
+                        disabled={isLoading}>
+                    </lightning-button> -->
+                </footer>
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,9 @@
+<template>
+    <lightning-spinner if:true={isLoading}></lightning-spinner>
+    <template if:false={isLoading}>
+    <div class="slds-card__footer slds-no-flex" style="text-align: right;padding-bottom: 0px;margin-bottom: -10px;">
+        <lightning-button class="slds-m-top_xx-large" variant="brand" label="New Employment" name="New Employment"
+            onclick={createNewEmployment}></lightning-button>
+    </div>
+    </template>
+</template>

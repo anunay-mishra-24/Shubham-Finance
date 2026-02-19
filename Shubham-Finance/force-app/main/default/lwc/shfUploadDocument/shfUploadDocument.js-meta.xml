@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__Tab</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="applicationId" type="String" label="Application Id" description="Pass the Application Id" role="inputOnly"/>
+            <property name="caseId" type="String" label="Case Id" description="Pass the Case Id" role="inputOnly"/>
+            <property name="caseName" type="String" label="Case Name" description="Pass the Case Name" role="inputOnly"/>
+            <property name="caseStatus" type="String" label="Case Status" description="Pass the Case Status" role="inputOnly"/>
+            <property name="branchCode" type="String" label="Case Branch Code" description="Pass the Case Branch Code" role="inputOnly"/>
+            <property name="parentRecordId" type="String" label="Parent Record Id" role="inputOnly"/>
+            <property name="parentObjectName" type="String" label="Parent Object Name" role="inputOnly"/>      
+             <property name="flowContext" label="Flow Context" type="String" role="outputOnly" /> 
+            <!--<property name="isFlow" type="Boolean" label="Is this used in Flow?" default="true" role="inputOnly"/>-->
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,320 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters">
+        <lightning-layout multiple-rows class="slds-gutters">
+            <!-- OWNER FORM -->
+            <template if:true={isOwnerForm}>
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-combobox
+                        name="ownerType__c"
+                        label="Owner Type"
+                        placeholder="Select"
+                        options={ownerTypeOptions}
+                        value={record.ownerType__c}
+                        data-field="ownerType__c"
+                        required
+                        onchange={handleChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-combobox
+                        name="ownershipStatus__c"
+                        label="Ownership Status"
+                        placeholder="Select"
+                        options={ownershipStatusOptions}
+                        value={record.ownershipStatus__c}
+                        data-field="ownershipStatus__c"
+                        required
+                        onchange={handleChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-combobox
+                        name="Owner_Applicant_Id__c"
+                        label="Owner Name"
+                        placeholder="Select Owner"
+                        options={ownerNameOptions}
+                        value={record.Owner_Applicant_Id__c}
+                        required
+                        onchange={handleOwnerApplicantChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="number"
+                        name="Percent_Share__c"
+                        label="Percent Share"
+                        value={record.Percent_Share__c}
+                        data-field="Percent_Share__c"
+                        formatter="percent-fixed"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        required
+                        disabled={isSingleOwnership}
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="date"
+                        name="From_Date__c"
+                        label="From Date"
+                        value={record.From_Date__c}
+                        data-field="From_Date__c"
+                        max={today}
+                        required={isFromDateRequired}
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="date"
+                        name="To_Date__c"
+                        label="To Date"
+                        value={record.To_Date__c}
+                        data-field="To_Date__c"
+                        min={record.From_Date__c}
+                        required={isToDateRequired}
+                        disabled={isToDateDisabled}
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="number"
+                        name="ownershipDates__c"
+                        label="Ownership Period (Months)"
+                        value={record.ownershipDates__c}
+                        disabled
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="4"
+                    padding="around-small"
+                >
+                    <lightning-textarea
+                        name="Linked_Applicant__c"
+                        label="Linked Applicant"
+                        value={record.Linked_Applicant__c}
+                        data-field="Linked_Applicant__c"
+                        disabled
+                    ></lightning-textarea>
+                </lightning-layout-item>
+            </template>
+
+            <!-- SELLER FORM -->
+            <template if:true={isSellerForm}>
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="text"
+                        name="Name"
+                        label="Seller Name"
+                        value={record.Name}
+                        data-field="Name"
+                        pattern="^[A-Za-z\s]+$"
+                        message-when-pattern-mismatch="Only letters and spaces allowed."
+                        required
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="text"
+                        name="presentRegistered__c"
+                        label="Present Registered Owner"
+                        value={record.presentRegistered__c}
+                        data-field="presentRegistered__c"
+                        pattern="^[A-Za-z\s]+$"
+                        message-when-pattern-mismatch="Only letters and spaces allowed."
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="text"
+                        name="tctCctNo__c"
+                        label="TCT/CCT No"
+                        value={record.tctCctNo__c}
+                        data-field="tctCctNo__c"
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="text"
+                        name="lotNo__c"
+                        label="Lot No."
+                        value={record.lotNo__c}
+                        data-field="lotNo__c"
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="number"
+                        name="Percentage_Share__c"
+                        label="Percentage Share"
+                        value={record.Percentage_Share__c}
+                        data-field="Percentage_Share__c"
+                        formatter="percent-fixed"
+                        min="0"
+                        max="100"
+                        step="0.01"
+                        required
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="date"
+                        name="dobIncorporationDate__c"
+                        label="DOB/Incorporation Date"
+                        value={record.dobIncorporationDate__c}
+                        data-field="dobIncorporationDate__c"
+                        max={today}
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-input
+                        type="text"
+                        name="identificationNumber__c"
+                        label="Identification Number"
+                        value={record.identificationNumber__c}
+                        data-field="identificationNumber__c"
+                        onchange={handleChange}
+                    ></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    padding="around-small"
+                >
+                    <lightning-textarea
+                        name="otherRemarks__c"
+                        label="Other Remarks"
+                        value={record.otherRemarks__c}
+                        data-field="otherRemarks__c"
+                        required
+                        onchange={handleChange}
+                    ></lightning-textarea>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="12"
+                    medium-device-size="6"
+                    padding="around-small"
+                >
+                    <lightning-combobox
+                        name="individualNonIndividual__c"
+                        label="Individual/Non-Individual"
+                        placeholder="Select"
+                        options={individualNonIndividualOptions}
+                        value={record.individualNonIndividual__c}
+                        data-field="individualNonIndividual__c"
+                        required
+                        onchange={handleChange}
+                    ></lightning-combobox>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
+    </div>
+
+    <template if:false={hideButtons}>
+        <div class="slds-m-top_medium slds-text-align_right">
+            <lightning-button
+                label="Cancel"
+                onclick={handleCancel}
+                class="slds-m-right_small"
+            ></lightning-button>
+            <lightning-button
+                variant="brand"
+                label="Save"
+                onclick={handleSave}
+                disabled={isSaving}
+            ></lightning-button>
+        </div>
+    </template>
+
+    <template if:true={isSaving}>
+        <div class="loader-full">
+            <lightning-spinner
+                alternative-text="Saving"
+                size="small"
+            ></lightning-spinner>
+        </div>
+    </template>
+</template>

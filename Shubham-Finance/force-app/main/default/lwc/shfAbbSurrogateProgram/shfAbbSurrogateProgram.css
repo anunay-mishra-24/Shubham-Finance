@@ -1,0 +1,16 @@
+.blue-header {
+    background-color: #54a3e5;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.total-cell {
+    font-weight: bold;
+    padding: 0 !important;
+}
+
+.slds-table_bordered {
+    border-left: 1px solid #dddbda;
+    border-right: 1px solid #dddbda;
+}

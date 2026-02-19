@@ -1,0 +1,67 @@
+<template>
+    <template if:false={hideNew}>
+			<div class="slds-m-bottom--x-small slds-m-left_xx-small slds-text-align--right" >
+				<lightning-button-group>
+					<lightning-button variant="brand" label={buttonLabel} title="Primary action" onclick={handleClick}
+						disabled={newButtonDisable} class="slds-m-right_x-small">
+					</lightning-button>
+					<!-- Added By Ranjeet Pandit on 05/01/2026 -->	
+					<lightning-button-menu variant="border-filled" menu-alignment="right">
+						<lightning-menu-item variant="brand" label={sendLinkToCustomerBtn} title="Primary action" onclick={sendLinkToCustomerBtnClick}
+							class="slds-m-right_x-small">
+						</lightning-menu-item> 
+					</lightning-button-menu>	
+				</lightning-button-group>	 	
+			</div>
+		</template>
+    <template if:true={isRecordFound}>
+		<div class="slds-p-horizontal_small slds-p-bottom_small">
+				<lightning-tabset variant="scoped">
+					<template for:each={loanApplicantList} for:item="record">
+						<lightning-tab label={record.displayName} key={record.Id} data-id={record.Id}>
+							<c-shf-display-document-details application-id={recordId} applicant-id={record.Id}
+								metadata={metadata} object-name={objectApiName}></c-shf-display-document-details>
+						</lightning-tab>
+					</template>
+				</lightning-tabset>
+		</div>	
+			</template>
+
+			<template if:false={isRecordFound}>
+				<div class="error-style">Application doesn't have Loan Applicant. Please Create Loan Applicant.</div>
+	</template>
+    <template if:true={showDocumentModal}>
+		<section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+			class="slds-modal slds-fade-in-open slds-modal_medium">
+			<div class="slds-modal__container modal-width">
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleClose}>
+                        <h1 class="slds-text-heading_medium">X</h1>
+                        <span class="slds-assistive-text">Cancel and close</span>
+                    </button>
+				<div class="slds-modal__content slds-p-around_medium">
+					<c-shf-create-document application-id={recordId} applicant-list={childApplicantList}  onclosemodal={handleClose}>
+					</c-shf-create-document>
+				</div>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+	</template>
+
+
+
+	<template if:true={showunUploadedDocumentModal}>
+		<section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+			class="slds-modal slds-fade-in-open slds-modal_medium">
+			<div class="slds-modal__container modal-width">
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleUnuploadedClose}>
+                        <h1 class="slds-text-heading_medium">X</h1>
+                        <span class="slds-assistive-text">Cancel and close</span>
+                    </button>
+				<div class="slds-modal__content slds-p-around_medium">
+					<c-shf-public-siteupload-document-modal application-id={recordId} source-type="DISPLAY" onclosemodal={handleUnuploadedClose}></c-shf-public-siteupload-document-modal>
+				</div>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+	</template>
+</template>

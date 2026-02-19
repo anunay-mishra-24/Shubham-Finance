@@ -1,0 +1,64 @@
+<template>
+
+    <lightning-spinner if:true={isUploading} size="small">
+    </lightning-spinner>
+    <template if:true={showErrorScreen}>
+        <div class="slds-p-around_large">
+
+            <!-- HEADER -->
+            <div class="slds-text-heading_medium slds-text-align_center slds-m-bottom_medium">
+                Error
+            </div>
+
+            <!-- BODY-->
+            <div class="slds-text-align_center slds-text-color_error">
+                {errorMessage}
+            </div>
+
+            <!-- FOOTER -->
+            <div class="slds-text-align_right">
+                <lightning-button label="OK" variant="brand" onclick={handleClose}> </lightning-button>
+            </div>
+
+        </div>
+    </template>
+
+
+    <template if:false={showErrorScreen}>
+        <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+
+            <!-- Sanction Letter TAB -->
+            <lightning-tab label="Sanction Letter" value="sanction">
+                <div style="height:550px;">
+                    <iframe src={sanctionVFUrl} width="100%" height="100%"></iframe>
+                </div>
+
+                <div class="slds-modal__footer slds-align_absolute-right">
+                    <lightning-button variant="brand" label="Send Sanction Letter" onclick={handleSendSanction}
+                        disabled={isSanctionSent}>
+                    </lightning-button>
+                </div>
+            </lightning-tab>
+
+            <!-- Tentative Repayment TAB -->
+            <lightning-tab label="Tentative Repayment Schedule" value="repayment">
+                <div style="height:550px;">
+                    <iframe src={repaymentVFUrl} width="100%" height="100%"></iframe>
+                </div>
+
+                <div class="slds-modal__footer slds-align_absolute-right">
+                    <lightning-button variant="brand" label="Send Repayment Schedule" onclick={handleSendRepayment}
+                        disabled={isRepaymentDisabled}>
+                    </lightning-button>
+                </div>
+            </lightning-tab>
+
+        </lightning-tabset>
+    </template>
+
+
+    <!-- DMS child component  -->
+
+    <c-shf-upload-document style="display:none" application-id={recordId} ondmsresponse={handleDmsResponse}>
+    </c-shf-upload-document>
+</template>

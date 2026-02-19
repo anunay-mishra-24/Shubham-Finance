@@ -1,0 +1,15 @@
+/* ===== Brown Theme Button ===== */
+.brown-button {
+    --slds-c-button-brand-color-background: #6b3f1d;
+    --slds-c-button-brand-color-background-hover: #8b5a2b;
+    --slds-c-button-brand-color-border: #6b3f1d;
+    --slds-c-button-brand-text-color: #ffffff;
+}
+
+/* Optional: same color for destructive variant if needed */
+.brown-destructive {
+    --slds-c-button-destructive-color-background: #6b3f1d;
+    --slds-c-button-destructive-color-background-hover: #8b5a2b;
+    --slds-c-button-destructive-text-color: #ffffff;
+    --slds-c-button-destructive-color-border: #6b3f1d;
+}

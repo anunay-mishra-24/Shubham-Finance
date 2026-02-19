@@ -1,0 +1,215 @@
+<template>
+
+    
+    <template if:true={validationError}>
+        <div class="slds-notify slds-notify_alert slds-theme_error" role="alert">
+            <h2>{validationError}</h2>
+        </div>
+    </template>
+    
+
+    <template if:true={isCalculationAllowed}>
+
+        <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+
+            <lightning-accordion-section name="eligibilitySummary" label="Eligibility Summary">
+                <div class="slds-grid slds-wrap slds-gutters slds-p-around_small">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="Applied Loan Amount" value={appliedLoanAmount} disabled>
+                        </lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="Maximum Eligible Loan Amount" value={maxEligibleLoanAmount}
+                            disabled></lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input 
+                            type="number" 
+                            label="Recommended Loan Amount" 
+                            name="Recommended_Loan_Amount__c" 
+                            value={applicationObj.Recommended_Loan_Amount__c}
+                            onchange={handleChange}
+                            min="1"
+                            message-when-range-underflow="Recommended loan amount can not be less than 1."
+                            required
+                        ></lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input 
+                            type="number" 
+                            label="Sanctioned Loan Amount" 
+                            name="Sanction_Amount__c" 
+                            value={applicationObj.Sanction_Amount__c}
+                            onchange={handleChange}
+                            required
+                            disabled
+                        ></lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="Total Appraised Income" value={totalAppraisedIncome} disabled>
+                        </lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="Total Obligations" value={obligationsEmiSum} disabled>
+                        </lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="BT Amount" value={btAmount} disabled></lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="Fresh Amount" value={freshAmount} disabled></lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="number" label="Total Exposure" value={totalExposure} disabled>
+                        </lightning-input>
+                    </div>
+                </div>
+            </lightning-accordion-section>
+
+            <lightning-accordion-section name="ratiosCalculations" label="Ratios & Calculations">
+                <div class="slds-grid slds-wrap slds-gutters slds-p-around_small">
+                    <lightning-input class="slds-col slds-size_1-of-2" label="Gross LTV (Market Value)" name="grossLTVMarketValue" 
+                    value={grossLTVMarketValue} disabled>
+                    </lightning-input>
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="Gross LTV (Valuation Value)" name="grossLTVValuationValue" 
+                    value={grossLTVValuationValue} disabled>
+                    </lightning-input>
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="Net LTV (Market Value)" name="netLTVMarketValue" 
+                    value={netLTVMarketValue} disabled>
+                    </lightning-input>
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="Net LTV (Valuation Value)" name="netLTVValuationValue" 
+                    value={netLTVValuationValue} disabled>
+                    </lightning-input>
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="IIR" name="iir" value={iir} disabled>
+                    </lightning-input>
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="IAR" name="iar" value={iar} disabled>
+                    </lightning-input>
+
+                    <!--
+                    <lightning-input class="slds-col slds-size_1-of-2" label="Total Loan Amount" name="totalLoanAmount"
+                    type="number" value={totalLoanAmount} disabled>
+                    </lightning-input>
+                    -->
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="Aggregate LTV" name="aggregateLTV"
+                        value={aggregateLTV} disabled>
+                    </lightning-input>
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="DBR/FOIR as per Policy" name="dbrPolicy"
+                        value={policyFOIRPercent} disabled>
+                    </lightning-input>
+
+                    <lightning-input class="slds-col slds-size_1-of-2" label="Actual DBR/FOIR" name="dbrActual"
+                        value={actualFOIR} disabled>
+                    </lightning-input>
+
+                </div>
+            </lightning-accordion-section>
+
+            <lightning-accordion-section name="finalEligibility" label="Final Eligibility">
+                <div class="slds-p-around_medium">
+
+                <div class="slds-grid slds-border_bottom slds-p-vertical_x-small slds-text-title_bold slds-theme_alert-texture slds-theme_info">
+                    <div class="slds-col slds-size_1-of-2">Parameter</div>
+                    <div class="slds-col slds-size_1-of-2">Value</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Sum of Monthly Income of Financial Applicants</div>
+                    <div class="slds-col slds-size_1-of-2">{totalAppraisedIncome}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Monthly Deductions (Excl. Household)</div>
+                    <div class="slds-col slds-size_1-of-2">{sumDeductions}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Monthly Obligations (Considered for FOIR)</div>
+                    <div class="slds-col slds-size_1-of-2">{obligationsEmiSum}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Gross Monthly Salary</div>
+                    <div class="slds-col slds-size_1-of-2">{grossMonthlySalary}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Policy FOIR</div>
+                    <div class="slds-col slds-size_1-of-2">{policyFOIRPercent}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Initial Serviceable EMI</div>
+                    <div class="slds-col slds-size_1-of-2">{initialServiceableEMI}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Final Serviceable EMI</div>
+                    <div class="slds-col slds-size_1-of-2">{finalServiceableEMI}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Rate (ROI)</div>
+                    <div class="slds-col slds-size_1-of-2">{roi}%</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Tenure (Months)</div>
+                    <div class="slds-col slds-size_1-of-2">{tenure}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Eligible Fundable Value (Based on Income)</div>
+                    <div class="slds-col slds-size_1-of-2">{eligibleFundableValueIncome}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Policy LTV (Based on Program)</div>
+                    <div class="slds-col slds-size_1-of-2">{policyLTVPercent}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Technical Accepted Valuation</div>
+                    <div class="slds-col slds-size_1-of-2">{technicalAcceptedValuation}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Property Cost</div>
+                    <div class="slds-col slds-size_1-of-2">{propertyCost}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-border_bottom">
+                    <div class="slds-col slds-size_1-of-2">Eligible Fundable Value (Based on LTV)</div>
+                    <div class="slds-col slds-size_1-of-2">{eligibleFundableValueLTV}</div>
+                </div>
+
+                <div class="slds-grid slds-p-vertical_x-small slds-theme_alert-texture slds-theme_info">
+                    <div class="slds-col slds-size_1-of-2"><strong>Final eligible amount</strong></div>
+                    <div class="slds-col slds-size_1-of-2"><strong>{finalEligibleFundableValue}</strong></div>
+                </div>
+
+            </div>
+            </lightning-accordion-section>
+        </lightning-accordion>
+        <div align="center">
+            <button class="slds-button slds-button_neutral" onclick={handleCancel}>Cancel</button>
+            <button class="slds-button slds-button_brand" onclick={handleSave} disabled={isSaveDisabled}>Save</button>
+        </div>
+
+    </template>
+
+</template>

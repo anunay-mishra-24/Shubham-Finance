@@ -1,0 +1,8 @@
+.table-wrapper {
+    height: 10rem;
+}
+
+.slds-modal__content {
+    max-height: 70vh;
+    overflow: auto;
+}

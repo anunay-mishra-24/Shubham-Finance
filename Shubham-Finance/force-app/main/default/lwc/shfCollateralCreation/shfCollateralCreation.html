@@ -1,0 +1,1487 @@
+<template>
+    <template if:true={isOpen}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-modal="true"
+            aria-labelledby="shfCollateralModalHeading"
+            class="slds-modal slds-fade-in-open slds-modal_large"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={handleCloseClick}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Close"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+
+                    <h2
+                        id="shfCollateralModalHeading"
+                        class="slds-text-heading_medium"
+                    >
+                        {modalTitle} 
+                    </h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium modal-body">
+                    <template if:true={isPageLoading}>
+                        <div class="loader-full">
+                            <lightning-spinner
+                                alternative-text="Loading"
+                                size="medium"
+                            ></lightning-spinner>
+                        </div>
+                    </template>
+
+                    <template if:false={isPageLoading}>
+                        <div class="slds-m-top_x-small">
+                            <!-- Top section: Property Identification & basic -->
+                            <lightning-layout
+                                multiple-rows
+                                class="slds-gutters"
+                            >
+                                <lightning-layout-item
+                                    size="12"
+                                    medium-device-size="4"
+                                    padding="around-small"
+                                >
+                                    <lightning-combobox
+                                        name="Property_Identification__c"
+                                        label="Property Identification"
+                                        options={propertyIdentificationOptions}
+                                        value={collateralRecord.Property_Identification__c}
+                                        data-field="Property_Identification__c"
+                                        required
+                                        disabled={isPropertyIdentificationLocked}  
+                                        onchange={handleInputChange}
+                                        ></lightning-combobox>
+
+                                </lightning-layout-item>
+
+                                <template if:true={showCollateralFields}>
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Collateral_Sub_Type_Property_Details__c"
+                                            label="Collateral Sub Type / Property Details"
+                                            placeholder="Select"
+                                            options={collateralSubTypeOptions}
+                                            value={collateralRecord.Collateral_Sub_Type_Property_Details__c}
+                                            data-field="Collateral_Sub_Type_Property_Details__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Type_Of_Purchase__c"
+                                            label="Type Of Purchase"
+                                            placeholder="Select"
+                                            options={typeOfPurchaseOptions}
+                                            value={collateralRecord.Type_Of_Purchase__c}
+                                            data-field="Type_Of_Purchase__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+                                </template>
+                            </lightning-layout>
+
+                            <template if:true={showCollateralFields}>
+                                <div class="row-spacer"></div>
+
+                                
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Property_Type__c"
+                                            label="Property Type"
+                                            placeholder="Select"
+                                            options={propertyTypeOptions}
+                                            value={collateralRecord.Property_Type__c}
+                                            data-field="Property_Type__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Nature_of_Property__c"
+                                            label="Nature of Property"
+                                            placeholder="Select"
+                                            options={filteredNatureOfPropertyOptions}
+                                            value={collateralRecord.Nature_of_Property__c}
+                                            data-field="Nature_of_Property__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Type_of_property__c"
+                                            label="Type of property"
+                                            placeholder="Select"
+                                            options={typeOfPropertyOptions}
+                                            value={collateralRecord.Type_of_property__c}
+                                            data-field="Type_of_property__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Property_Reference_Number__c"
+                                            type="text"
+                                            label="Property Reference Number"
+                                            value={collateralRecord.Property_Reference_Number__c}
+                                            data-field="Property_Reference_Number__c"
+
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Current_Usage__c"
+                                            label="Current Usage"
+                                            placeholder="Select"
+                                            options={currentUsageOptions}
+                                            value={collateralRecord.Current_Usage__c}
+                                            data-field="Current_Usage__c"
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Approximate_property_cost_INR__c"
+                                            type="number"
+                                            label="Approximate property cost (INR)"
+                                            value={collateralRecord.Approximate_property_cost_INR__c}
+                                            data-field="Approximate_property_cost_INR__c"
+                                            formatter="currency"
+                                            min="0"
+                                           max="9999999999"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-textarea
+                                            name="Property_Description__c"
+                                            label="Property Description"
+                                            value={collateralRecord.Property_Description__c}
+                                            data-field="Property_Description__c"
+                                            onchange={handleInputChange}
+                                        ></lightning-textarea>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+                                </lightning-layout>
+
+                                <!-- BUILDER SECTION -->
+                                <template if:true={showBuilderSection}>
+                                    <div class="row-spacer"></div>
+
+                                    <h3
+                                        class="section slds-text-heading_small slds-m-bottom_x-small"
+                                    >
+                                        Builder Details
+                                    </h3>
+
+                                    
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-record-picker
+                                               
+                                                lwc:ref="builderPicker"
+                                                label="Company Name"
+                                                placeholder="Search Builder..."
+                                                object-api-name="Builder_Master__c"
+                                                value={builderId}
+                                                onchange={handleBuilderChange}
+                                                matching-info={builderMatchingInfo}
+                                                display-info={builderDisplayInfo}
+                                                required
+                                                icon-name="standard:account"
+                                            >
+                                            </lightning-record-picker>
+                                        </lightning-layout-item>
+
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Tier_of_Builder__c"
+                                                label="Tier of Builder"
+                                                value={builderTier}
+                                                data-builder-field="Tier_of_Builder__c"
+                                                disabled
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-record-picker
+                                                
+                                                lwc:ref="projectPicker"
+                                                label="Project Name"
+                                                placeholder="Search Project..."
+                                                object-api-name="Builder_Project_Master__c"
+                                                value={projectId}
+                                                onchange={handleProjectChange}
+                                                matching-info={projectMatchingInfo}
+                                                display-info={projectDisplayInfo}
+                                                filter={projectFilter}
+                                                required
+                                                icon-name="custom:custom63"
+                                                
+                                            >
+                                            </lightning-record-picker>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <div class="row-spacer"></div>
+
+                                    
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-record-picker
+                                                lwc:ref="buildingPicker"
+                                                label="Building Name"
+                                                placeholder="Search Building..."
+                                                object-api-name="Building_Detail_Master__c"
+                                                value={buildingId}
+                                                onchange={handleBuildingChange}
+                                                matching-info={buildingMatchingInfo}
+                                                display-info={buildingDisplayInfo}
+                                                filter={buildingFilter}
+                                                required
+                                                icon-name="custom:custom63"
+                                                disabled={isBuildingDisabled}
+                                            >
+                                            </lightning-record-picker>
+                                        </lightning-layout-item>
+
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Wing_Name__c"
+                                                label="Wing Name"
+                                                data-builder-field="Wing_Name__c"
+                                                value={collateralRecord.Wing_Name__c}
+                                                disabled
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-record-picker
+                                               lwc:ref="unitPicker"
+                                                label="Unit Details"
+                                                placeholder="Search Unit..."
+                                                object-api-name="Unit_Details_Master__c"
+                                                value={unitId}
+                                                onchange={handleUnitChange}
+                                                matching-info={unitMatchingInfo}
+                                                display-info={unitDisplayInfo}
+                                                filter={unitFilter}
+                                                required
+                                                icon-name="custom:custom63"
+                                                disabled={isUnitDisabled}
+                                            >
+                                            </lightning-record-picker>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    
+                                    <div class="row-spacer"></div>
+
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        ></lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        ></lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <div class="row-spacer"></div>
+
+                                    
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Flat_Shop_No__c"
+                                                label="Flat/Shop No."
+                                                data-builder-field="Flat_Shop_No__c"
+                                                value={collateralRecord.Flat_Shop_No__c}
+                                                disabled={canEditFlatAndFloor}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Floor_No__c"
+                                                label="Floor No."
+                                                data-builder-field="Floor_No__c"
+                                                value={collateralRecord.Floor_No__c}
+                                                disabled={canEditFlatAndFloor}
+                                               
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Building_Completion__c"
+                                                type="number"
+                                                label="Building Completion %"
+                                                data-builder-field="Building_Completion__c"
+                                                value={collateralRecord.Building_Completion__c}
+                                                formatter="percent-fixed"
+                                                min="0"
+                                                max="100"
+                                                step="0.01"
+                                                disabled
+                                                required
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <div class="row-spacer"></div>
+
+                                    
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-combobox
+                                                name="APF__c"
+                                                label="APF"
+                                                placeholder="Select"
+                                                options={apfOptions}
+                                                data-builder-field="APF__c"
+                                                value={collateralRecord.APF__c}
+                                                disabled
+                                                required
+                                                onchange={handleBuilderFieldChange}
+                                            ></lightning-combobox>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                         <lightning-input
+                                                name="APF_Number__c"
+                                                type="text"
+                                                label="APF Number"
+                                                data-builder-field="APF_Number__c"
+                                                value={collateralRecord.APF_Number__c}
+                                                required
+                                                disabled
+                                            ></lightning-input>
+                                    </lightning-layout-item>
+                                        
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        ></lightning-layout-item>
+                                    </lightning-layout>
+                                </template>
+
+                                <!-- OTHER DETAILS SECTION -->
+                                
+                                    <div class="row-spacer"></div>
+
+                                    <h3
+                                        class="section slds-text-heading_small slds-m-bottom_x-small"
+                                    >
+                                        Other Details
+                                    </h3>
+
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-combobox
+                                                name="Property_Classification__c"
+                                                label="Property Classification"
+                                                placeholder="Select"
+                                                options={propertyClassificationOptions}
+                                                value={collateralRecord.Property_Classification__c}
+                                                data-field="Property_Classification__c"
+                                                required
+                                                
+                                                onchange={handleInputChange}
+                                            ></lightning-combobox>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-combobox
+                                                name="Property_Ownership__c"
+                                                label="Property Ownership"
+                                                placeholder="Select"
+                                                options={propertyOwnershipOptions}
+                                                value={collateralRecord.Property_Ownership__c}
+                                                data-field="Property_Ownership__c"
+                                                required
+                                                
+                                                onchange={handleInputChange}
+                                            ></lightning-combobox>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Market_Value_INR__c"
+                                                type="number"
+                                                label="Market Value (INR)"
+                                                value={collateralRecord.Market_Value_INR__c}
+                                                data-field="Market_Value_INR__c"
+                                                formatter="currency"
+                                                min="0"
+                                                step="0.01"
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Accepted_Value_Valuation_Value_INR__c"
+                                                type="number"
+                                                label="Accepted Value(Valuation Value) (INR)"
+                                                value={collateralRecord.Accepted_Value_Valuation_Value_INR__c}
+                                                data-field="Accepted_Value_Valuation_Value_INR__c"
+                                                formatter="currency"
+                                                min="0"
+                                                step="0.01"
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-combobox
+                                                name="Considered_Value__c"
+                                                label="Considered Value"
+                                                placeholder="Select"
+                                                options={consideredValueOptions}
+                                                value={collateralRecord.Considered_Value__c}
+                                                data-field="Considered_Value__c"
+                                                onchange={handleInputChange}
+                                            ></lightning-combobox>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Built_Up_Area__c"
+                                                type="number"
+                                                label="Built Up Area"
+                                                value={collateralRecord.Built_Up_Area__c}
+                                                data-field="Built_Up_Area__c"
+                                                min="0"
+                                                step="0.01"
+                                                disabled
+                                                
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <div class="row-spacer"></div>
+
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Carpet_Area__c"
+                                                type="number"
+                                                label="Carpet Area"
+                                                value={collateralRecord.Carpet_Area__c}
+                                                data-field="Carpet_Area__c"
+                                                min="0"
+                                                step="0.01"
+                                                disabled
+                                                
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-combobox
+                                                name="Property_Purpose__c"
+                                                label="Property Purpose"
+                                                placeholder="Select"
+                                                options={propertyPurposeOptions}
+                                                value={collateralRecord.Property_Purpose__c}
+                                                data-field="Property_Purpose__c"
+                                                required
+                                                onchange={handleInputChange}
+                                            ></lightning-combobox>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Age_Of_Property_In_Years__c"
+                                                type="number"
+                                                label="Age Of Property (In Years)"
+                                                value={collateralRecord.Age_Of_Property_In_Years__c}
+                                                data-field="Age_Of_Property_In_Years__c"
+                                                min="0"
+                                                
+                                                disabled
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <div class="row-spacer"></div>
+
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Age_Of_Property_In_Months__c"
+                                                type="number"
+                                                label="Age Of Property (In Months)"
+                                                value={collateralRecord.Age_Of_Property_In_Months__c}
+                                                data-field="Age_Of_Property_In_Months__c"
+                                                min="0"
+                                                
+                                                disabled
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-combobox
+                                                name="Residual_Age_of_Property__c"
+                                                label="Residual Age of Property"
+                                                placeholder="Select"
+                                                options={residualAgeOptions}
+                                                value={collateralRecord.Residual_Age_of_Property__c}
+                                                data-field="Residual_Age_of_Property__c"
+                                                required
+                                                onchange={handleInputChange}
+                                            ></lightning-combobox>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Accepted_Valuation_INR__c"
+                                                type="number"
+                                                label="Accepted Valuation (INR)"
+                                                value={collateralRecord.Accepted_Valuation_INR__c}
+                                                data-field="Accepted_Valuation_INR__c"
+                                                formatter="currency"
+                                                min="0"
+                                                step="0.01"
+                                                
+                                                disabled
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <div class="row-spacer"></div>
+
+                                    <lightning-layout
+                                        multiple-rows
+                                        class="slds-gutters"
+                                    >
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                type="text"
+                                                name="Plan_Type__c"
+                                                label="Plan Type"
+                                                value={collateralRecord.Plan_Type__c}
+                                                data-field="Plan_Type__c"
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Plan_Number__c"
+                                                type="number"
+                                                label="Plan Number"
+                                                value={collateralRecord.Plan_Number__c}
+                                                data-field="Plan_Number__c"
+                                                min="0"
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+
+                                        <lightning-layout-item
+                                            size="12"
+                                            medium-device-size="4"
+                                            padding="around-small"
+                                        >
+                                            <lightning-input
+                                                name="Property_Lot_Number__c"
+                                                type="number"
+                                                label="Property Lot Number"
+                                                value={collateralRecord.Property_Lot_Number__c}
+                                                data-field="Property_Lot_Number__c"
+                                                min="0"
+                                                onchange={handleInputChange}
+                                            ></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                
+
+                                <div class="row-spacer"></div>
+
+                                <!-- Property & Registration Details -->
+                                <h3
+                                    class="section slds-m-bottom_x-small"
+                                >
+                                    Property &amp; Registration Details
+                                </h3>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Agreement_Value_INR__c"
+                                            type="number"
+                                            label="Agreement Value (INR)"
+                                            value={collateralRecord.Agreement_Value_INR__c}
+                                            data-field="Agreement_Value_INR__c"
+                                            formatter="currency"
+                                            min="0"
+                                            step="0.01"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <!-- Summary Details -->
+                                <h3
+                                    class="section slds-text-heading_small slds-m-bottom_x-small"
+                                >
+                                    Summary Details
+                                </h3>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Property_cost_INR__c"
+                                            type="number"
+                                            label="Property cost (INR)"
+                                            value={collateralRecord.Property_cost_INR__c}
+                                            data-field="Property_cost_INR__c"
+                                            formatter="currency"
+                                            min="0"
+                                            max="9999999999"
+                                            step="0.01"
+                                            required={isPropertyCostRequired}
+                                            disabled={isPropertyCostDisabled}
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Property_Breakup_type__c"
+                                            label="Property Breakup type"
+                                            placeholder="Select"
+                                            options={propertyBreakupTypeOptions}
+                                            value={collateralRecord.Property_Breakup_type__c}
+                                            data-field="Property_Breakup_type__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Percentage_of_Down_payment__c"
+                                            type="number"
+                                            label="Percentage of Down payment"
+                                            value={collateralRecord.Percentage_of_Down_payment__c}
+                                            data-field="Percentage_of_Down_payment__c"
+                                            formatter="percent-fixed"
+                                            message-when-range-overflow = "The value cannot be greater than 100%"
+                                            min="0"
+                                            max="100"
+                                            step="0.01"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Down_payment_INR__c"
+                                            type="number"
+                                            label="Down payment (INR)"
+                                            value={collateralRecord.Down_payment_INR__c}
+                                            data-field="Down_payment_INR__c"
+                                            formatter="currency"
+                                            max={collateralRecord.Property_cost_INR__c}
+                                            min="0"
+                                            step="0.01"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <!-- Property Address -->
+                                <h3
+                                    class="section slds-text-heading_small slds-m-bottom_x-small"
+                                >
+                                    Property Address
+                                </h3>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Address_Type__c"
+                                            label="Address Type"
+                                            placeholder="Select"
+                                            options={addressTypeOptions}
+                                            value={collateralRecord.Address_Type__c}
+                                            
+                                            data-field="Address_Type__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Full_Address__c"
+                                            label="Full Address"
+                                            value={fullAddress}
+                                            disabled
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Country__c"
+                                            label="Country"
+                                            value={collateralRecord.Country__c}
+                                            data-field="Country__c"
+                                            required
+                                            disabled
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Flat_Plot_Number__c"
+                                            label="Flat / Plot Number"
+                                            value={collateralRecord.Flat_Plot_Number__c}
+                                            data-field="Flat_Plot_Number__c"
+                                            required
+                                            
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Address_Line_2__c"
+                                            label="Address Line 2"
+                                            value={collateralRecord.Address_Line_2__c}
+                                            data-field="Address_Line_2__c"
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Address_Line_3__c"
+                                            label="Address Line 3"
+                                            value={collateralRecord.Address_Line_3__c}
+                                            data-field="Address_Line_3__c"
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-record-picker
+                                            label="Pincode"
+                                            placeholder="Search Pincode"
+                                            object-api-name="Pincode_Master__c"
+                                            value={collateralRecord.Pincode__c}
+                                            required
+                                            onchange={handlePincodeLookupChange}
+                                        ></lightning-record-picker>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="State__c"
+                                            label="State"
+                                            value={collateralRecord.State__c}
+                                            data-field="State__c"
+                                            disabled
+                                            required
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="City__c"
+                                            label="City"
+                                            value={collateralRecord.City__c}
+                                            data-field="City__c"
+                                            disabled
+                                            required
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="District__c"
+                                            label="District"
+                                            value={collateralRecord.District__c}
+                                            data-field="District__c"
+                                            disabled
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Taluka__c"
+                                            label="Taluka"
+                                            value={collateralRecord.Taluka__c}
+                                            data-field="Taluka__c"
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Village__c"
+                                            label="Village"
+                                            value={collateralRecord.Village__c}
+                                            data-field="Village__c"
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Residence_Status__c"
+                                            label="Residence Status"
+                                            placeholder="Select"
+                                            options={residenceStatusOptions}
+                                            value={collateralRecord.Residence_Status__c}
+                                            data-field="Residence_Status__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-combobox
+                                            name="Residence_Type__c"
+                                            label="Residence Type"
+                                            placeholder="Select"
+                                            options={residenceTypeOptions}
+                                            value={collateralRecord.Residence_Type__c}
+                                            data-field="Residence_Type__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Landmark__c"
+                                            label="Landmark"
+                                            value={collateralRecord.Landmark__c}
+                                            data-field="Landmark__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Sub_Locality_Of_Property__c"
+                                            label="Sub Locality Of Property"
+                                            value={collateralRecord.Sub_Locality_Of_Property__c}
+                                            data-field="Sub_Locality_Of_Property__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Street_On_Which_Property_Located__c"
+                                            label="Street On Which Property Located"
+                                            value={collateralRecord.Street_On_Which_Property_Located__c}
+                                            data-field="Street_On_Which_Property_Located__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Main_Locality_of_property__c"
+                                            label="Main Locality of Property"
+                                            value={collateralRecord.Main_Locality_of_property__c}
+                                            data-field="Main_Locality_of_property__c"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <div class="row-spacer"></div>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="Mobile_Phone__c"
+                                            type="tel"
+                                            label="Mobile Phone"
+                                            value={collateralRecord.Mobile_Phone__c}
+                                            data-field="Mobile_Phone__c"
+                                            maxlength="10"
+                                            pattern="^(?!0{10})[6-9][0-9]{9}$"
+                                            min="1"
+                                            message-when-pattern-mismatch="Enter 10 digit mobile number"
+                                            required
+                                            onchange={handleInputChange}
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+                                </lightning-layout>
+
+                                        <!-- Collateral Application -->
+                                <div class="row-spacer"></div>
+
+                                <h3
+                                    class="section slds-text-heading_small slds-m-bottom_x-small"
+                                >
+                                    Collateral Application
+                                </h3>
+
+                                <lightning-layout
+                                    multiple-rows
+                                    class="slds-gutters"
+                                >
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="CA_LVR__c"
+                                            type="number"
+                                            label="LVR (%)"
+                                            value={collateralApplication.LVR__c}
+                                            disabled
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    >
+                                        <lightning-input
+                                            name="CA_LTV__c"
+                                            type="number"
+                                            label="LTV (%)"
+                                            value={collateralApplication.LTV__c}
+                                            disabled
+                                        ></lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item
+                                        size="12"
+                                        medium-device-size="4"
+                                        padding="around-small"
+                                    ></lightning-layout-item>
+                                </lightning-layout>
+
+                            </template>
+
+                            <template if:true={showNoCollateralMessage}>
+                                <div
+                                    class="slds-m-top_x-small slds-text-color_error"
+                                >
+                                    In case of NO - Collateral fields will not be
+                                    visible.
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                     <div class="slds-show_small slds-hide_medium slds-p-bottom_xx-large"></div>
+                </div>
+
+                <div class="slds-modal__footer slds-text-align_center">
+                    <!-- <div class="slds-grid slds-grid_align-end slds-wrap slds-p-around_medium"> -->
+                        <lightning-button
+                            class="slds-m-right_small"
+                            data-id="close"
+                            label="Close"
+                            variant="neutral"
+                            type="button"
+                            onclick={handleCloseClick}
+                        ></lightning-button>
+
+                        <lightning-button
+                            
+                            data-id="save"
+                            variant="brand"
+                            label={saveButtonLabel}
+                            type="button"
+                            onclick={handleSave}
+                            disabled={isSaveDisabled}
+                        ></lightning-button>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showDuplicateConfirm}>
+        <section
+            role="dialog"
+            aria-modal="true"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-theme_warning">
+                    <h2 class="slds-text-heading_medium">
+                        Duplicate Collateral Found
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>
+                        This collateral already exists in the system. Do you want
+                        to link the existing record instead?
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button
+                        variant="neutral"
+                        label="No"
+                        onclick={handleDuplicateNo}
+                    ></lightning-button>
+                    <lightning-button
+                        variant="brand"
+                        class="slds-m-left_small"
+                        label="Yes"
+                        onclick={handleDuplicateYes}
+                    ></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,579 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container slds-modal_x-large">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                    <template if:true={isIcici}>ICICI Insurance</template>
+                    <template if:true={isKotak}>Kotak Insurance</template>
+                </h2>
+            </header>
+            <template if:true={isLocked}>
+                <div class="blocking-overlay"></div>
+            </template>
+
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <template if:true={isIcici}>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-combobox class="validate" name="Funded__c" label="Funded" value={insuranceObj.Funded__c}
+                                    placeholder="--Select--" options={fundedOptions} onchange={handleChange} required>
+                                </lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-combobox class="validate" name="Life_Insured__c" label="Life Insured"
+                                    value={insuranceObj.Life_Insured__c} placeholder="--Select--" options={lifeInsuredOptions}  onchange={handleChange} required></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <!-- Applicant 1 Detail Section-->
+                    <div class="section">{applicantDetailTitle}</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-combobox class="validate" name="Applicant__c" label="Applicant Name"
+                                    value={insuranceObj.Applicant__c} placeholder="--Select--"
+                                    options={applicantDetails} disabled=true required></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-combobox name="Gender__c" label="Gender" value={insuranceObj.Gender__c}
+                                    placeholder="--Select--" options={genderOptions} disabled=true></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-input type="date" name="Date_Of_Birth__c"
+                                    value={insuranceObj.Date_Of_Birth__c} label="Date of Birth" disabled=true>
+                                </lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-input type="number" name="Age__c" value={insuranceObj.Applicant_Age__c}
+                                    label="Age(Year&Month)" disabled=true></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <!-- Applicant 2 Detail Section -->
+                    <template if:true={showApplicantSecondApplicantSection}>
+                        <div class="section">Applicant 2 Details</div>
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-combobox  name="Loan_Applicant_2__c" label="Applicant Name"
+                                        value={insuranceObj.Loan_Applicant_2__c} placeholder="--Select--"
+                                        options={applicantList} onchange={handleApplicantChange} required>
+                                    </lightning-combobox>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-combobox name="Gender_2__c" label="Gender"
+                                        value={insuranceObj.Gender_2__c} placeholder="--Select--"
+                                        options={genderOptions} disabled>
+                                    </lightning-combobox>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input type="date" name="Date_Of_Birth_2__c"
+                                        value={insuranceObj.Date_Of_Birth_2__c} label="Date of Birth" disabled>
+                                    </lightning-input>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input type="number" name="Applicant_Age_2__c"
+                                        value={insuranceObj.Applicant_Age_2__c} label="Age(Year&Month)" disabled>
+                                    </lightning-input>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </template>
+
+
+
+
+
+                    <!-- Insurance & Loan Details -->
+                    <div class="section">Insurance & Loan Details</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <!--<lightning-combobox class="validate" name="Loan_Type__c" label="Loan Type"
+                                    value={insuranceObj.Loan_Type__c} placeholder="--Select--" options={loanTypeOptions}
+                                    onchange={handleChange} disabled required>
+                                </lightning-combobox>-->
+                                <lightning-input type="text" class="validate" name="Loan_Type__c"
+                                    value={insuranceObj.Loan_Type__c} label="Loan Type"
+                                    onchange={handleChange} disabled>
+                                </lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-input type="number" name="Outstanding_Loan_Amount__c"
+                                    value={insuranceObj.Outstanding_Loan_Amount__c} label="Outstanding Loan Amount"
+                                    onchange={handleChange} max="999999999" required >
+                                </lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-input type="number" name="Outstanding_Loan_Tenure__c"
+                                    value={insuranceObj.Outstanding_Loan_Tenure__c} label="Outstanding Loan Tenure"
+                                    onchange={handleChange} required
+                                    max="120">
+                               </lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-input type="date" name="LDD__c" value={insuranceObj.LDD__c} label="LDD"
+                                    disabled>
+                                </lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-combobox class="validate" name="Cover__c" label="Cover" value={insuranceObj.Cover__c}
+                                    placeholder="--Select--" options={coverOptions} onchange={handleChange} required>
+                                </lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" padding="around-small">
+                            <div>
+                                <lightning-combobox class="validate" name="Benefit_Option__c" label="Benefit Option"
+                                    value={insuranceObj.Benefit_Option__c} placeholder="--Select--"
+                                    options={benefitOptions} onchange={handleChange} required></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <!-- Death Benefit -->
+                    <template if:true={showDeathBenefitSection}>
+                        <div class="section">Death Benefit</div>
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input class="validate" type="number" name="Sum_Assured_Death__c"
+                                        value={insuranceObj.Sum_Assured_Death__c} label="Sum Assured"
+                                        onchange={handleChange} required
+                                        min="1" max="9999999999">
+                                   </lightning-input>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input class="validate" type="number" name="Coverage_Term_Death__c"
+                                        value={insuranceObj.Coverage_Term_Death__c} label="Coverage Term"
+                                        onchange={handleChange} required
+                                        min="1" max="120">
+                                   </lightning-input>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </template>
+
+                    <!-- ADB Benefit -->
+                    <template if:true={showADBSection}>
+                        <div class="section">ADB</div>
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input class="validate" type="number" name="Sum_Assured_ADB__c"
+                                        value={insuranceObj.Sum_Assured_ADB__c} label="Sum Assured"
+                                        onchange={handleChange} required
+                                        min="1" max="9999999999"></lightning-input>
+                               </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input class="validate" type="number" name="Coverage_Term_ADB__c"
+                                        value={insuranceObj.Coverage_Term_ADB__c} label="Coverage Term"
+                                        onchange={handleChange} required
+                                        min="1" max="120"></lightning-input>
+                               </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </template>
+
+                    <!-- ACI Benefit -->
+                    <template if:true={showACISection}>
+                        <div class="section">ACI</div>
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input class="validate" type="number" name="Sum_Assured_ACI__c"
+                                        value={insuranceObj.Sum_Assured_ACI__c} label="Sum Assured"
+                                        onchange={handleChange} required
+                                        min="1" max="9999999999"></lightning-input>
+                               </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                large-device-size="6" padding="around-small">
+                                <div>
+                                    <lightning-input class="validate" type="number" name="Coverage_Term_ACI__c"
+                                        value={insuranceObj.Coverage_Term_ACI__c} label="Coverage Term"
+                                        onchange={handleChange} required
+                                        min="1" max="120"></lightning-input>
+                               </div>
+                                </lightning-layout-item>
+                                </lightning-layout>
+                                </template>
+                                </template>
+                                <template if:true={isKotak}>
+                                
+                                    <div class="section">Kotak Insurance Details</div>
+                                
+                                    <lightning-layout multiple-rows>
+                                        <!-- Plan Code -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-combobox class="validate" label="Plan Code" name="Plan_Code__c" value={insuranceObj.Plan_Code__c}
+                                                options={planOptions} onchange={handlePlanChange} required>
+                                            </lightning-combobox>
+                                        </lightning-layout-item>
+                                
+                                        <!-- Type of Loan -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <!--<lightning-combobox class="validate" name="Loan_Type__c" label="Type of Loan" options={loanTypeOptions}
+                                                value={insuranceObj.Loan_Type__c} onchange={handleChange} disabled required>
+                                            </lightning-combobox>-->
+                                            <lightning-input type="text" class="validate" name="Loan_Type__c"
+                                                value={insuranceObj.Loan_Type__c} label="Loan Type"
+                                                onchange={handleChange} disabled>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                
+                                        <!-- Joint Life Option -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-combobox class="validate" name="Joint_Life_Option__c" label="Joint Life Option"  
+                                            value={insuranceObj.Joint_Life_Option__c} options={jointLifeOptions} onchange={handleChange} required>
+                                            </lightning-combobox>
+                                        </lightning-layout-item>
+                                
+                                        <!-- DOB Older -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input class="validate" type="date" name="Date_Of_Birth_of_Older_Borrower__c"
+                                                value={insuranceObj.Date_Of_Birth__c} label="Date of Birth - Applicant" onchange={handleChange} disabled=true required>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                        <template if:true={showYoungerBorrowerSection}>
+                                            <!--Second Applicant-->
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                                large-device-size="6" padding="around-small">
+                                                <div>
+                                                    <lightning-combobox  name="Loan_Applicant_2__c" label="Second Applicant Name"
+                                                        value={insuranceObj.Loan_Applicant_2__c} placeholder="--Select--"
+                                                        options={applicantList} onchange={handleApplicantChange} required>
+                                                    </lightning-combobox>
+                                                </div>
+                                            </lightning-layout-item>
+                                            <!-- DOB Younger -->
+                                                <lightning-layout-item size="6" padding="around-small">
+                                                    <lightning-input class="validate" type="date" name="Date_Of_Birth_of_Younger_Borrower__c"
+                                                        label="Date of Birth - Second Applicant" value={insuranceObj.Date_Of_Birth_2__c} onchange={handleChange}
+                                                        disabled required>
+                                                    </lightning-input>
+                                                </lightning-layout-item>
+                                        </template>
+                                        <!-- DOC -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input class="validate" type="date" name="Date_Of_Cover_Of_Commencement__c" label="Date of Cover Commencement"
+                                                value={insuranceObj.Date_Of_Cover_Of_Commencement__c} onchange={handleChange} required>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                
+                                        <!-- Sanctioned Amount -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input class="validate" type="number" name="Sanctioned_Loan_Amount__c" label="Sum Assured"
+                                               value={insuranceObj.Sanctioned_Loan_Amount__c} onchange={handleChange} required >
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                
+                                        <!-- Flat Tenure 
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input type="number" name="Flat_Tenure_In_Years__c" label="Flat Tenure (Years)"
+                                                onchange={handleChange}>
+                                            </lightning-input>
+                                        </lightning-layout-item> -->
+                                
+                                        <!-- Reducing Tenure 
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input type="number" name="Reducing_Tenure_In_Years__c" label="Reducing Tenure (Years)"
+                                                onchange={handleChange}>
+                                            </lightning-input>
+                                        </lightning-layout-item> -->
+                                
+                                        <!-- Loan Tenure -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input class="validate" type="number" name="Loan_Tenure_In_Years__c" label="Loan Tenure (Years)"
+                                                value={insuranceObj.Tenure__c} onchange={handleChange} disabled required>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                
+                                        <!-- Funding -->
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-combobox class="validate" name="Does_Premium_Have_To_Be_Funding__c" label="Does Premium Have to be Funding?"
+                                                options={yesNoOptions} onchange={handleChange} required>
+                                            </lightning-combobox>
+                                        </lightning-layout-item>
+                                
+                                        <!-- Age Younger 
+                                        <template if:true={showYoungerBorrowerSection}>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input type="number" name="Age_Of_Younger_Borrower__c" label="Age of Younger Borrower"
+                                                    onchange={handleChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                    
+                                             UW Status 
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input type="text" name="UnderWriting_Status_Of_Younger_Borrower__c" label="Underwriting Status"
+                                                    onchange={handleChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            
+                                             Premium 
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input type="number" name="Younger_Borrower_s_Premium__c" label="Younger Borrower's Premium"
+                                                    onchange={handleChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                        </template> -->
+                                
+                                    </lightning-layout>
+                                
+                                </template>
+                                <!--Nominee Details-->
+                                <div class="section">Nominee Details</div>
+                                <template for:each={nominees} for:item="nominee" for:index="index">
+
+                                    <div key={nominee.tempId} class="slds-box slds-m-bottom_medium">
+
+                                        <!-- Header -->
+                                        <div class="section">
+                                            Nominee {nominee.sequence}
+                                        </div>
+
+                                        <lightning-layout multiple-rows>
+
+                                            <!-- Nominee Name -->
+                                            <lightning-layout-item size="12" large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-input
+                                                    type="text"
+                                                    label="Nominee Name"
+                                                    name="Nominee_Name__c"
+                                                    value={nominee.Nominee_Name__c}
+                                                    data-index={index}
+                                                    onchange={handleNomineeChange}
+                                                    pattern="^[A-Za-z\s]+$"
+                                                    required>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <!-- Nominee Relationship -->
+                                            <lightning-layout-item size="12" large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-combobox
+                                                    label="Nominee Relationship"
+                                                    name="Nominee_Relationship__c"
+                                                    value={nominee.Nominee_Relationship__c}
+                                                    options={relationshipOptions}
+                                                    data-index={index}
+                                                    onchange={handleNomineeChange}>
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+
+                                            <!-- Nominee DOB -->
+                                            <lightning-layout-item size="12" large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-input
+                                                    type="date"
+                                                    label="Nominee Date of Birth"
+                                                    name="Nominee_Date_of_Birth__c"
+                                                    value={nominee.Nominee_Date_of_Birth__c}
+                                                    data-index={index}
+                                                    max={today}
+                                                    onchange={handleNomineeChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <!-- Nominee Gender -->
+                                            <lightning-layout-item size="12" large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-combobox
+                                                    label="Nominee Gender"
+                                                    name="Nominee_Gender__c"
+                                                    value={nominee.Nominee_Gender__c}
+                                                    options={nomineeGenderOptions}
+                                                    data-index={index}
+                                                    onchange={handleNomineeChange}>
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+
+                                            <!-- Is Minor -->
+                                            <lightning-layout-item size="12" large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-input
+                                                    label="Is Minor?"
+                                                    value={nominee.Is_Minor__c}
+                                                    disabled>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <!-- Appointee Name -->
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-input 
+                                                    type="text" 
+                                                    label="Appointee Name" 
+                                                    name="Appointee_Name__c"
+                                                    value={nominee.Appointee_Name__c}
+                                                    onchange={handleNomineeChange}
+                                                    data-index={index}
+                                                    data-field="validation"
+                                                    pattern="^[A-Za-z\s]+$"
+                                                    class="validate">
+                                                        
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <!-- Appointee Relationship -->
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                                                large-device-size="6" class="slds-p-horizontal_x-small">
+                                                    <lightning-combobox 
+                                                        options={relationshipOptions}
+                                                        label="Appointee Relationship" 
+                                                        name="Appointee_Relationship__c"
+                                                        value={nominee.Appointee_Relationship__c}
+                                                        onchange={handleNomineeChange}
+                                                        data-index={index}
+                                                        data-field="validation"
+                                                        class="validate">
+                                                    </lightning-combobox>
+                                            </lightning-layout-item>
+
+                                            <!-- Appointee DOB -->
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-input 
+                                                    type="date" 
+                                                    label="Appointee DOB" 
+                                                    name="Appointee_DOB__c"
+                                                    value={nominee.Appointee_DOB__c}
+                                                    data-field="validation"
+                                                    max={today}
+                                                    data-index={index}
+                                                    onchange={handleNomineeChange}
+                                                    class="validate">
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <!-- Percentage -->
+                                            <lightning-layout-item size="12" large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-input
+                                                    type="number"
+                                                    label="Percentage of Entitlement"
+                                                    name="Percentage_of_Entitlement__c"
+                                                    value={nominee.Percentage_of_Entitlement__c}
+                                                    min="0" max="100"
+                                                    data-index={index}
+                                                    onchange={handleNomineeChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <!-- Address -->
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                                large-device-size="6" class="slds-p-horizontal_x-small">
+                                                <lightning-textarea 
+                                                    label="Nominee Address" 
+                                                    name="Nominee_Address__c"
+                                                    value={insuranceObj.Nominee_Address__c}
+                                                    onchange={handleChange}
+                                                    data-field="validation"
+                                                    class="validate">
+                                                 </lightning-textarea>
+                                            </lightning-layout-item>
+
+                                        </lightning-layout>
+
+                                        <!-- Remove button -->
+                                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                                large-device-size="6" class="slds-p-horizontal_x-small">
+                                            <lightning-button
+                                                label="Remove Nominee"
+                                                variant="destructive"
+                                                data-index={index}
+                                                onclick={removeNominee}
+                                                disabled={isOnlyOneNominee}>
+                                            </lightning-button>
+                                        </lightning-layout-item>    
+
+                                    </div>
+                                </template>
+                                <c-shf-confirm-modal onconfirm={handleNomineeDeleteConfirm}></c-shf-confirm-modal>
+                                <div class="slds-grid slds-grid_align-end slds-m-top_medium">
+                                    <lightning-button
+                                        label="Add New Nominee"
+                                        icon-name="utility:add"
+                                        variant="brand"
+                                        onclick={addNominee}>
+                                    </lightning-button>
+                                </div>
+
+
+                                <template if:true={isSaving}>
+                                    <lightning-spinner alternative-text="Saving..." size="medium"></lightning-spinner>
+                                </template>
+
+                                <!--Output Table By Child Component-->
+                                <template if:true={isOutputShow}>
+                                    <c-shf-_-icici-insurance-output record-id={recordId}></c-shf-_-icici-insurance-output>
+                                </template>
+                                </div>
+                                
+                                <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick={handleClose}>Cancel</button>
+                <button class="slds-button slds-button_neutral" onclick={handleSave}>Save</button>
+            </footer>
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

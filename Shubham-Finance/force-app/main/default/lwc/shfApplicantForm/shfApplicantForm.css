@@ -1,0 +1,64 @@
+/* Desktop remains unchanged */
+.slds-modal__header {
+    padding: 1rem;
+}
+
+.slds-modal__footer {
+    padding: 1rem;
+}
+
+/* ALL PHONES */
+@media only screen and (max-width: 768px) {
+
+    .slds-modal__container {
+        width: 96vw !important;
+        max-width: 96vw !important;
+        margin: 0 auto;
+    }
+
+    /* Header */
+    .slds-modal__header {
+        padding: 0.4rem !important;
+    }
+
+    .slds-modal__header h2 {
+        font-size: 0.9rem !important;
+        font-weight: 600;
+    }
+
+    /* Content */
+    .slds-modal__content {
+        padding: 0.5rem !important;
+    }
+
+    /* Footer */
+    .slds-modal__footer {
+        padding: 0.4rem !important;
+        display: flex;
+        gap: 0.35rem;
+        justify-content: space-between;
+    }
+
+    /* Buttons scale properly across devices */
+    .slds-modal__footer lightning-button {
+        flex: 1;
+        transform: scale(0.82);
+    }
+}
+
+/* EXTRA SMALL PHONES (older Android / small screens) */
+@media only screen and (max-width: 420px) {
+
+    .slds-modal__header h2 {
+        font-size: 0.8rem !important;
+    }
+
+    .slds-modal__footer lightning-button {
+        transform: scale(0.75);
+    }
+
+    .slds-modal__header,
+    .slds-modal__footer {
+        padding: 0.3rem !important;
+    }
+}

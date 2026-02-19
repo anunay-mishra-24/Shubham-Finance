@@ -1,0 +1,19 @@
+<template>
+    <lightning-card>
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-p-around_small">
+                {error}
+            </div>
+        </template>
+
+        <div class="tableWrap slds-p-around_small">
+            <lightning-datatable
+                key-field="id"
+                data={rows}
+                columns={columns}
+                hide-checkbox-column
+                show-row-number-column>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>

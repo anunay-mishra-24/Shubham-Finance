@@ -1,0 +1,65 @@
+<template>
+    <lightning-card title="Create Case" class="slds-p-around_medium">
+        <lightning-record-edit-form 
+            object-api-name="Case" 
+            onsuccess={handleSuccess} 
+            default-field-values={defaultFieldValues}>
+
+            <lightning-messages></lightning-messages>
+
+            <!-- Application Lookup -->
+            <template if:true={hasSelectedApplication}>
+                <div class="slds-grid slds-gutters slds-m-bottom_small">
+                    <div class="slds-col slds-size_1-of-1 slds-p-bottom_small slds-m-left_medium">
+                        <lightning-input label="Application" value={selectedApplicationName} readonly></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-left_small">
+                        <!-- Empty column to align -->
+                </div>
+            </template>
+            
+
+            <!-- Customer Info (only if no application selected) -->
+            <template if:false={hasSelectedApplication}>
+                <div class="slds-grid slds-gutters slds-m-bottom_small">
+                    <div class="slds-col slds-size_1-of-2 slds-p-right_small">
+                        <lightning-input-field field-name="Customer_Name__c" required></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-left_small">
+                        <lightning-input-field field-name="Contact_No_1__c" required></lightning-input-field>
+                    </div>
+                </div>
+
+                <div class="slds-grid slds-gutters slds-m-bottom_small">
+                    <div class="slds-col slds-size_1-of-2 slds-p-right_small">
+                        <lightning-input-field field-name="Contact_No_2__c"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-left_small">
+                        <lightning-input-field field-name="Dummy_Application_Tagging__c"></lightning-input-field>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Branch and Search Criteria -->
+            <div class="slds-grid slds-gutters slds-m-bottom_small">
+                <div class="slds-col slds-size_1-of-2 slds-p-right_small slds-m-left_left_medium">
+                    <lightning-input-field field-name="Branch__c" required></lightning-input-field>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-left_small">
+                    <lightning-input-field 
+                        field-name="Search_Criteria_Available__c"
+                        value={searchCriteriaAvailable} 
+                        readonly>
+                    </lightning-input-field>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="slds-m-top_medium slds-text-align_right slds-m-right_medium">
+                <lightning-button variant="brand" type="submit" label="Create Case"></lightning-button>
+            </div>
+
+        </lightning-record-edit-form>
+    </lightning-card>
+</template>

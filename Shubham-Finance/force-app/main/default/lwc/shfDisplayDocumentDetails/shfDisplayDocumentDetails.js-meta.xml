@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+		<target>lightning__RecordPage</target>
+		<target>lightning__Tab</target>
+    <target>lightning__FlowScreen</target>
+	</targets>
+  <targetConfigs>
+    <targetConfig targets="lightning__RecordPage">
+        <property name="contextMode" type="String" label="Context Mode" 
+                  description="Set to 'Generic' when used on Query/Verification/Verification Activity record pages" 
+                  default="Application"/>
+        <supportedFormFactors>
+                <supportedFormFactor type="Small"/>   <!-- Mobile -->
+                <supportedFormFactor type="Large"/>   <!-- Desktop -->
+            </supportedFormFactors>          
+    </targetConfig>
+    <targetConfig targets="lightning__FlowScreen">
+        <property name="contextMode" type="String" label="Context Mode" 
+                  description="Set to 'Generic' when used on Query/Verification/Verification Activity record pages" 
+                  default="Application"/>
+        <property name="recordId" type="String" label="RecordId" 
+                  description="Set to record Id of Current Record" 
+                  default=""/>
+        <property name="objectApiName" type="String" label="Object API Name" 
+                  description="Set to ObjectAPIName of Current Record" 
+                  default="Application"/>
+    </targetConfig>
+</targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,150 @@
+<template>
+    <lightning-card title="Self Employed Contract Income Program">
+        <div class="slds-m-around_medium slds-scrollable_x">
+            <table class="slds-table slds-table_bordered slds-table_col-bordered slds-no-row-hover">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="blue-header">Site Details</th>
+                        <th rowspan="2" class="blue-header">Current Status</th>
+                        <th colspan="2" class="blue-header">Period of Service</th>
+                        <th rowspan="2" class="blue-header">Site & Client Details</th>
+                        <th rowspan="2" class="blue-header">Work Details</th>
+                        <th rowspan="2" class="blue-header">Contract Value (Rs.)</th>
+                        <th rowspan="2" class="blue-header">Remarks</th>
+                        <th rowspan="2" class="blue-header">Action</th>
+                    </tr>
+                    <tr>
+                        <th class="blue-header" style="min-width: 110px;">From</th>
+                        <th class="blue-header" style="min-width: 110px;">To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={tableData} for:item="row">
+                        <tr key={row.id}>
+                            <template for:each={row.fields} for:item="field">
+                                <td key={field.key} class="slds-p-around_xx-small">
+                                    <template if:true={field.isText}>
+                                        <lightning-input variant="label-hidden" value={field.value} data-row={row.id} data-order={field.order} max-length={field.maxLength} message-when-too-long="Please enter a maximum of 100 characters." onchange={handleInputChange}></lightning-input>
+                                    </template>
+                                    <template if:true={field.isPicklist}>
+                                        <lightning-combobox variant="label-hidden" value={field.value} options={statusOptions} data-row={row.id} data-order={field.order} onchange={handleInputChange}></lightning-combobox>
+                                    </template>
+                                    <template if:true={field.isDate}>
+                                        <lightning-input type="date" variant="label-hidden" value={field.value} data-row={row.id} data-order={field.order} onchange={handleInputChange}></lightning-input>
+                                    </template>
+                                    <template if:true={field.isTextarea}>
+                                        <lightning-textarea variant="label-hidden" value={field.value} data-row={row.id} data-order={field.order} max-length={field.maxLength} message-when-too-long="Please enter a maximum of 1000 characters." onchange={handleInputChange} style="min-width: 150px;"></lightning-textarea>
+                                    </template>
+                                    <template if:true={field.isNumber}>
+                                        <lightning-input type="number" variant="label-hidden" value={field.value} data-row={row.id} data-order={field.order} 
+                                            min={field.minValue} max-length={field.maxLength} 
+                                            formatter={field.formatter} 
+                                            step="0.01" message-when-step-mismatch="Please enter a value with up to 2 decimal places (e.g., 90.50)."
+                                            message-when-range-underflow="Value cannot be negative"
+                                            message-when-too-long="Please enter a maximum of 10 digits." onchange={handleInputChange}></lightning-input>
+                                    </template>
+                                </td>
+                            </template>
+                            <td class="slds-text-align_center slds-align-middle">
+                                <lightning-button-icon icon-name="utility:delete" variant="error" data-row={row.id} disabled={isDeleteDisabled} onclick={handleOpenDeleteModal}></lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="slds-text-align_right slds-text-title_bold">Total Period (Months)</td>
+                        <td colspan="2" class="total-cell yellow-bg">{grandTotals.totalPeriod}</td>
+                        <td colspan="2" class="slds-text-align_right slds-text-title_bold">Gross Receipts for the Period</td>
+                        <td class="total-cell">
+                            <lightning-input 
+                                type="number" 
+                                variant="label-hidden" 
+                                value={grandTotals.grossReceipts} 
+                                formatter="currency"
+                                disabled>
+                            </lightning-input>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="slds-text-align_right slds-text-title_bold">Gross Margin On Total Income (%)</td>
+                        <td class="total-cell yellow-bg">
+                            <lightning-input type="number" variant="label-hidden" formatter="percent-fixed" value={grandTotals.margin} onchange={handleMarginChange} min="1" max="100" step="0.01" message-when-step-mismatch="Please enter a value with up to 2 decimal places (e.g., 90.50)." message-when-range-underflow="Value cannot be negative or 0" message-when-range-overflow="Value cannot be more than 100"></lightning-input>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="slds-text-align_right slds-text-title_bold">Gross Total Income for Period at Margin Mentioned</td>
+                        <td class="total-cell">
+                            <lightning-input 
+                                type="number" 
+                                variant="label-hidden" 
+                                value={grandTotals.totalIncome} 
+                                formatter="currency"
+                                disabled>
+                            </lightning-input>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="slds-text-align_right slds-text-title_bold">Average Monthly Income</td>
+                        <td class="total-cell" style="background-color: #f3f3f3;">
+                            <lightning-input 
+                                type="number" 
+                                variant="label-hidden" 
+                                value={grandTotals.avgMonthly} 
+                                formatter="currency"
+                                disabled>
+                            </lightning-input>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="slds-text-align_right slds-text-title_bold">Less : Expenses(as per expanse schedule)</td>
+                        <td class="total-cell" style="padding: 0;">
+                            <lightning-input type="number" variant="label-hidden" value={grandTotals.expenses} onchange={handleExpenseChange}
+                            min="0" max-length="10" 
+                            formatter="currency"
+                            step="0.01" message-when-step-mismatch="Please enter a value with up to 2 decimal places (e.g., 90.50)."
+                            message-when-range-underflow="Value cannot be negative"
+                            message-when-too-long="Please enter a maximum of 10 digits."
+                            ></lightning-input>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="slds-text-align_right slds-text-title_bold">Net Income (Monthly)</td>
+                        <td class="total-cell green-bg">
+                            <lightning-input 
+                                type="number" 
+                                variant="label-hidden" 
+                                value={grandTotals.netIncome} 
+                                formatter="currency"
+                                disabled>
+                            </lightning-input>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="slds-m-top_medium slds-grid slds-grid_align-center slds-gutters">
+            <div class="slds-col"><lightning-button label="Add Site Row" icon-name="utility:add" onclick={handleAddRow}></lightning-button></div>
+            <div class="slds-col"><lightning-button label="Save Data" variant="brand" onclick={handleSave}></lightning-button></div>
+        </div>
+    </lightning-card>
+    <template if:true={isDeleteModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header"><h2 class="slds-text-heading_medium">Confirm Deletion</h2></header>
+                <div class="slds-modal__content slds-p-around_medium"><p>Are you sure you want to delete this row? This action cannot be undone.</p></div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Delete" variant="destructive" onclick={confirmDelete}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

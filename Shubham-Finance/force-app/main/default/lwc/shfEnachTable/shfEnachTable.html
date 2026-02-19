@@ -1,0 +1,26 @@
+<template>
+    <lightning-card>
+        <template if:true={records}>
+            <lightning-datatable
+                key-field="id"
+                data={records}
+                columns={columns}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+
+        <template if:false={records}>
+            <div class="slds-align_absolute-center slds-p-around_medium">
+                No E-Nach records found.
+            </div>
+        </template>
+        <div class="slds-p-top_medium slds-p-bottom_medium slds-border_top slds-p-left_none">
+            <lightning-button
+                label="Send Enach Form Link"
+                variant="brand"
+                onclick={createEnachRecordandSendLink}
+                disabled={isSendDisabled}>
+            </lightning-button>
+        </div>
+    </lightning-card>
+</template>

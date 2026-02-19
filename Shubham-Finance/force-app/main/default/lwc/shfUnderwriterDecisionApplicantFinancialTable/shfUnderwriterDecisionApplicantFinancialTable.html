@@ -1,0 +1,28 @@
+<template>
+    <lightning-card>        
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+
+            <template if:true={rows}>
+                <div class="tableWrap">
+                    <lightning-datatable
+                        key-field="applicantId"
+                        data={rows}
+                        columns={columns}
+                        column-widths-mode="auto"
+                        wrap-table-header="none"
+                        hide-checkbox-column>
+                    </lightning-datatable>
+                </div>
+            </template>
+
+            <template if:true={noData}>
+                <div class="slds-text-color_weak slds-p-vertical_small">
+                    No Loan Applicants found for this Application.
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

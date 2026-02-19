@@ -1,0 +1,101 @@
+<template>
+    <div class="spinner">
+        <template if:true={isUploading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="medium">
+            </lightning-spinner>
+        </template>
+    </div>
+
+    <!-- Missing Fields Screen -->
+    <template if:true={showMissingScreen}>
+        <lightning-card title="Missing Required Information">
+            <div class="slds-p-around_medium">
+                <p>Please fill the following fields:</p>
+                <ul class="slds-p-top_small">
+                    <template for:each={missingFields} for:item="f">
+                        <li key={f}>• {f}</li>
+                    </template>
+                </ul>
+            </div>
+
+            <div slot="footer" class="slds-text-align_right">
+                <lightning-button variant="brand" label="OK" onclick={handleClose}></lightning-button>
+            </div>
+        </lightning-card>
+    </template>
+
+
+    <!-- OTP Screen -->
+    <template if:true={showOtpScreen}>
+        <div class="slds-p-around_large">
+
+            <!-- <div class="slds-box slds-theme_default slds-p-around_large slds-rounded_large"> -->
+
+            <h1 class="slds-text-heading_medium slds-m-bottom_small slds-align_absolute-center">
+                OTP Verification
+            </h1>
+
+            <p class="slds-text-body_regular slds-m-bottom_medium slds-align_absolute-center">
+                An OTP has been sent to your registered mobile number.
+            </p>
+
+            <lightning-input label="Enter OTP" type="text" value={userOtp} maxlength="4" pattern="[0-9]{4}"
+                message-when-pattern-mismatch="Please enter 4 digits only" class="slds-m-bottom_small"
+                onchange={handleOtpChange}>
+            </lightning-input>
+
+            <template if:true={otpError}>
+                <p class="slds-text-color_error slds-m-bottom_small">
+                    {otpError}
+                </p>
+            </template>
+
+            <div class="slds-m-bottom_medium">
+                <a onclick={resendOtp} style="cursor:pointer; font-weight:600;">
+                    {sentotpLabel}
+                </a>
+            </div>
+
+            <div class="slds-align_absolute-center">
+                <lightning-button variant="neutral" label="Cancel" onclick={handleClose}>
+                </lightning-button>
+
+                <lightning-button class="slds-m-left_small" variant="brand" label="Submit" onclick={verifyOtp}>
+                </lightning-button>
+                
+                <lightning-button class="slds-m-left_small" variant="neutral" label="Preview" onclick={handlePreview}>
+                </lightning-button>
+            </div>
+
+            <!-- </div> -->
+
+        </div>
+    </template>
+
+
+
+
+
+
+    <!-- PDF Preview Screen -->
+    <template if:true={showPdfScreen}>
+        <lightning-card title="Loan Application Form">
+            <template if:true={isDesktop}>
+            <iframe src={pdfUrl} width="100%" height="500px"></iframe>
+            </template>
+            <div class="slds-p-around_medium slds-text-align_right">
+                <lightning-button variant="brand" label="Send" onclick={handleSend}></lightning-button>
+            </div>
+            <c-shf-upload-document application-id={recordId} context="lwc" ondmsresponse={handleDmsResponse}
+                style="display:none"></c-shf-upload-document>
+
+        </lightning-card>
+    </template>
+
+     <c-shf-upload-document
+        ondmsresponse={handleDmsResponse}
+        style="display:none"
+        application-id={recordId} >
+    </c-shf-upload-document>
+
+</template>

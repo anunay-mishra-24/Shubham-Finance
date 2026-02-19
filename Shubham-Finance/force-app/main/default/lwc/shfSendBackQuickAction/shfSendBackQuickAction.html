@@ -1,0 +1,70 @@
+<template>
+  <lightning-quick-action-panel header="Send Back">
+    <template if:true={showSpinner}>
+      <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+    <template if:false={showSpinner}>
+      <lightning-combobox
+        label="Target Stage"
+        value={selectedStage}
+        options={stageOptions}
+        onchange={handleStageChange}
+        placeholder="Select..."
+        required
+      ></lightning-combobox>
+
+      <lightning-combobox
+        class="slds-m-top_small"
+        label="User"
+        value={selectedUserId}
+        options={userOptions}
+        onchange={handleUserChange}
+        placeholder="Select..."
+        required
+      ></lightning-combobox>
+
+      <lightning-combobox
+        class="slds-m-top_small"
+        label="Send Back Reason"
+        value={selectedReason}
+        options={reasonOptions}
+        onchange={handleReasonChange}
+        placeholder="Select..."
+        required
+        disabled={disableReason}
+      ></lightning-combobox>
+
+      <template if:true={noReasonOptions}>
+        <p class="slds-text-color_error slds-m-top_small">
+          No Send Back Reason configured for this stage/record type change.
+        </p>
+      </template>
+
+      <lightning-textarea
+        class="slds-m-top_small"
+        label="Remarks"
+        value={remarks}
+        onchange={handleRemarksChange}
+        required
+      ></lightning-textarea>
+
+      <template if:true={noStageOptions}>
+        <p class="slds-text-color_error slds-m-top_small">
+          No previous stage available for current stage.
+        </p>
+      </template>
+    </template>
+
+    <div slot="footer">
+      <lightning-button variant="neutral" onclick={handleCancel} label="Cancel"></lightning-button>
+      <lightning-button
+        variant="brand"
+        label="Save"
+        onclick={handleSave}
+        class="slds-m-left_x-small"
+        disabled={disableSave}
+      ></lightning-button>
+    </div>
+  </lightning-quick-action-panel>
+</template>

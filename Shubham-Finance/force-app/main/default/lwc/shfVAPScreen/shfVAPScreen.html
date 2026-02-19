@@ -1,0 +1,422 @@
+<template>
+    <!-- Modal Body -->
+    <div class="slds-modal__content slds-p-around_medium custom-body" id="modal-content-id-1">
+        <div style="padding:0 0.5rem">
+
+            <!-- VAP Detail Section 
+            <div class="section">VAP Details</div> -->
+
+            <lightning-layout multiple-rows>
+                
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <!-- VAP Product Combobox -->
+                            <lightning-combobox 
+                                label="VAP Product" 
+                                name="VAP_Product__c"
+                                value={vapRec.VAP_Product__c} 
+                                options={VAPProduct}
+                                required=true>
+                            </lightning-combobox>
+                        </div>                            
+                 </lightning-layout-item>
+
+                 <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Applicant Name" name="Applicant_Name__c"
+                                    value={vapRec.Applicant_Name__c} disabled></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+        
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <!-- VAP Product Combobox -->
+                            <lightning-combobox 
+                                label="VAP Category" 
+                                name="VAP__c"
+                                value={vapRec.VAP_Category__c} 
+                                options={VAPCategory}
+                                required=true>
+                            </lightning-combobox>
+                        </div>                            
+                 </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <!-- VAP Product Combobox -->
+                            <lightning-combobox 
+                                label="VAP Type" 
+                                name="VAP__c"
+                                value={vapRec.VAP_Type__c} 
+                                options={VAPType}
+                                required=true>
+                            </lightning-combobox>
+                        </div>                            
+                 </lightning-layout-item>
+
+                 <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <!-- VAP Product Combobox -->
+                            <lightning-combobox 
+                                label=" VAP Treatment" 
+                                name="VAP__c"
+                                value={vapRec.VAP_Treatment__c} 
+                                options={VAPTreatment}
+                                required=true>
+                            </lightning-combobox>
+                        </div>                            
+                 </lightning-layout-item>
+
+
+                 <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <!-- VAP_Policy_Amount__c -->
+                            <lightning-input 
+                            type="number" 
+                            label="VAP Policy Amount " 
+                            name="VAP_Policy_Amount__c"
+                            value={vapRec.VAP_Policy_Amount__c}
+                            onchange={handleChange}
+                            required>
+                        </lightning-input>
+
+                        </div>                   
+                                                
+                 </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <!-- VAP_Policy_Amount__c -->
+                            <lightning-input 
+                            type="number" 
+                            label="VAP Amount " 
+                            name="VAP_Amount__c"
+                            value={vapRec.VAP_Amount__c}
+                            onchange={handleChange}
+                            required>
+                        </lightning-input>
+
+                        </div>                   
+                                                
+                 </lightning-layout-item>
+                 
+
+
+                 <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <lightning-input 
+                            type="number" 
+                            label="Differential Amount " 
+                            value={differentialAmount}
+                            disabled>
+                        </lightning-input>
+                        </div>                        
+                                                
+                 </lightning-layout-item>
+               
+
+                     <!-- Bought_From__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="text" 
+                                label="Bought From" 
+                                name="Bought_From__c"
+                                value={vapRec.Bought_From__c}
+                                onchange={handleChange}
+                                required>
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+
+                    
+                    <!-- Disburse_To__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                            <!-- VAP Product Combobox -->
+                            <lightning-combobox 
+                            label="Disburse To" 
+                            name="Disburse_To__c"
+                            value={vapRec.Disburse_To__c} 
+                            options={DisburseTo}
+                            onchange={handleChange}
+                            required>
+                            </lightning-combobox>
+
+                        </div>                            
+                 </lightning-layout-item>
+
+
+
+                    <!-- Policy_Number__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="number" 
+                                label="Policy Number" 
+                                name="Policy_Number__c"
+                                value={vapRec.Policy_Number__c}
+                                onchange={handleChange}
+                                >
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Insurance_Term_in_Years__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="number" 
+                                label="Insurance Term (Years)" 
+                                name="Insurance_Term_in_Years__c"
+                                value={vapRec.Insurance_Term_in_Years__c}
+                                onchange={handleChange}
+                                min="1"
+                                >
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Insurance_Term_in_Months__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="number" 
+                                label="Insurance Term (Months)" 
+                                name="Insurance_Term_in_Months__c"
+                                value={vapRec.Insurance_Term_in_Months__c}
+                                onchange={handleChange}
+                                min="1"
+                                >
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Start_Date__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="date" 
+                                label="Start Date" 
+                                name="Start_Date__c"
+                                value={startDateDisplay}
+                                onchange={handleChange}
+                                >
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Maturity_Date__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="date" 
+                                label="Maturity Date" 
+                                name="Maturity_Date__c"
+                                value={maturityDateDisplay}
+                                onchange={handleChange}
+                                >
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Coverage_Type__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="text" 
+                                label="Coverage Type" 
+                                name="Coverage_Type__c"
+                                value={vapRec.Coverage_Type__c}
+                                onchange={handleChange}
+                                required>
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Coverage_Amount__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="number" 
+                                label="Coverage Amount (₹)" 
+                                name="Coverage_Amount__c"
+                                value={vapRec.Coverage_Amount__c}
+                                onchange={handleChange}
+                                min="1"
+                                disabled>
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Premium_Amount__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-input 
+                                type="number" 
+                                label="Premium Amount (₹)" 
+                                name="Premium_Amount__c"
+                                value={vapRec.Premium_Amount__c}
+                                onchange={handleChange}
+                                min="1"
+                                disabled>
+                            </lightning-input>
+                        </div>
+                    </lightning-layout-item>
+
+                    <!-- Insured__c -->
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                                        large-device-size="6" class="slds-p-horizontal_x-small">                                        
+                        <div>
+                            <lightning-combobox 
+                                label="Insured" 
+                                name="Insured__c"
+                                value={vapRec.Insured__c} 
+                                options={InsuredOptions}
+                                onchange={handleChange}>
+                            </lightning-combobox>
+
+                         </div>                        
+                    </lightning-layout-item>
+
+            </lightning-layout>
+
+        </div>
+
+
+
+        <!--Nominee Details-->
+        <div class="section">Nominee Details</div>
+
+        <lightning-layout multiple-rows>
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                       large-device-size="6" class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input 
+                    type="text" 
+                    label="Nominee Name" 
+                    name="Nominee_Name__c"
+                    value={vapRec.Nominee_Name__c}
+                    onchange={handleChange}>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input 
+                    type="text" 
+                    label="Nominee Relationship" 
+                    name="Nominee_Relationship__c"
+                    value={vapRec.Nominee_Relationship__c}
+                    onchange={handleChange}>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                       large-device-size="6" class="slds-p-horizontal_x-small">
+        <div>
+        <lightning-input 
+            type="date" 
+            label="Date of Birth" 
+            name="Date_of_Birth__c"
+            value={dateOfBirth}
+            onchange={handleChange}>
+        </lightning-input>
+        </div>
+
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                       large-device-size="6" class="slds-p-horizontal_x-small">
+        <div>
+            <lightning-combobox 
+                label="Gender"
+                name="Gender__c"
+                value={vapRec.Gender__c}
+                options={genderOptions}
+                onchange={handleChange}>
+            </lightning-combobox>
+        </div>
+    </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                       large-device-size="6" class="slds-p-horizontal_x-small">
+        <div>
+        <lightning-input 
+            type="text" 
+            label="Is Minor?"
+            name="Is_Minor__c" 
+            value={isMinorHandling}
+            disabled>
+        </lightning-input>
+    </div>
+
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                        large-device-size="6" class="slds-p-horizontal_x-small">
+        <div>
+            <lightning-textarea 
+                label="Nominee Address" 
+                name="Nominee_address__c"
+                value={vapRec.Nominee_address__c}
+                onchange={handleChange}>
+            </lightning-textarea>
+        </div>
+    </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                       large-device-size="6" class="slds-p-horizontal_x-small">
+
+        <div>
+            <lightning-input 
+                type="number" 
+                label="Percentage of Entitlement" 
+                name="Percentage_of_Entitlement__c"
+                value={vapRec.Percentage_of_Entitlement__c}
+                onchange={handleChange}
+                min="0" max="100">
+            </lightning-input>
+        </div>
+        </lightning-layout-item>
+        
+        </lightning-layout>
+
+
+
+        <!-- Modal Footer -->
+        <footer class="slds-modal__footer custom-footer">
+            <button class="slds-button slds-button_neutral" onclick={handleClear}>Clear</button>
+            <button class="slds-button slds-button_brand" onclick={handleSave}>Save</button>
+        </footer>
+    </div>
+</template>

@@ -1,0 +1,317 @@
+<!--
+  @author            : Preeti
+  @group             : TechMatrix Consulting
+  @description       : 
+  @created on        : 23-11-2025
+  @last modified on  : 07-12-2025
+  @last modified by  : Preeti
+  @Contributor       : 
+  @Version History   :
+ * 
+ * 
+-->
+<template>
+
+    <!-- Add New Reference Button -->
+    <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+        <lightning-button label="Add New Reference" variant="brand" onclick={openTypeModal}>
+        </lightning-button>
+    </div>
+
+
+    <!-- Choose Type Modal -->
+    <template if:true={showTypeModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">Type Of Reference</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-radio-group
+                        name="memberType"
+                        options={typeOptions}
+                        value={selectedType}
+                        type="radio"
+                        onchange={handleTypeChange}>
+                    </lightning-radio-group>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button label="Next" variant="brand" class="slds-m-left_small" onclick={goToForm}></lightning-button>
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+    <!-- Dynamic Fields Modal -->
+    <template if:true={showFormModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">{selectedType} Details</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <!-- Reference -->
+                    <template if:true={isReference}>
+                        <lightning-input label="Name" data-field="Name" pattern="^[A-Za-z]+( [A-Za-z]+)*$" message-when-pattern-mismatch="Name Should Contains Alphabets Only" maxlength="100" onchange={handleChange} required></lightning-input>
+                        <lightning-combobox  name="relationship" label="Relationship" data-field="Relationship__c" options={filteredRelationshipOptions} placeholder="Select Relationship" onchange={handleChange} required></lightning-combobox>
+                        <lightning-input label="Mobile Number" type="phone" data-field="Mobile_Number__c" pattern="[6-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit phone number" max-length = "10" onchange={handleChange} required></lightning-input>
+                    </template>
+
+                    <!-- Family -->
+                    <template if:true={isFamily}>
+                        <lightning-input label="Name" data-field="Name" pattern="^[A-Za-z]+( [A-Za-z]+)*$" message-when-pattern-mismatch="Name Should Contains Alphabets Only" maxlength="100" onchange={handleChange} required></lightning-input>
+                        <lightning-input label="Age" type="number" data-field="Age__c"  min="1" max="99" message-when-range-overflow="Age must be less than 100 years" message-when-range-underflow="Age cannot be 0 or negative" onchange={handleChange} required></lightning-input>
+                        <lightning-combobox  name="gender" label="Gender" data-field="Gender__c" options={genderOptions} placeholder="Select Gender" onchange={handleChange} required></lightning-combobox>
+                        <lightning-combobox  name="relationship" label="Relationship" data-field="Relationship__c" options={filteredRelationshipOptions} placeholder="Select Relationship" onchange={handleChange} required></lightning-combobox>
+                        <lightning-input label="Mobile Number" type="phone" data-field="Mobile_Number__c" pattern="[6-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit phone number" onchange={handleChange} required></lightning-input>
+                    </template>
+
+                    <!-- Witness -->
+                    <template if:true={isWitness}>
+                        <lightning-input label="Name" data-field="Name" pattern="^[A-Za-z]+( [A-Za-z]+)*$" message-when-pattern-mismatch="Name Should Contains Alphabets Only" maxlength="100" onchange={handleChange} required></lightning-input>
+                        <lightning-input label="Witness Address" data-field="Witness_address__c" onchange={handleChange} pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." required></lightning-input>
+                        <lightning-combobox name="relationship" label="Relationship" data-field="Relationship__c" options={filteredRelationshipOptions} placeholder="Select Relationship" onchange={handleChange} required></lightning-combobox>
+                        <lightning-input label="Mobile Number" type="phone" data-field="Mobile_Number__c" pattern="[6-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit phone number" onchange={handleChange} required></lightning-input>
+                    </template>
+                    
+                    <template if:true={isContactPerson}>
+                    
+                        <div class="slds-grid slds-wrap slds-gutters">
+                    
+                            <!-- Column 1 -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    
+                                <lightning-input label="Applicant" value={primaryApplicantName} disabled></lightning-input>
+                    
+                                <lightning-combobox label="Salutation" data-field="Salutation__c" options={salutationOptions} onchange={handleChange} required></lightning-combobox>
+                    
+                                <lightning-input label="Name" data-field="Name" pattern="^[A-Za-z]+( [A-Za-z]+)*$" message-when-pattern-mismatch="Name Should Contains Alphabets Only" maxlength="100" onchange={handleChange} required></lightning-input>
+                    
+                                <lightning-input type="email" label="Email Address" data-field="Email_Address__c" onchange={handleChange}> </lightning-input>
+                    
+                                <lightning-input label="Position" data-field="Position__c" pattern="^[A-Za-z0-9]+( [A-Za-z0-9]+)*$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange} required> </lightning-input> 
+
+                                <lightning-combobox label="Is Address Verified?" data-field="Is_Address_Verified__c" options={yesNoOptions}
+                                    onchange={handleChange}></lightning-combobox>
+
+                                <lightning-combobox label="Address Type" data-field="Address_Type__c" options={addressTypeOptions} onchange={handleChange} required></lightning-combobox>
+                    
+                                <lightning-input label="Full Address" data-field="Full_Address__c" pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." onchange={handleChange}></lightning-input>
+                    
+                                <lightning-input label="Duration at Current Address" type="number" data-field="Duration_at_current_address__c" min="0" max="99" message-when-range-overflow="Value cannot be more than 99." message-when-range-underflow="Value cannot be less than 0." pattern="^\d{1,2}$" message-when-pattern-mismatch="Please enter a valid value, for example: 5, 12." onchange={handleChange} required></lightning-input>
+                    
+                                <lightning-input label="Duration at Current City" type="number" data-field="Duration_At_Current_City__c" min="0" max="99" message-when-range-overflow="Value cannot be more than 99." message-when-range-underflow="Value cannot be less than 0." pattern="^\d{1,2}$" message-when-pattern-mismatch="Please enter a valid value, for example: 5, 12." onchange={handleChange} required> </lightning-input> 
+
+                    
+                            </div>
+                    
+                            <!-- Column 2 -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    
+                    
+                                <lightning-input label="Primary Phone (Landline)" type="phone" data-field="Primary_Phone_Landline__c" pattern="[1-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit Primary Phone (Landline)" onchange={handleChange}></lightning-input>
+                    
+                                <lightning-input label="Mobile" type="phone" data-field="Mobile_Number__c" onchange={handleChange} pattern="[6-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit phone number"></lightning-input>
+
+                                <lightning-input label="Experience" type="number" data-field="Experience__c" step="0.1" min="0" max="99" message-when-range-overflow="Experience cannot be more than 99." message-when-range-underflow="Experience cannot be less than 0." pattern="^\d{1,2}(\.\d{1})?$" message-when-pattern-mismatch="Please enter a valid Experience, for example: 5, 12, or 12.5." onchange={handleChange}> </lightning-input>
+                    
+                                <lightning-input label="Years with Company" type="number" data-field="Years_with_Company__c" step="0.1" min="0" max="99" message-when-range-overflow="Value cannot be more than 99." message-when-range-underflow="Value cannot be less than 0." pattern="^\d{1,2}(\.\d{1})?$" message-when-pattern-mismatch="Please enter a valid value, for example: 5, 12, or 12.5." onchange={handleChange}></lightning-input>
+                    
+                                <lightning-combobox label="Is Key Employee" data-field="Is_Key_Employee__c" options={yesNoOptions} onchange={handleChange}></lightning-combobox>
+
+                                <lightning-combobox label="Is Corporate Signatory" data-field="Is_Corporate_Signatory__c" options={yesNoOptions} onchange={handleChange}></lightning-combobox>                     
+                                
+                                <lightning-record-picker label="Pincode" placeholder="Search Pincode..." data-field="Pincode__c" object-api-name="Pincode_Master__c" onchange={handlePincodeChange} required></lightning-record-picker>
+
+                                <lightning-input label="City" value={city} disabled></lightning-input>
+
+                                <lightning-input label="State" value={state} disabled></lightning-input>
+
+                                <lightning-input label="Country" value={country} disabled></lightning-input>
+                    
+                                
+                    
+                                
+                                </div>
+
+                        </div>
+                    </template>
+
+                    <template if:true={isIndividual}>
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                <lightning-combobox label="Title" data-field="Title__c" options={filteredTitleOptions}
+                            onchange={handleChange} disabled={isCompany}>
+                        </lightning-combobox>
+                        
+                        
+                        <lightning-input label="Name" data-field="Name" pattern="^[A-Za-z]+( [A-Za-z]+)*$" message-when-pattern-mismatch="Name Should Contains Alphabets Only" maxlength="100" onchange={handleChange} required></lightning-input>
+                        <lightning-combobox  name="type" label="Type" data-field="Type__c" options={applicantTypeOptions} placeholder="Select Type" onchange={handleChange} required></lightning-combobox>
+                        <lightning-input type="date" label="Date of Birth" data-field="Date_of_Birth__c" max={today} onchange={handleChange}
+                            required>
+                        </lightning-input>
+                    
+                        <lightning-input type="number" label="Experience (Years)" data-field="Experience_years__c" step="0.1" min="0" max="99" message-when-range-overflow="Experience cannot be more than 99." message-when-range-underflow="Experience cannot be less than 0." pattern="^\d{1,2}(\.\d{1})?$" message-when-pattern-mismatch="Please enter a valid Experience, for example: 5, 12, or 12.5."  onchange={handleChange}
+                            required>
+                        </lightning-input>
+                    
+                        <lightning-input label="Unique ID No." data-field="Unique_ID_No__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange} required>
+                        </lightning-input>
+                    
+                        <lightning-input label="Constitution" data-field="Constitution__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange}>
+                        </lightning-input>
+                    
+                        <lightning-input label="Qualification" data-field="Qualification__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange}>
+                        </lightning-input>
+                    
+                        <lightning-input label="Relationship With Employee" data-field="Relationship_With_Employee__c" pattern="^[A-Za-z]+( [A-Za-z]+)?$" message-when-pattern-mismatch="Invalid input. Only alphabetic characters allowed, up to two words." onchange={handleChange}>
+                        </lightning-input>
+                    
+                        <lightning-input type="number" label="Partner's Capital" data-field="Partner_s_Capital__c" step="0.01" min="0" max="9999999999999999.99" message-when-range-overflow="Please enter a valid amount." message-when-range-underflow="Please enter a valid amount." pattern="^\d{1,16}(\.\d{1,2})?$" message-when-pattern-mismatch="Please enter a valid amount." onchange={handleChange}>
+                        </lightning-input>
+
+                                </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                <lightning-input type="number" label="Holding Percentage" data-field="Holding_Percentage__c" min="0" max="100" message-when-range-overflow="Holding Percentage cannot exceed 100."  message-when-range-underflow="Holding Percentage must greater than or equals to 0."
+                            onchange={handleChange} required>
+                        </lightning-input>
+                    
+                        <lightning-input label="Identification" data-field="Identification__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange} >
+                        </lightning-input>
+                    
+                        <!-- Address Fields -->
+                        <lightning-input label="Address Line 1" data-field="Address_Line_1__c" pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." onchange={handleChange} required></lightning-input>
+                    
+                        <lightning-input label="Address Line 2" data-field="Address_Line_2__c" pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." onchange={handleChange}></lightning-input>
+                    
+                        <lightning-input label="Address Line 3" data-field="Address_Line_3__c" pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." onchange={handleChange}></lightning-input>
+                    
+                        <lightning-input label="Landmark" data-field="Landmark__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid Landmark in the correct format." onchange={handleChange} required></lightning-input>
+                        
+                        <lightning-record-picker label="Pincode" placeholder="Select Pincode" object-api-name="Pincode_Master__c" onchange={handlePincodeChange} required></lightning-record-picker>
+                        
+                        <lightning-input label="City" value={city} disabled></lightning-input>
+                        <lightning-input label="State" value={state} disabled></lightning-input>
+                        <lightning-input label="Country" value={country} disabled></lightning-input>
+
+                                </div>
+                        </div>
+ 
+                    </template>
+                    
+                    
+                    <!-- Company -->
+                    <template if:true={isCompany}>
+                        <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-combobox label="Title" data-field="Title__c" options={filteredTitleOptions}
+                            onchange={handleCategoryChange} disabled={isCompany}>
+                        </lightning-combobox>
+                        
+                        <lightning-input label="Company Name" data-field="Company_Name__c" pattern="^[A-Za-z]+( [A-Za-z]+)*$" message-when-pattern-mismatch="Name Should Contains Alphabets Only" maxlength="100" onchange={handleChange} required>
+                        </lightning-input>
+
+                        <lightning-combobox  name="type" label="Type" data-field="Type__c" options={applicantTypeOptions} placeholder="Select Type" onchange={handleChange} required></lightning-combobox>
+                    
+                        <lightning-input type="number" label="Experience (Years)" data-field="Experience_years__c" step="0.1" min="0" max="99" message-when-range-overflow="Experience cannot be more than 99." message-when-range-underflow="Experience cannot be less than 0." pattern="^\d{1,2}(\.\d{1})?$" message-when-pattern-mismatch="Please enter a valid Experience, for example: 5, 12, or 12.5." onchange={handleChange}
+                            required>
+                        </lightning-input>
+                    
+                        <lightning-input type="date" label="Date of Incorporation" data-field="Date_Of_Incorporation__c" max={today}
+                            onchange={handleChange} required>
+                        </lightning-input>
+                    
+                        <lightning-input label="Unique ID No." data-field="Unique_ID_No__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange} required>
+                        </lightning-input>
+                    
+                        <lightning-input label="Constitution" data-field="Constitution__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange} required>
+                        </lightning-input>
+                    
+                        <lightning-input type="number" label="Partner's Capital" data-field="Partner_s_Capital__c" step="0.01" min="0" max="9999999999999999.99" message-when-range-overflow="Please enter a valid amount." message-when-range-underflow="Please enter a valid amount." pattern="^\d{1,16}(\.\d{1,2})?$" message-when-pattern-mismatch="Please enter a valid amount." onchange={handleChange}
+                            required>
+                        </lightning-input>
+                        <lightning-input type="number" label="Holding Percentage" data-field="Holding_Percentage__c" min="0" max="100" message-when-range-overflow="Holding Percentage cannot exceed 100."  message-when-range-underflow="Holding Percentage must greater than or equals to 0."
+                            onchange={handleChange} required>
+                        </lightning-input>
+
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    
+                        <lightning-input label="Identification" data-field="Identification__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid value in the correct format." onchange={handleChange} required>
+                        </lightning-input>
+                    
+                        <!-- Address -->
+                        <lightning-input label="Address Line 1" data-field="Address_Line_1__c" pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." onchange={handleChange} required></lightning-input>
+                    
+                        <lightning-input label="Address Line 2" data-field="Address_Line_2__c" pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." onchange={handleChange}></lightning-input>
+                    
+                        <lightning-input label="Address Line 3" data-field="Address_Line_3__c" pattern="^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#']*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid address." onchange={handleChange}></lightning-input>
+                    
+                        <lightning-input label="Landmark" data-field="Landmark__c" pattern="^[A-Za-z0-9].*[A-Za-z0-9]$" message-when-pattern-mismatch="Please enter a valid Landmark in the correct format." onchange={handleChange} required></lightning-input>
+                        
+                        <lightning-record-picker label="Pincode" placeholder="Select Pincode" object-api-name="Pincode_Master__c" onchange={handlePincodeChange} required></lightning-record-picker>
+
+                        
+                        <lightning-input label="City" value={city} disabled></lightning-input>
+                        <lightning-input label="State" value={state} disabled></lightning-input>
+                        <lightning-input label="Country" value={country} disabled></lightning-input>
+
+                        </div>
+                        </div>
+                        
+                    </template>
+                    
+                    
+                    </div>
+                    
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Previous" onclick={backToType}></lightning-button>
+                        <lightning-button label="Cancel" onclick={closeModal} class="slds-m-left_small"></lightning-button>
+                        <lightning-button label="Save" variant="brand" class="slds-m-left_small" onclick={saveRecord} disabled={isSaving}>
+                        </lightning-button>
+                    </footer>
+                    
+                    </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    
+    <!-- Individual / Company Modal -->
+    <template if:true={showIndividualCompanyModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+    
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">Select Type</h2>
+                </header>
+    
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-combobox label="Individual/Company" data-field="Individual_Company__c"
+                        options={individualCompanyOptions} placeholder="Select Type"
+                        onchange={handleCategoryChange} required>
+                    </lightning-combobox>
+                </div>
+    
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Previous" onclick={backFromIndividualCompany}></lightning-button>
+                    <lightning-button label="Cancel" class="slds-m-left_small" onclick={closeModal}></lightning-button>
+                    <lightning-button label="Next" variant="brand" class="slds-m-left_small"
+                        onclick={continueAfterIndividualCompany}></lightning-button>
+                </footer>
+    
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

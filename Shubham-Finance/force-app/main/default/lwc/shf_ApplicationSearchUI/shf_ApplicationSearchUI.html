@@ -1,0 +1,118 @@
+<template>
+    <lightning-card title="Search Customer / Applicant">
+
+        <!-- Spinner / Loader -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_small">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Search Fields -->
+        <div class="slds-p-around_small slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                <lightning-input type="text" label="Application No" name="application"
+                                 value={application} onchange={handleInputChange}>
+                </lightning-input>
+            </div>
+            <div class="slds-col slds-align-middle slds-text-align_center slds-p-horizontal_small">OR</div>
+            <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                <lightning-input type="text" label="Loan Agreement No" name="loanAggrement"
+                                 value={loanAggrement} onchange={handleInputChange}>
+                </lightning-input>
+            </div>
+            <div class="slds-col slds-align-middle slds-text-align_center slds-p-horizontal_small">OR</div>
+            <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                <lightning-input type="text" label="Phone" name="phone"
+                                 value={phone} onchange={handleInputChange}>
+                </lightning-input>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="slds-p-around_small slds-grid slds-grid_align-center">
+            <lightning-button label="Clear" onclick={handleClearClick}
+                              disabled={isClearDisabled} class="slds-m-right_x-small">
+            </lightning-button>
+            <lightning-button variant="brand" label="Search" onclick={handleSearch}
+                              disabled={isSearchDisabled}>
+            </lightning-button>
+        </div>
+
+        <!-- Search Results -->
+        <template if:true={hasSearched}>
+            <div class="slds-p-around_small">
+                <template if:true={hasApplications}>
+                    <lightning-datatable key-field="Id"
+                                         data={applications}
+                                         columns={columns}
+                                         hide-checkbox-column={hideCheckboxColumn}
+                                         max-row-selection="1"
+                                         selected-rows={rowSelection}
+                                         onrowselection={handleRowSelection}
+                                         onrowaction={handleRowAction}>
+                    </lightning-datatable>
+                </template>
+
+                <template if:true={noApplicationsFound}>
+                    <p class="slds-text-color_error">No records found with the provided details</p>
+                </template>
+            </div>
+        </template>
+
+        <!-- Create New Case -->
+        <div class="slds-p-around_small slds-grid slds-grid_align-end">
+            <lightning-button variant="brand" label="Create New Case" onclick={handleCreateNewCaseClick}>
+            </lightning-button>
+        </div>
+
+    </lightning-card>
+
+    <!--  MODAL FOR LINKED LOAN DETAILS -->
+<template if:true={isModalOpen}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container my-large-modal" >
+
+            <!-- Header -->
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Linked Loan Details</h2>
+            </header>
+
+            <!-- Body -->
+            <div class="slds-modal__content slds-p-around_medium">
+
+                <!-- CUSTOMER NAME AT TOP -->
+                <template if:true={customerName}>
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">
+                        <b>Customer Name:</b> {customerName}
+                    </h3>
+                </template>
+
+                <!-- DATATABLE FOR LINKED LOAN LIST -->
+                <template if:true={linkedLoanList}>
+                    <lightning-datatable
+                        key-field="loanAccountNumber"
+                        data={linkedLoanList}
+                        columns={linkedLoanColumns}
+                        hide-checkbox-column="true">
+                    </lightning-datatable>
+                </template>
+
+                <template if:false={linkedLoanList}>
+                    <p>No Linked Loan Data Found</p>
+                </template>
+            </div>
+
+            <!-- Footer -->
+            <footer class="slds-modal__footer">
+                <lightning-button variant="brand" label="Close" onclick={closeModal}></lightning-button>
+            </footer>
+
+        </div>
+    </section>
+
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+
+</template>

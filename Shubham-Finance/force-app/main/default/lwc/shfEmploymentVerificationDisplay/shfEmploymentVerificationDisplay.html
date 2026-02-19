@@ -1,0 +1,77 @@
+<template>
+    <lightning-card title="">
+
+        <!-- MAIN SECTIONS -->
+        <template for:each={sections} for:item="section">
+            <div key={section.title} class="slds-m-around_medium" >
+
+                <h3 class="slds-text-heading_medium slds-m-bottom_small" style="background: #c3c3c3ba;padding: 0.3rem;">
+                    {section.title}
+                </h3>
+
+                <!-- TWO COLUMN DETAIL VIEW WITH ROW SEPARATORS -->
+                <template if:true={section.isTwoColumn}>
+                    <div class="slds-box slds-theme_default">
+                        <lightning-layout multiple-rows>
+                            <template for:each={section.fields} for:item="field">
+                                <lightning-layout-item
+                                    key={field.label}
+                                    size="6"
+                                    class="slds-p-around_small slds-border_bottom">
+
+                                    <div class="slds-form-element">
+                                        <span class="slds-form-element__label slds-text-title_caps">
+                                            {field.label}
+                                        </span>
+                                        <div class="slds-form-element__control">
+                                            <span class="slds-text-body_regular">
+                                                {field.value}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </div>
+                </template>
+
+                <!-- TABLE VIEW -->
+                <template if:true={section.isTable}>
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_medium">
+                        <thead>
+                            <tr>
+                                <template for:each={section.columns} for:item="col">
+                                    <th key={col.field}>{col.label}</th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={section.rows} for:item="row">
+                                <tr key={row.id}>
+                                    <template for:each={row.cells} for:item="cell">
+                                        <td key={cell.key}>{cell.value}</td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- FAILURES (ALWAYS LAST) -->
+        <template if:true={failures}>
+            <div class="slds-m-around_medium slds-p-around_medium">
+                <h3 class="slds-text-heading_medium">Failures</h3>
+                <ul>
+                    <template for:each={failures} for:item="f">
+                        <li key={f}>{f}</li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+
+    </lightning-card>
+</template>

@@ -1,0 +1,272 @@
+<template>
+    <lightning-card title="Disbursement Memo" icon-name="standard:account">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+        
+        <div class="slds-p-around_medium">
+            <!-- Header: Application Details (2-Column Grid) -->
+            <lightning-layout multiple-rows class="slds-m-bottom_medium">
+                <!-- Row 1 -->
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Application Number" value={application.Name} disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Tranche ID" value={disbursement.Name} disabled></lightning-input>
+                </lightning-layout-item>
+
+                <!-- Row 2 -->
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Product" value={application.Loan_Product__c} disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Sub-Product" value={application.Sub_Product__c} disabled></lightning-input>
+                </lightning-layout-item>
+
+                <!-- Row 3 -->
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Program" value={programName} disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Loan Amount" value={disbursement.Disbursal_Amount__c} disabled></lightning-input>
+                </lightning-layout-item>
+
+                <!-- Row 4 -->
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="PF%" value={application.Processing_Fee_percent__c} disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Construction Cost" value={constructionCost} disabled></lightning-input>
+                </lightning-layout-item>
+
+                <!-- Row 5 -->
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Branch" value={application.BranchName} disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="horizontal-small" class="slds-p-bottom_small">
+                    <lightning-input label="Applicant Name" value={primaryApplicantName} disabled></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- Tenure and Bank Grid (3 Column) -->
+            <div class="slds-box slds-box_small slds-theme_shade slds-m-bottom_medium">
+                <lightning-layout multiple-rows horizontal-align="spread">
+                     <lightning-layout-item size="4" padding="horizontal-small">
+                         <lightning-input label="Tenure (Years)" value={tenureInYears} disabled></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" padding="horizontal-small">
+                         <lightning-input label="Tenure (Months)" value={tenureInMonths} disabled></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" padding="horizontal-small">
+                         <lightning-combobox
+                            label="Disbursement Bank"
+                            value={disbursement.Disbursement_Bank__c}
+                            options={disbursementBankOptions}
+                            placeholder="Select Disbursement Bank"
+                            onchange={handleInputChange}
+                            data-field="Disbursement_Bank__c"
+                            class="slds-m-bottom_small">
+                        </lightning-combobox>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <br/>
+
+            <!-- Payee Details Table -->
+            <!-- Payee Details Section -->
+            <div class="slds-text-heading_medium slds-m-bottom_medium">Payee Details</div>
+            
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col" style="width: 50px;">
+                            <div class="slds-truncate" title="S. No">S. No</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Disbursal Amount">Disbursal Amount</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Payment Mode">Payment Mode</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Cheque no.">Cheque no.</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Favouring">Favouring</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="A/C No.">A/C No.</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                        </th>
+                        <th class="" scope="col" style="width: 50px;">
+                            <div class="slds-truncate" title="Actions">Actions</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={payeeDetails} for:item="payee" for:index="index">
+                        <tr key={payee.key}>
+                            <td>{payee.sNo}</td>
+                            <td>
+                                <lightning-input type="number" variant="label-hidden" value={payee.DisbursalAmount__c} 
+                                                 data-index={index} data-field="DisbursalAmount__c" 
+                                                 onchange={handleInputChange}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-combobox variant="label-hidden" value={payee.TypeOfPaymentMode__c} 
+                                                    options={paymentModeOptions} 
+                                                    data-index={index} data-field="TypeOfPaymentMode__c" 
+                                                    onchange={handleInputChange}></lightning-combobox>
+                            </td>
+                            <td>
+                                <template if:true={payee.isCheque}>
+                                    <lightning-record-picker
+                                        object-api-name="Cheque_Master__c"
+                                        placeholder="Select Cheque"
+                                        label="Cheque No"
+                                        variant="label-hidden"
+                                        value={payee.Instrument_Number__c}
+                                        filter={chequeFilter}
+                                        onchange={handleInputChange}
+                                        data-index={index}
+                                        data-field="Instrument_Number__c">
+                                    </lightning-record-picker>
+                                </template>
+                            </td>
+                            <td>
+                                <lightning-input type="text" variant="label-hidden" value={payee.InFavourOf__c} 
+                                                 data-index={index} data-field="InFavourOf__c" 
+                                                 onchange={handleInputChange} placeholder="Favouring"></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" variant="label-hidden" value={payee.Account_Number__c} 
+                                                 data-index={index} data-field="Account_Number__c" 
+                                                 onchange={handleInputChange} placeholder="A/C No"></lightning-input>
+                            </td>
+                            <td>
+
+                                <lightning-combobox
+                                    variant="label-hidden"
+                                    label="Bank Name"
+                                    value={payee.Customer_Bank__c}
+                                    options={customerBankOptions}
+                                    placeholder="Select Bank"
+                                    onchange={handleInputChange}
+                                    data-index={index}
+                                    data-field="Customer_Bank__c">
+                                </lightning-combobox>
+
+                            </td>
+                            <td>
+                                <lightning-button-icon icon-name="utility:delete" alternative-text="Delete" 
+                                                       title="Delete" onclick={handleRemoveRow} data-index={index}></lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            
+            <div class="slds-m-top_medium">
+                <lightning-button label="Add Row" title="Add Row" icon-name="utility:add" onclick={handleAddRow}></lightning-button>
+            </div>
+
+            <!-- Fees Details Section -->
+            <div class="slds-text-heading_medium slds-m-top_large slds-m-bottom_medium">Fees Details</div>
+            
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col" style="width: 50px;">
+                            <div class="slds-truncate" title="S. No">S. No</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Amount">Amount</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Fee Type">Fee Type</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Tax">Tax</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Charge Sub Type">Charge Sub Type</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Status">Status</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={feeDetails} for:item="fee" for:index="index">
+                        <tr key={fee.key}>
+                            <td>{fee.sNo}</td>
+                            <td>
+                                <lightning-input type="number" variant="label-hidden" value={fee.Amount__c} 
+                                                 formatter="currency" step="0.01" disabled></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-combobox variant="label-hidden" value={fee.Fee_Type__c} 
+                                                    options={feeTypeOptions} 
+                                                    placeholder="Select Fee Type" disabled></lightning-combobox>
+                            </td>
+                            <td>
+                                <lightning-input type="number" variant="label-hidden" value={fee.Tax__c} 
+                                                 formatter="currency" step="0.01" disabled></lightning-input>
+                            </td>
+                             <td>
+                                <lightning-combobox variant="label-hidden" value={fee.Charge_Sub_Type__c} 
+                                                    options={chargeSubTypeOptions} 
+                                                    placeholder="Select Sub Type" disabled></lightning-combobox>
+                            </td>
+                            <td>
+                                <lightning-combobox variant="label-hidden" value={fee.Status__c} 
+                                                    options={feeStatusOptions} 
+                                                    placeholder="Select Status" disabled></lightning-combobox>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <!-- Primary Applicant Details Section -->
+            <div class="slds-text-heading_medium slds-m-top_large slds-m-bottom_medium">Primary Applicant Details</div>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" padding="horizontal-small">
+                     <lightning-input type="number" label="Amount" value={primaryApplicantAmount} 
+                                      data-field="Payment_Amount__c" onchange={handlePrimaryApplicantChange} 
+                                      formatter="currency" step="0.01" disabled></lightning-input>
+                </lightning-layout-item>
+                 <lightning-layout-item size="4" padding="horizontal-small">
+                     <lightning-input label="Primary Applicant Name" value={primaryApplicantPayee.InFavourOf__c} 
+                                      data-field="InFavourOf__c" onchange={handlePrimaryApplicantChange} disabled></lightning-input>
+                </lightning-layout-item>
+                 <lightning-layout-item size="4" padding="horizontal-small">
+                     <lightning-input label="Account Number" value={primaryApplicantPayee.Account_Number__c} 
+                                      data-field="Account_Number__c" onchange={handlePrimaryApplicantChange} disabled></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <div class="slds-m-top_medium">
+                <strong>Total Disbursal Amount: {totalDisbursalAmount}</strong>
+            </div>
+
+            <!-- Memo Maker Section -->
+            <div class="slds-m-top_large border-section">
+                <div class="slds-text-heading_small slds-p-around_x-small" style="background-color: #0b2e4e; color: white; text-align: center;">
+                    Memo Maker
+                </div>
+                <div class="slds-box slds-box_small slds-theme_default slds-text-align_center">
+                    {currentUserName} - {currentUserEmployeeNumber}
+                </div>
+            </div>
+
+        </div>
+        
+        <div slot="footer">
+            <lightning-button variant="brand" label="Save" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+        </div>
+    </lightning-card>
+</template>

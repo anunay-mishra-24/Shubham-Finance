@@ -1,0 +1,470 @@
+<template>
+<div class='slds-text-title_bold slds-p-vertical_small slds-m-bottom_small slds-text-align_center'
+    style="background:#D3D3D3;">
+    Application  Details
+</div>
+
+<lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
+
+<lightning-layout multiple-rows class="slds-box slds_theme_default">
+    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+        class="slds-p-horizontal_x-small">
+        <lightning-input
+            type="number"
+            label="Sanctioned Loan Amount"
+            name="Sanction_Amount__c"
+            value={applicationUiDraft.sanctionAmount}
+            data-field="sanctionAmount"
+            onchange={handleApplicationChange}
+            formatter="currency"
+            step=".01"
+            disabled={disableSanctionAmount}
+            min = "1"
+            required>
+        </lightning-input>
+    </lightning-layout-item>
+
+    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+        class="slds-p-horizontal_x-small">
+        <lightning-input
+            type="number"
+            label="Rate of Interest (ROI)"
+            name="Rate_of_Interest__c"
+            value={applicationUiDraft.roi}
+            data-field="roi"
+            onchange={handleApplicationChange}
+            formatter="percent-fixed"
+            step="0.01"
+            disabled={disableRoi}
+           
+            required>
+        </lightning-input>
+    </lightning-layout-item>
+
+    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+        class="slds-p-horizontal_x-small">
+        <lightning-input
+            type="number"
+            label="Tenure"
+            name="Tenure__c"
+            value={applicationUiDraft.tenure}
+            data-field="tenure"
+            max="360"
+            onchange={handleApplicationChange}
+            disabled={disableTenure}
+            
+            required>
+        </lightning-input>
+    </lightning-layout-item>
+
+    <!-- Unmapped fields (keep UI same, disable) -->
+    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+        class="slds-p-horizontal_x-small">
+        <lightning-input 
+            type="number" label="Processing Fee (%)" name="Processing_Fee_Percent__c" 
+            value={applicationUiDraft.processingFeePercent} data-field="processingFeePercent" formatter="percent-fixed"
+            step="0.01" min="0.01"
+            onchange={handleApplicationChange} disabled={disableProcessingFeePercent} required></lightning-input>
+        
+    </lightning-layout-item>
+
+    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+        class="slds-p-horizontal_x-small">
+        <lightning-input 
+            type="number" label="Processing Fee (INR)" name="Processing_Fee__c" 
+            value={applicationUiDraft.processingFee} data-field="processingFee" formatter="currency"
+            step=".01" min="0.01"
+            onchange={handleApplicationChange} disabled={disableProcessingFee} required></lightning-input>
+        
+    </lightning-layout-item>
+</lightning-layout>
+
+<br/>
+
+<div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small slds-text-align_center"
+        style="background:#D3D3D3;">
+    Insurance Details
+</div>
+
+<div class="table-wrap slds-box slds_theme_default">
+  <div class="table-scroll">
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout custom-table ins-table"
+           aria-label="Insurance Details">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th scope="col" class="sticky-col"><div class="slds-truncate">Applicant Name</div></th>
+          <th scope="col"><div class="slds-truncate">Insurance Amount</div></th>
+          <th scope="col"><div class="slds-truncate">Insurance Premium</div></th>
+          <th scope="col"><div class="slds-truncate">Insurance Tenure</div></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <template for:each={insuranceUiRows} for:item="row">
+          <tr key={row.loanApplicantId}>
+            <td class="sticky-col wrap">
+              <div class="slds-truncate">{row.applicantName}</div>
+            </td>
+
+            <td class="cell-input">
+              <lightning-input
+                variant="label-hidden"
+                type="number"
+                value={row.uiInsuredAmount}
+                data-ins-id={row.insuranceVerificationId}
+                data-la-id={row.loanApplicantId}
+                data-ins-field="insured"
+                onchange={handleInsuranceChange}
+                formatter="currency"
+                step=".01"
+                disabled={row.disableInsured}
+                min="0.01"
+                required>
+              </lightning-input>
+            </td>
+
+            <td class="cell-input">
+              <lightning-input
+                variant="label-hidden"
+                type="number"
+                value={row.uiPremiumAmount}
+                data-ins-id={row.insuranceVerificationId}
+                data-ins-field="premium"
+                data-la-id={row.loanApplicantId}
+                onchange={handleInsuranceChange}
+                formatter="currency"
+                step=".01"
+                disabled={row.disablePremium}
+                min="0.01"
+                required>
+              </lightning-input>
+            </td>
+
+            <td class="cell-input">
+              <lightning-input
+                variant="label-hidden"
+                type="number"
+                value={row.uiTenure}
+                data-ins-id={row.insuranceVerificationId}
+                data-la-id={row.loanApplicantId}
+                data-ins-field="tenure"
+                max="360"
+                min="1"
+                onchange={handleInsuranceChange}
+                disabled={row.disableTenure}
+               
+                required>
+              </lightning-input>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<br/>
+
+<div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small slds-text-align_center"
+    style="background:#D3D3D3;">
+Collateral Details
+</div>
+
+<div class="slds-box slds_theme_default slds-scrollable_x">
+<lightning-datatable
+    key-field="collateralId"
+    data={collateralRows}
+    columns={collateralColumns}
+    column-widths-mode="auto"
+    wrap-text-max-lines="3"
+    hide-checkbox-column
+    show-row-number-column>
+</lightning-datatable>
+
+</div>
+
+
+<!-- Buttons -->
+<div class="slds-m-top_large slds-align_absolute-center">
+    <lightning-button variant="brand" label="Save"
+        class="slds-m-right_small"
+        onclick={handleSaveClick}
+        disabled={isSaveDisabled}>
+    </lightning-button>
+
+    <lightning-button variant="neutral" label="Reset"
+        class="slds-m-right_small"
+        onclick={handleResetClick}
+        disabled={isResetDisabled}>
+    </lightning-button>
+
+    <lightning-button variant="brand" label="Submit For Approval"
+        onclick={handleSubmitClick}
+        disabled={isSubmitDisabled}>
+    </lightning-button>
+</div>
+
+<!-- Bottom Negotiation (Requested) values -->
+<div class="slds-m-top_large">
+    <lightning-accordion
+    allow-multiple-sections-open
+    active-section-name={activeSections}
+    onsectiontoggle={handleSectionToggle}
+    class="slds-m-bottom_medium">
+         <lightning-accordion-section name="NegotiationValues" label="Requested Negotiated Value">
+            
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small slds-text-align_center"
+        style="background:#D3D3D3;">
+        Application Negotiation Values
+    </div>
+
+    <div class="table-wrap slds-box slds_theme_defaults">
+  <div class="table-scroll">
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout custom-table two-col-table"
+           aria-label="Application Negotiation Values">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th scope="col" class="sticky-col"><div class="slds-truncate">Field</div></th>
+          <th scope="col"><div class="slds-truncate">Value</div></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Negotiation Sanctioned Loan Amount</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationRequestedDraft.sanctionAmount}>₹{applicationRequestedDraft.sanctionAmount}</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Negotiation ROI</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationRequestedDraft.roi}>{applicationRequestedDraft.roi}%</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Negotiation Tenure</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationRequestedDraft.tenure}>{applicationRequestedDraft.tenure}</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Negotiation Processing Fee %</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationRequestedDraft.processingFeePercent}>{applicationRequestedDraft.processingFeePercent}%</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Negotiation Processing Fee</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationRequestedDraft.processingFee}>₹{applicationRequestedDraft.processingFee}</template>
+          </div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+         
+        
+    <div class="slds-m-top_medium slds-text-title_bold slds-p-vertical_medium slds-m-bottom_small slds-text-align_center" style="background:#D3D3D3;">Insurance Negotiation  Values</div>
+
+    <div class="table-wrap slds-box slds_theme_default">
+  <div class="table-scroll">
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout custom-table ins-ro-table"
+           aria-label="Insurance Negotiation Values">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th scope="col" class="sticky-col"><div class="slds-truncate">Applicant Name</div></th>
+          <th scope="col"><div class="slds-truncate">Negotiation Insured Amount</div></th>
+          <th scope="col"><div class="slds-truncate">Negotiation Premium</div></th>
+          <th scope="col"><div class="slds-truncate">Negotiation Tenure</div></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <template for:each={insuranceUiRows} for:item="row">
+          <tr key={row.loanApplicantId}>
+            <td class="sticky-col wrap"><div class="slds-truncate">{row.applicantName}</div></td>
+
+            <td><div class="slds-truncate">
+              <template if:true={row.requestedInsuredDraft}>₹{row.requestedInsuredDraft}</template>
+            </div></td>
+
+            <td><div class="slds-truncate">
+              <template if:true={row.requestedPremiumDraft}>₹{row.requestedPremiumDraft}</template>
+            </div></td>
+
+            <td><div class="slds-truncate">
+              <template if:true={row.requestedTenureDraft}>{row.requestedTenureDraft}</template>
+            </div></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+         </lightning-accordion-section>
+            
+
+
+         <lightning-accordion-section name="originalapplicatiovalues" label="Original  Values">
+<div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small slds-text-align_center"
+    style="background:#D3D3D3;">
+Original Application Values
+</div>
+
+<!-- Application Original -->
+<div class="table-wrap slds-box slds_theme_default">
+  <div class="table-scroll">
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout custom-table two-col-table"
+           aria-label="Original Application Values">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th scope="col" class="sticky-col"><div class="slds-truncate">Field</div></th>
+          <th scope="col"><div class="slds-truncate">Value</div></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Original Sanction Loan Amount</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationOriginal.sanctionAmount}>₹{applicationOriginal.sanctionAmount}</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Original ROI</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationOriginal.roi}>{applicationOriginal.roi}%</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Original Tenure</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationOriginal.tenure}>{applicationOriginal.tenure}</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Original Processing Fee %</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationOriginal.processingFeePercent}>{applicationOriginal.processingFeePercent}%</template>
+          </div></td>
+        </tr>
+
+        <tr>
+          <td class="sticky-col wrap"><div class="slds-truncate">Original Processing Fee</div></td>
+          <td><div class="slds-truncate">
+            <template if:true={applicationOriginal.processingFee}>₹{applicationOriginal.processingFee}</template>
+          </div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+         
+<!-- Insurance Original -->
+
+<div class="slds-m-top_medium slds-text-title_bold slds-p-vertical_small slds-text-align_center"
+    style="background:#D3D3D3;">
+Original Insurance Values
+</div>
+
+<div class="table-wrap slds-box slds_theme_default">
+  <div class="table-scroll">
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout custom-table ins-ro-table"
+           aria-label="Original Insurance Values">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th scope="col" class="sticky-col"><div class="slds-truncate">Applicant Name</div></th>
+          <th scope="col"><div class="slds-truncate">Original Insured Amount</div></th>
+          <th scope="col"><div class="slds-truncate">Original Premium</div></th>
+          <th scope="col"><div class="slds-truncate">Original Tenure</div></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <template for:each={insuranceUiRows} for:item="row">
+          <tr key={row.loanApplicantId}>
+            <td class="sticky-col wrap"><div class="slds-truncate">{row.applicantName}</div></td>
+
+            <td><div class="slds-truncate">
+              <template if:true={row.originalInsuredAmount}>₹{row.originalInsuredAmount}</template>
+            </div></td>
+
+            <td><div class="slds-truncate">
+              <template if:true={row.originalPremiumAmount}>₹{row.originalPremiumAmount}</template>
+            </div></td>
+
+            <td><div class="slds-truncate">
+              <template if:true={row.originalTenure}>{row.originalTenure}</template>
+            </div></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</lightning-accordion-section>
+    </lightning-accordion>
+</div>
+
+<!-- Reason Modal -->
+<template if:true={showReasonModal}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Reason for Change</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+                <template for:each={reasonModalItems} for:item="item">
+                    <div key={item.key} class="slds-m-bottom_medium">
+                        <lightning-textarea
+                            label={item.label}
+                            required
+                            data-reason-key={item.key}
+                            value={item.reason}
+                            onchange={handleReasonTextChange}>
+                        </lightning-textarea>
+                    </div>
+                </template>
+            </div>
+
+            <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                <lightning-button variant="neutral" label="Cancel" onclick={closeReasonModal}></lightning-button>
+                <lightning-button class="slds-m-left_small" variant="brand" label="Proceed" onclick={proceedSave}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+<template if:true={showSubmitConfirmModal}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Confirmation</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium">
+                Are you sure you want to change?
+            </div>
+            <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                <lightning-button variant="neutral" label="Cancel" onclick={closeSubmitConfirmModal}></lightning-button>
+                <lightning-button class="slds-m-left_small" variant="brand" label="OK" onclick={confirmSubmit}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+</template>

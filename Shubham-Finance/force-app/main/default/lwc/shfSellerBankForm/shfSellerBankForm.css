@@ -1,0 +1,15 @@
+.slds-backdrop.slds-backdrop_open {
+  position: fixed !important;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 999998 !important;
+}
+
+.slds-modal.slds-fade-in-open {
+  position: fixed !important;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 999999 !important;
+}
+.slds-backdrop.slds-backdrop_open {
+  opacity: 0.9;            /* dim but almost hide */
+  background: #000;
+}

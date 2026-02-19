@@ -1,0 +1,26 @@
+.modal-content-wrapper {
+    /* max-width: 1100px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem; */
+}
+
+.scroll-container {
+    /* max-height: 300px; 
+    overflow-y: auto;*/
+}
+
+@media only screen and (max-width: 48em) {
+
+    .slds-modal__container {
+        height: 110vh !important;
+        max-height: 110vh !important;
+        margin: 0 auto;
+    }
+
+    .slds-modal__content {
+        max-height: calc(105vh - 10rem) !important;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

@@ -1,0 +1,13 @@
+.blue-header {
+    background-color: #5ab0e2 !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+}
+
+.total-cell {
+    background-color: #f8f8f8;
+    font-weight: bold;
+    text-align: left;
+    border: 1px solid #d8dde6;
+}

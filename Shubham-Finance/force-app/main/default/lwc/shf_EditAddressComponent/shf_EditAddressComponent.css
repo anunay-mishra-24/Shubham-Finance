@@ -1,0 +1,10 @@
+.custom-modal-container {
+    max-width: 90% !important;
+    width: 90% !important;
+    min-height: 80vh; /* Optional: taller modal */
+}
+
+.slds-modal__content {
+    overflow-y: auto;
+    max-height: 70vh; /* Scroll if needed */
+}

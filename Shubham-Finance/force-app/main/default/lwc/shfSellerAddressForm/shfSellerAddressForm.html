@@ -1,0 +1,351 @@
+<template>
+    <section
+        role="dialog"
+        tabindex="-1"
+        aria-modal="true"
+        class="slds-modal slds-fade-in-open custom-modal"
+    >
+        <div class="slds-modal__container custom-modal-container">
+            <header class="slds-modal__header">
+                <button
+                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close"
+                    onclick={handleCancel}
+                >
+                    <lightning-icon
+                        icon-name="utility:close"
+                        alternative-text="Close"
+                        size="small"
+                    ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_medium">
+                    Seller Address Details
+                </h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium custom-modal-body">
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <lightning-layout multiple-rows class="slds-gutters">
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-combobox
+                                name="seller"
+                                label="Seller"
+                                placeholder="Select Seller"
+                                options={sellerOptions}
+                                value={selectedSellerId}
+                                onchange={handleSellerChange}
+                                required
+                            ></lightning-combobox>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-combobox
+                                name="Address_Type__c"
+                                label="Address Type"
+                                placeholder="Select an Option"
+                                options={addressTypeOptions}
+                                value={record.Address_Type__c}
+                                data-field="Address_Type__c"
+                                onchange={handleInputChange}
+                                required
+                            ></lightning-combobox>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                name="Full_Address__c"
+                                label="Full Address"
+                                value={fullAddress}
+                                disabled
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="Flat_Plot_Number__c"
+                                label="Flat/Plot Number"
+                                value={record.Flat_Plot_Number__c}
+                                data-field="Flat_Plot_Number__c"
+                                onchange={handleInputChange}
+                                required
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="Address_Line_2__c"
+                                label="Address Line 2"
+                                value={record.Address_Line_2__c}
+                                data-field="Address_Line_2__c"
+                                onchange={handleInputChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="Address_Line_3__c"
+                                label="Address Line 3"
+                                value={record.Address_Line_3__c}
+                                data-field="Address_Line_3__c"
+                                onchange={handleInputChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="Landmark__c"
+                                label="Landmark"
+                                value={record.Landmark__c}
+                                data-field="Landmark__c"
+                                onchange={handleInputChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-combobox
+                                name="Residence_Status__c"
+                                label="Residence Status"
+                                placeholder="Select an Option"
+                                options={residenceStatusOptions}
+                                value={record.Residence_Status__c}
+                                data-field="Residence_Status__c"
+                                onchange={handleInputChange}
+                                required
+                            ></lightning-combobox>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-combobox
+                                name="Residence_Type__c"
+                                label="Residence Type"
+                                placeholder="Select an Option"
+                                options={residenceTypeOptions}
+                                value={record.Residence_Type__c}
+                                data-field="Residence_Type__c"
+                                onchange={handleInputChange}
+                                required
+                            ></lightning-combobox>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="tel"
+                                name="Mobile_Phone__c"
+                                label="Mobile Phone"
+                                value={record.Mobile_Phone__c}
+                                data-field="Mobile_Phone__c"
+                                pattern="^[6-9]\d{9}$"
+                                min-length="10"
+                                max-length="10"
+                                message-when-pattern-mismatch="Enter valid 10-digit mobile number."
+                                onchange={handleInputChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-record-picker
+                                label="PinCode"
+                                placeholder="Search PinCode"
+                                object-api-name="Pincode_Master__c"
+                                value={record.Pincode__c}
+                                onchange={handlePincodeChange}
+                                required
+                            ></lightning-record-picker>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="State__c"
+                                label="State"
+                                value={record.State__c}
+                                disabled
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="City__c"
+                                label="City"
+                                value={record.City__c}
+                                disabled
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="Country__c"
+                                label="Country"
+                                value={record.Country__c}
+                                disabled
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="District__c"
+                                label="District"
+                                value={record.District__c}
+                                data-field="District__c"
+                                disabled
+                                onchange={handleInputChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="Taluka__c"
+                                label="Taluka"
+                                value={record.Taluka__c}
+                                data-field="Taluka__c"
+                                onchange={handleInputChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                            <lightning-input
+                                type="text"
+                                name="Village__c"
+                                label="Village"
+                                value={record.Village__c}
+                                data-field="Village__c"
+                                onchange={handleInputChange}
+                            ></lightning-input>
+                           
+                        </lightning-layout-item>
+                         <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                         <lightning-input
+                            type="number"
+                            label="Duration at this Address"
+                            data-field="Duration_at_Current_Address__c"
+                            value={record.Duration_at_Current_Address__c}
+                            max="99999"
+                            min="0"
+                            onchange={handleInputChange}>
+                        </lightning-input>
+                         </lightning-layout-item>
+                         <lightning-layout-item
+                            size="12"
+                            medium-device-size="4"
+                            padding="around-small"
+                        >
+                        <lightning-input
+                        type = "number"
+                        label="Duration at this City"
+                        data-field="Duration_at_Current_City__c"
+                        value={record.Duration_at_Current_City__c}
+                        max="99999"
+                        min="0"
+                        onchange={handleInputChange}>
+                    </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </div>
+
+            <footer class="slds-modal__footer slds-text-align_right">
+                <lightning-button
+                    label="Cancel"
+                    class="slds-m-right_small"
+                    onclick={handleCancel}
+                ></lightning-button>
+                <lightning-button
+                    label="Save"
+                    variant="brand"
+                    onclick={handleSave}
+                    disabled={isSaving}
+                ></lightning-button>
+            </footer>
+        </div>
+    </section>
+<div class="slds-backdrop slds-backdrop_open"></div>
+    <template if:true={isSaving}>
+        <div class="loader-full">
+            <lightning-spinner
+                alternative-text="Saving"
+                size="small"
+            ></lightning-spinner>
+        </div>
+    </template>
+</template>

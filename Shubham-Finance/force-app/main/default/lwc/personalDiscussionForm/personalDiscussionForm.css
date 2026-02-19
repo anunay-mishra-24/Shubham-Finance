@@ -1,0 +1,54 @@
+/* Scope everything under your custom root class to avoid touching SLDS globally */
+.personal-discussion-modal .form-container {
+    display: flex;
+    justify-content: center;
+}
+
+/* Do NOT override slds-p-around_medium globally */
+.personal-discussion-modal .modal-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Field container: desktop width, but responsive */
+.personal-discussion-modal .field-container {
+    width: 60%;
+    min-width: 20rem; /* smaller than before */
+    max-width: 32rem;
+}
+
+/* Make inputs full width inside container */
+.personal-discussion-modal lightning-combobox,
+.personal-discussion-modal lightning-input,
+.personal-discussion-modal lightning-textarea {
+    width: 100%;
+}
+
+/* Center Save + Cancel buttons */
+.personal-discussion-modal .save-button-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+/* Modal body padding only for this modal */
+.personal-discussion-modal .slds-modal__content {
+    padding: 1.5rem !important;
+}
+
+/* Mobile-specific tweaks */
+@media only screen and (max-width: 480px) {
+    .personal-discussion-modal .slds-modal__container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0.5rem;
+    }
+
+    .personal-discussion-modal .field-container {
+        width: 100%;
+        min-width: auto;
+    }
+}

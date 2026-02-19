@@ -1,0 +1,20 @@
+<template>
+    <!-- ACTION BUTTONS (TOP RIGHT) -->
+    <template if:true={isOwner}>
+        <div class="slds-grid slds-grid_align-end slds-m-bottom_small slds-m-right_small">
+
+            <lightning-button label="Approve" variant="brand" class="slds-m-right_small brown-button"
+                onclick={handleClick}>
+            </lightning-button>
+
+            <lightning-button label="Reject" variant="destructive" class="brown-destructive" onclick={handleClick}>
+            </lightning-button>
+
+        </div>
+    </template>
+
+    <!-- DATA TABLE -->
+    <lightning-datatable key-field="Id" data={documentData} columns={columns} onrowselection={handleRowSelection}>
+    </lightning-datatable>
+
+</template>

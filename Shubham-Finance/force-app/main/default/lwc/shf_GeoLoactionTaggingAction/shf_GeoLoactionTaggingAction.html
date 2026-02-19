@@ -1,0 +1,37 @@
+<template>
+    <lightning-card title="Tag Geo Location" icon-name="utility:checkin">
+
+        <div class="slds-p-around_medium">
+
+            <!-- DESKTOP -->
+            <template if:false={isPhone}>
+                <div class="slds-grid slds-grid_align-center">
+                    <lightning-button variant="brand" label="Tag My Location" icon-name="utility:checkin"
+                        onclick={handleGeoLocation}>
+                    </lightning-button>
+                </div>
+            </template>
+
+            <!-- PHONE -->
+            <template if:true={isPhone}>
+                <div class="slds-grid slds-grid_vertical slds-align_absolute-center">
+
+                    <div class="slds-m-bottom_medium slds-size_full">
+                        <lightning-button variant="brand" label="Tag My Location" icon-name="utility:checkin"
+                            class="slds-size_full" onclick={handleGeoLocation}>
+                        </lightning-button>
+                    </div>
+
+                    <div class="slds-size_full">
+                        <lightning-button variant="neutral" label="Capture Image" icon-name="utility:image"
+                            class="slds-size_full" onclick={handleCaptureImage}>
+                        </lightning-button>
+                    </div>
+
+                </div>
+            </template>
+
+
+        </div>
+    </lightning-card>
+</template>

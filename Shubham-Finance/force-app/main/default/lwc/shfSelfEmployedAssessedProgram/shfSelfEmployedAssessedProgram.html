@@ -1,0 +1,52 @@
+<template>
+    <lightning-card title="Self Employed Assessed Program" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <lightning-combobox
+                name="calculatorSelect"
+                label="Select Calculator Type"
+                value={selectedCalculator}
+                placeholder="Choose a calculator..."
+                options={calculatorOptions}
+                onchange={handleCalculatorChange}
+                class="slds-m-bottom_medium">
+            </lightning-combobox>
+
+            <template if:true={isRetail}>
+                <div class="slds-box slds-theme_shade">
+                    <c-shf-self-employed-retail
+                        loan-applicant-id={loanApplicantId}
+                        income-program="Self_Employed_Retail">
+                    </c-shf-self-employed-retail>
+                </div>
+            </template>
+
+            <template if:true={isService}>
+                <div class="slds-box slds-theme_shade">
+                    <c-shf-self-employed-service
+                        loan-applicant-id={loanApplicantId}
+                        income-program="Self_Employed_Service">
+                    </c-shf-self-employed-service>
+                </div>
+            </template>
+
+            <template if:true={isContract}>
+                <div class="slds-box slds-theme_shade">
+                    <c-shf-self-employed-contract
+                        loan-applicant-id={loanApplicantId}
+                        income-program="Self_Employed_Contract">
+                    </c-shf-self-employed-contract>
+                </div>
+            </template>
+
+            <template if:true={isManual}>
+                <div class="slds-box slds-theme_shade">
+                    <c-shf-self-employed-manual
+                        loan-applicant-id={loanApplicantId}
+                        income-program="Self_Employed_Manual">
+                    </c-shf-self-employed-manual>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

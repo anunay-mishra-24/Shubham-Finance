@@ -1,0 +1,102 @@
+<template>
+    <lightning-button label="Initiate Perfios" onclick={open}></lightning-button>
+
+    <template if:true={openModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container custom-modal">
+
+             
+                <header class="slds-modal__header custom-header">
+                    <h2 class="slds-text-heading_medium">Initiate Perfios Verification</h2>
+                </header>
+
+                
+                <div class="slds-modal__content slds-p-around_medium">
+
+                  
+                    <div class="modal-grid">
+
+                        <div class="column">
+
+                            <label class="slds-form-element__label">Upload Bank Statement</label>
+                            <lightning-file-upload
+                                accept=".pdf"
+                                label="Upload Files"
+                                name="bankUpload"
+                                record-id={recordId}
+                                onuploadfinished={handleUpload}
+                                multiple>
+                            </lightning-file-upload>
+
+                            <template if:true={fileTypeError}>
+                                <div class="error-text">
+                                    {fileTypeError}
+                                </div>
+                            </template>
+
+                            <!-- From Date -->
+                            <lightning-input
+                                type="date"
+                                name="fromDate"
+                                label="From Date"
+                                class="input-spacing"
+                                value={fromDate}
+                                onchange={handleChange}>
+                            </lightning-input>
+
+                            <!--  FROM DATE ERROR -->
+                            <template if:true={fromDateError}>
+                                <div class="error-text">{fromDateError}</div>
+                            </template>
+
+                        </div>
+
+                        
+                        <div class="column">
+
+                            <!-- Password -->
+                            <lightning-input
+                                type="password"
+                                label="Password"
+                                class="input-spacing"
+                                value={password}
+                                onchange={handleChange}>
+                            </lightning-input>
+
+                            <!-- To Date -->
+                            <lightning-input
+                                type="date"
+                                name="toDate"
+                                label="To Date"
+                                value={toDate}
+                                onchange={handleChange}>
+                            </lightning-input>
+
+                           
+                            <template if:true={toDateError}>
+                                <div class="error-text">{toDateError}</div>
+                            </template>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <footer class="slds-modal__footer custom-footer">
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>
+
+                    <lightning-button
+                        label="Save"
+                        variant="brand"
+                        class="slds-m-left_small"
+                        onclick={handleSave}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

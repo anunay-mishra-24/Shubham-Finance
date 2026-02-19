@@ -1,0 +1,154 @@
+<template>
+    <section
+        role="dialog"
+        tabindex="-1"
+        aria-modal="true"
+        class="slds-modal slds-fade-in-open slds-modal_large"
+    >
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button
+                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close"
+                    onclick={handleCancel}
+                >
+                    <lightning-icon
+                        icon-name="utility:close"
+                        alternative-text="Close"
+                        size="small"
+                    ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_medium">
+                    Seller Bank Details 
+                </h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning-layout multiple-rows class="slds-gutters">
+                    
+                    <lightning-layout-item
+                        size="12"
+                        medium-device-size="4"
+                        padding="around-small"
+                    >
+                        <lightning-combobox
+                            name="seller"
+                            label="Seller"
+                            placeholder="Select Seller"
+                            options={sellerOptions}
+                            value={selectedSellerId}
+                            onchange={handleSellerChange}
+                            required
+                        ></lightning-combobox>
+                    </lightning-layout-item>
+
+                    
+                    <lightning-layout-item
+                        size="12"
+                        medium-device-size="4"
+                        padding="around-small"
+                    >
+                        <lightning-input
+                            name="Account_No__c"
+                            label="Account No"
+                            value={record.Account_No__c}
+                            data-field="Account_No__c"
+                            onchange={handleInputChange}
+                            pattern ="^[1-9]{1,15}$"
+                            max-length="20"
+                            min-length = "9"
+                            required
+                        ></lightning-input>
+                    </lightning-layout-item>
+
+                    
+                    <lightning-layout-item
+                        size="12"
+                        medium-device-size="4"
+                        padding="around-small"
+                    >
+                        <lightning-combobox
+                            name="Type_of_Account__c"
+                            label="Type of Account"
+                            placeholder="Select Account Type"
+                            options={typeOfAccountOptions}
+                            value={record.Type_of_Account__c}
+                            data-field="Type_of_Account__c"
+                            onchange={handleInputChange}
+                            required
+                        ></lightning-combobox>
+                    </lightning-layout-item>
+
+                    
+                    <lightning-layout-item
+                        size="12"
+                        medium-device-size="4"
+                        padding="around-small"
+                    >
+                        <lightning-record-picker
+                            name="IFSC_Code_Master__c"
+                            label="IFSC"
+                            placeholder="Search IFSC"
+                            object-api-name="IFSC_Code_Master__c"
+                            value={record.IFSC_Code_Master__c}
+                            onchange={handleIfscChange}
+                            required
+                        ></lightning-record-picker>
+                    </lightning-layout-item>
+
+                    
+                    <lightning-layout-item
+                        size="12"
+                        medium-device-size="4"
+                        padding="around-small"
+                    >
+                        <lightning-input
+                            name="BankNameDisplay"
+                            label="Bank Name"
+                            value={ifscBankName}
+                            disabled
+                        ></lightning-input>
+                    </lightning-layout-item>
+
+                    
+                    <lightning-layout-item
+                        size="12"
+                        medium-device-size="4"
+                        padding="around-small"
+                    >
+                         <lightning-input
+                            name="Branch_Name__c"
+                            label="Branch Name"
+                            value={record.Branch_Name__c}
+                            disabled
+                        ></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <footer class="slds-modal__footer slds-text-align_right">
+                <lightning-button
+                    label="Cancel"
+                    class="slds-m-right_small"
+                    onclick={handleCancel}
+                ></lightning-button>
+                <lightning-button
+                    label="Save"
+                    variant="brand"
+                    onclick={handleSave}
+                    disabled={isSaving}
+                ></lightning-button>
+            </footer>
+        </div>
+    </section>
+
+    <template if:true={isSaving}>
+        <div class="loader-full">
+            <lightning-spinner
+                alternative-text="Saving"
+                size="small"
+            ></lightning-spinner>
+        </div>
+    </template>
+</template>

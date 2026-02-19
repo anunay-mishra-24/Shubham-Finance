@@ -1,0 +1,130 @@
+<template>
+    
+    <div class="slds-card">
+        <div
+            class="slds-card__header slds-grid slds-grid_align-spread slds-p-horizontal_small slds-p-vertical_x-small"
+        >
+            <div class="slds-media slds-media_center">
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span>Application Collaterals</span>
+                    </h2>
+                </div>
+            </div>
+           
+            <template if:true={isButtonVisible}>
+            <div class="slds-button-group actionCol" role="group">
+                <lightning-button class="actionBtn"
+                    label="Link Collateral"
+                    variant="neutral"
+                    onclick={handleLinkCollateral}
+                ></lightning-button>
+
+                <lightning-button 
+                    label="Create Collateral"
+                    variant="brand"
+                    class="actionBtn"
+                    onclick={handleClick}
+                ></lightning-button>
+            </div>
+            </template>
+        </div>
+
+        <div class="slds-box slds-theme_default slds-border">
+            <lightning-datatable
+                key-field="Id"
+                data={collateralRows}
+                columns={columns}
+                hide-checkbox-column
+                is-loading={isTableLoading}
+                column-widths-mode="auto"
+                onrowaction={handleRowAction}   
+            ></lightning-datatable>
+        </div>
+    </div>
+
+    
+    <c-shf-collateral-creation
+    record-id={recordId}
+    collateral-id={collateralId}
+    is-edit={isEditCollateral}
+    is-open={showCollateralModal}
+    default-property-identification={defaultPropertyIdentification}
+    lock-property-identification={lockPropertyIdentification}
+    onclose={handleCollateralClose}
+    oncollateralsaved={handleCollateralSaved}
+></c-shf-collateral-creation>
+
+
+    
+    <template if:true={showLinkModal}>
+        <c-shf-link-collateral
+            application-id={recordId}
+            onclose={handleLinkClose}
+            onsuccess={handleLinkSuccess}
+        ></c-shf-link-collateral>
+    </template>
+
+    
+    <template if:true={showSellerOwnerModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-modal="true"
+            class="slds-modal slds-fade-in-open slds-modal_large"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={handleSellerOwnerClose}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Close"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <div
+                        class="slds-col slds-grow slds-text-align_center"
+                    >
+                        <h2 class="slds-text-heading_medium">
+                            Collateral Details
+                        </h2>
+                        <template if:true={linkedFromExisting}>
+                            <span class="slds-badge slds-theme_warning">
+                                Linked from Existing
+                            </span>
+                        </template>
+                    </div>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <c-shf-collateral-detail-entry
+                        collateral-id={collateralId}
+                        application-id={recordId}
+                        type-of-purchase={typeOfPurchase}
+                        is-property-cost-disabled={isPropertyCostDisabled}
+                    ></c-shf-collateral-detail-entry>
+                </div>
+
+                <footer class="slds-modal__footer slds-text-align_right">
+                    <lightning-button
+                        variant="neutral"
+                        label="Previous"
+                        class="slds-m-right_small"
+                        onclick={handlePrevious}
+                    ></lightning-button>
+                    <lightning-button
+                        label="Done"
+                        onclick={handleSellerOwnerClose}
+                    ></lightning-button>
+                </footer>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

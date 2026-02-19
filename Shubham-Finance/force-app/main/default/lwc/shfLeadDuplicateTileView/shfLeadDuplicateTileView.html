@@ -1,0 +1,42 @@
+<template>
+    <lightning-card title={duplicateLabel}>
+
+        <template if:true={isLoading}>
+            <div class="slds-p-around_medium">
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:false={isLoading}>
+            
+            <template if:true={hasRecords}>
+                <div class="slds-p-horizontal_medium slds-p-top_small slds-text-body_small">
+                    {totalRecords} of {totalRecords} items
+                </div>
+                <div class="slds-p-around_medium">
+                    <template for:each={leads} for:item="lead">
+                        <div key={lead.Id} class="slds-box slds-m-bottom_small">
+                            
+                            <b>{lead.Name}</b>
+
+                            <p><b>Full Name:</b> {lead.Full_Name__c}</p>
+                            <p><b>Status:</b> {lead.Lead_Status__c}</p>
+                            <p><b>Loan Product:</b> {lead.Loan_Product__c}</p>
+                            <p><b>Sub Product:</b> {lead.Sub_Product__c}</p>
+                            <p><b>Created:</b> {lead.createdDateFormatted}</p>
+
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <template if:false={hasRecords}>
+                <div class="slds-p-around_medium">
+                    No duplicate records found.
+                </div>
+            </template>
+
+        </template>
+
+    </lightning-card>
+</template>

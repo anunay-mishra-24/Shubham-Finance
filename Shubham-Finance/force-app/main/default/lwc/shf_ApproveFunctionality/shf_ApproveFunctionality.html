@@ -1,0 +1,62 @@
+<template>
+     <lightning-spinner if:true={isLoading} alternative-text="Loading" size="large"></lightning-spinner>
+        <template if:true={showErrorModal}>
+            <div class="slds-p-around_medium">
+                <header class="slds-modal__header slds-theme_error slds-p-around_small">
+                    <h2 class="slds-text-heading_medium">Error</h2>
+                </header>
+                <div class="slds-p-around_medium">
+                    <ul class="slds-list_dotted slds-p-left_medium">
+                        <template for:each={errorMessages} for:item="err">
+                            <li key={err} class="error-text">{err}</li>
+                        </template>
+                    </ul>
+                </div>
+                <footer class="slds-modal__footer slds-p-around_small"
+                        style="display:flex; justify-content:flex-end;">
+                    <lightning-button variant="neutral" 
+                                      label="Close" 
+                                      onclick={closeModal}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </template>
+        <!----------approval modal--------------->
+  
+          <template if:true={approvalModal}>
+             <div class="slds-p-around_medium">
+                <header class="slds-modal__header slds-theme_error slds-p-around_small">
+                    <h2 class="slds-text-heading_medium">Approval</h2>
+                </header>
+            <div class="slds-p-around_medium">
+                <lightning-layout multiple-rows="true">
+                    <!-- Recommendation -->
+                    <lightning-layout-item size="12" large-device-size="6" padding="around-small">
+                        <lightning-textarea name="Comment"
+                                            label="Comment"
+                                            required
+                                            placeholder="Enter some Comments"
+                                            onchange={handleChange}
+                                            class="requiredField">
+                        </lightning-textarea>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <!-- Footer -->
+            <div class="slds-modal__footer slds-p-around_small" 
+                 style="display:flex; justify-content:flex-end; gap:1rem;">
+                <lightning-button variant="neutral" 
+                                  label="Close" 
+                                  onclick={closeModal}>
+                </lightning-button>
+                <lightning-button variant="brand" 
+                                  label="Save" 
+                                  onclick={handleSubmit}>
+                </lightning-button>
+            </div>
+             </div>
+        </template>
+  
+
+</template>

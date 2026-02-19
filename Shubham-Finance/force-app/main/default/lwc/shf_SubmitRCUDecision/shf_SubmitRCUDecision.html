@@ -1,0 +1,61 @@
+<template>
+    <!-- Modal -->
+    <template if:true={isModalOpen}>
+        <template if:true={rcuScreen}>
+            <section class="custom-modal-backdrop">
+                <div class="custom-modal" style="max-height: 400px;">
+
+                    <!-- Modal Header -->
+                    <header class="slds-modal__header">
+                        <h2 class="slds-text-heading_medium">
+                            RCU Decision
+                        </h2>
+                    </header>
+
+                    <!-- Modal Body -->
+                    <div class="slds-modal__content " style="padding :23px ">
+                        
+                        <!-- RCU Decision (Mandatory) -->
+                        <lightning-combobox
+                            label="RCU Decision"
+                            value={decision}
+                            options={decisionOptions}
+                            required
+                            onchange={handleDecisionChange} 
+                            >
+                        </lightning-combobox>
+
+                        <!-- Comment (Optional) -->
+                        <lightning-textarea
+                            label="Comment"
+                            value={comment}
+                            onchange={handleCommentChange}>
+                        </lightning-textarea>
+
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <footer class="slds-modal__footer">
+                        <lightning-button
+                            label="Cancel"
+                            variant="neutral"
+                            onclick={closeModal}
+                            style="margin: 5px;">
+                        </lightning-button>
+
+                        <lightning-button
+                            label="Submit"
+                            variant="brand"
+                            onclick={handleSubmit}
+                            style="margin: 5px;">
+                        </lightning-button>
+                    </footer>
+
+                </div>
+            </section>
+
+            <!-- Backdrop -->
+            <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+        </template>
+    </template>
+</template>

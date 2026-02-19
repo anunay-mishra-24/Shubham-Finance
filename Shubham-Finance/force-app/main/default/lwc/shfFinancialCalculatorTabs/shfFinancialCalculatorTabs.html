@@ -1,0 +1,104 @@
+<template>
+    <c-shf-financial-calculator
+        record-id={recordId}
+        onborrowersubmit={handleSelected}
+        onborrowerclear={handleClear}>
+    </c-shf-financial-calculator>
+
+    <template if:true={showTabs}>
+        <lightning-card>
+            <lightning-tabset variant="scoped">
+                
+                <lightning-tab label="Personal Information" value="personal">
+                    <c-shf-financial-personal-information
+                        applicant-id={selectedBorrowerId}
+                        record-id={recordId}>
+                    </c-shf-financial-personal-information>
+                </lightning-tab>
+
+                <template if:true={showIncomeCalculatorTab}>
+                    <lightning-tab label="Income Calculator" value="incomeCalculator">
+                        <template if:true={isGSTProgram}>
+                            <c-shf-gst-progarm
+                                record-id={recordId}
+                                loan-applicant-id={selectedBorrowerId}>
+                            </c-shf-gst-progarm>
+                        </template> 
+
+                        <template if:true={isSelfEmployedAssessedProgram}>
+                            <c-shf-self-employed-assessed-program
+                                record-id={recordId}
+                                loan-applicant-id={selectedBorrowerId}
+                                income-program={selectedIncomeProgram}>
+                            </c-shf-self-employed-assessed-program>
+                        </template> 
+
+                        <template if:true={isITRProgram}>
+                            <c-shf-i-t-r-income-program
+                                record-id={recordId}
+                                loan-applicant-id={selectedBorrowerId}
+                                income-program={selectedIncomeProgram}>
+                            </c-shf-i-t-r-income-program>
+                        </template>
+
+                        <template if:true={isAbbSurrogateProgram}>
+                            <c-shf-abb-surrogate-program
+                                record-id={recordId}
+                                loan-applicant-id={selectedBorrowerId}
+                                income-program={selectedIncomeProgram}>
+                            </c-shf-abb-surrogate-program>
+                        </template> 
+
+                        <template if:true={isShfFinalEligibilityProgram}>
+                            <c-shf-final-eligibility-calculator
+                                record-id={selectedBorrowerId}>
+                            </c-shf-final-eligibility-calculator>
+                        </template> 
+                    </lightning-tab>
+                </template>
+
+                <template if:true={isEligibilityProgram}>
+                    <lightning-tab label="Income Details" value="incomeDetails">
+                        <c-shf-income-details record-id={selectedBorrowerId}></c-shf-income-details>
+                    </lightning-tab>
+                </template>
+
+                <lightning-tab label="Other Income" value="otherIncome">
+                    <c-shf-other-income-details record-id={selectedBorrowerId}></c-shf-other-income-details>
+                </lightning-tab>
+
+                <lightning-tab label="Expense" value="expense">
+                    <c-shf_-financial-expense-calculator record-id={selectedBorrowerId}></c-shf_-financial-expense-calculator>
+                </lightning-tab>
+                
+                <template if:true={showExpenseCalculator}>
+                    <lightning-tab label="Expense Calculator" value="expenseCalculator">
+                        <c-shf-expense-calculator
+                            record-id={selectedBorrowerId}>       
+                        </c-shf-expense-calculator>
+                    </lightning-tab>
+                </template>
+
+                <lightning-tab label="Assets" value="asset">
+                    <template if:true={selectedBorrowerId}>
+                        <c-shf-financial-assets-management 
+                            record-id={recordId}
+                            loan-applicant-id={selectedBorrowerId}>
+                        </c-shf-financial-assets-management>
+                    </template>
+                    <template if:false={selectedBorrowerId}>
+                        <div class="slds-p-around_medium">Please select a borrower first.</div>
+                    </template>
+                </lightning-tab>
+
+                <lightning-tab label="Obligation" value="obligation">
+                    <c-s-h-f_-financial-calculator-obligation-screen
+                        record-id={recordId}
+                        loan-applicant-id={selectedBorrowerId}>
+                    </c-s-h-f_-financial-calculator-obligation-screen>
+                </lightning-tab>
+
+            </lightning-tabset>
+        </lightning-card>
+    </template>
+</template>

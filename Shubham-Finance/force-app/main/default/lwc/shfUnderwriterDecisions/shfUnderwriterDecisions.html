@@ -1,0 +1,153 @@
+<template>
+    <!-- Modal Body -->
+    <div class="slds-modal__content slds-p-around_medium custom-body" id="modal-content-id-1">
+        <div style="padding:0 0.5rem">
+
+            <!-- First Section -->
+            <lightning-layout multiple-rows>            
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            type="number" 
+                            label="Total Appraised Income" 
+                            value={totalAppraisedIncome} 
+                            disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>   
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            type="number" 
+                            label="Total Obligations" 
+                            value={obligationsEmiSum} 
+                            disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>  
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            label="IIR" 
+                            name="iir" 
+                            value={iir} 
+                            disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>    
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            label="DBR/FOIR as per Policy" 
+                            name="dbrPolicy"
+                            value={policyFOIRPercent} 
+                            disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>  
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            label="Actual DBR/FOIR" 
+                            name="dbrActual"
+                            value={actualFOIR} 
+                            disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>  
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            type="number" 
+                            label="Sanctioned Loan Amount" 
+                            name="Sanction_Amount__c" 
+                            value={applicationObj.Sanction_Amount__c}
+                            onchange={handleChange}
+                             disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            label="Initial Serviceable EMI (4*5)" 
+                            name="initialServiceableEMI"
+                            value={initialServiceableEMI} 
+                            disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>  
+
+                <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                    <div>
+                        <lightning-input 
+                            label="Final Serviceable EMI (6-3)" 
+                            name="finalServiceableEMI"
+                            value={finalServiceableEMI} 
+                            disabled>
+                        </lightning-input>
+                    </div>        
+                </lightning-layout-item>         
+
+            </lightning-layout>
+        </div>
+
+        <!-- Financial Details Section
+        <div class="section">Financial Details </div>
+
+        <lightning-layout multiple-rows>
+
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                           large-device-size="6" class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input 
+                        label="Appraised Income" 
+                        name="appraisedIncome"
+                        disabled
+                        value={totalAppraisedIncome}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>  
+
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                           large-device-size="6" class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input 
+                        label="Income Program" 
+                        name="incomeProgram"
+                        disabled
+                        value={incomeProgram}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                           large-device-size="6" class="slds-p-horizontal_x-small">
+                <div>
+                    <lightning-input 
+                        label="Applicant List" 
+                        name="applicantList"
+                        disabled
+                        value={applicantList}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>     
+
+        </lightning-layout> -->
+    </div>
+</template>

@@ -1,0 +1,1163 @@
+<template>
+    <lightning-card variant="Narrow" title={title}>
+        <!-- <lightning-spinner alternative-text="Loading" size="medium" if:true={showSpinner}></lightning-spinner> -->
+        <template if:true={showSpinner}>
+            <div class="backdrop">
+                <div class="spinner-container">
+                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                    <!-- <p class="message">{message}</p> -->
+                </div>
+            </div>
+        </template>
+
+        <template if:true={relatedRecords}>
+            <template for:each={relatedRecords.headerActions} for:item="action">
+                <template if:true={action.isEnable}>
+                    <lightning-button class="slds-p-right_medium" name={action.name} key={action.name}
+                        label={action.label} slot="actions" onclick={handleheaderAction}
+                        data-error-message={action.errorMessage} data-success-message={action.successMessage}
+                        data-type={action.type} data-s-object-a-p-i-name={action.sObjectAPIName}
+                        data-default-values={action.defaultValues} data-link={action.link}
+                        data-is-show-modal={action.isShowModal}></lightning-button>
+                </template>
+            </template>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="12">
+                    <template if:true={relatedRecords}>
+                        <c-generic-data-table-l-w-c result={relatedRecords} btns={rowAction}
+                            onselected={handleTableSelection} onrowselectionevent={handleRowSelection}>
+                        </c-generic-data-table-l-w-c>
+                    </template>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </lightning-card>
+    <c-initiate-perfios onsaveperfios={handlePerfiosSave}></c-initiate-perfios>
+    <template lwc:if={showScreenFlowCKYCAadhaar}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container modal-width">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleCloseCKYCAadhaar}>
+                    <h1 class="slds-text-heading_medium">X</h1>
+                    <span class="slds-assistive-text">Cancel and close</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow flow-api-name='SHF_Get_Aadhaar_CKYC_Details'
+                        flow-input-variables={flowInputVeriables} onstatuschange={handleFlowExecution}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <template lwc:if={showScreenFlowElectricity}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container modal-width">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleCloseElectricity}>
+                    <h1 class="slds-text-heading_medium">X</h1>
+                    <span class="slds-assistive-text">Cancel and close</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow flow-api-name='SHF_Get_Electricity_Bill_Details'
+                        flow-input-variables={flowInputVeriables} onstatuschange={handleFlowExecution}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!--<template lwc:if={showScreenFlowSMSConsent}>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+        class="slds-modal slds-fade-in-open slds-modal_medium">
+        <div class="slds-modal__container modal-width">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleCloseSMSConsent}>
+                    <h1 class="slds-text-heading_medium">X</h1>
+                    <span class="slds-assistive-text">Cancel and close</span>
+                </button>
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning-flow flow-api-name='SHF_Get_SMS_OTP_Details'
+                    flow-input-variables={flowInputVeriables} onstatuschange={handleFlowExecution}>
+                </lightning-flow>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template> -->
+    <template lwc:if={submitDecision}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container modal-width">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleSubmitDecision}>
+                        <h1 class="slds-text-heading_medium">X</h1>
+                        <span class="slds-assistive-text">Cancel and close</span>
+                    </button>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow flow-api-name='SHF_Submit_Decision_Screen_Flow'
+                        flow-input-variables={inputVariables} onstatuschange={handleFlowExecution}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    
+    <!--Added by Dimple Kapri on 17/12/2025 for udyam registration-->
+    <template lwc:if={showScreenFlowUdyam}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container modal-width">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleCloseUdyam}>
+                        <h1 class="slds-text-heading_medium">X</h1>
+                        <span class="slds-assistive-text">Cancel and close</span>
+                    </button>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow flow-api-name='SHF_Initiate_Udyam_Registration'
+                        flow-input-variables={flowInputVeriables} onstatuschange={handleFlowExecution}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!-- // added by Preeti on 12-09-2025----- for missing fields for insurance and cibil/crif api -->
+
+    <template if:true={showValidationModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Missing Mandatory Fields</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Please fill the following fields before initiating Verification:</p>
+                    <ul> <template for:each={missingFields} for:item="field">
+                            <li key={field}>{field}</li>
+                        </template> </ul>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="OK" variant="brand" onclick={closeValidationModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!----added by mansur on 13-10-2025---->
+    <div class="slds-modal__content slds-p-around_medium">
+        <template if:true={isShowAddress}>
+            <c-shf-_-address-component record-id={recordId} address-record-id={addressId} is-edit-address={isEditAdd}
+                pincode-id={pincodeId} onclose={handleAddressClose}>
+            </c-shf-_-address-component>
+        </template>
+
+    </div>
+    <!-- <template if:true={showCibilAadhaarModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Enter Aadhaar Number(optional)</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input label="Aadhaar Number" value={aadhaarNumber} onchange={handleAadhaarChange}
+                        pattern="[2-9]{1}[0-9]{11}"
+                        message-when-pattern-mismatch="Enter a valid 12-digit Aadhaar number starting with 2-9">
+                    </lightning-input>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeValidationModal}>
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Submit" onclick={submitAadhaar} class="slds-m-left_small">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template> -->
+    <!-- Commnet by Vikas Soni for bureau aadhaar shwoing issue -->
+
+    <template if:true={showScreenFlowSMSConsent}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="
+    max-width: 700px !important; /* medium width */
+    width: 90% !important;
+    margin: 0 auto;
+">
+
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                onclick={handleCloseSMSConsent} title="Cancel and close">
+                <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                <span class="slds-assistive-text">Cancel and close</span>
+            </button>
+                    <h2 class="slds-text-heading_medium">Enter Your OTP</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_small">
+                    <lightning-input label="Enter 4 Digit OTP" value={otpNumber} onchange={handleOTPChange}
+                        maxlength="4" type="text"
+                        message-when-pattern-mismatch="Only 4-digit numbers are allowed in OTP">
+                    </lightning-input>
+                </div>
+
+                <footer class="slds-modal__footer" style="display: flex; justify-content: flex-end;">
+                    <lightning-button variant="neutral" label="Cancel" onclick={handleCloseSMSConsent}>
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Submit" onclick={submitOtp} class="slds-m-left_small">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- CKYC OTP modal starts here-->
+    <template if:true={showScreenFlowCkycOTP}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 700px !important; /* medium width */width: 90% !important;margin: 0 auto;">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        onclick={handleCloseCkycOtp} title="Cancel and close">
+                        <lightning-icon icon-name="utility:close" alternative-text="Close"
+                            size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Cancel and close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">Enter Your OTP</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_small">
+                    <lightning-input label="Enter 6 Digit OTP" value={ckycOTP} onchange={handleCKYCOTPChange}
+                        maxlength="6" type="text"
+                        message-when-pattern-mismatch="Only 6-digit numbers are allowed in OTP">
+                    </lightning-input>
+                </div>
+
+                <footer class="slds-modal__footer" style="display: flex; justify-content: flex-end;">
+                    <lightning-button variant="neutral" label="Cancel" onclick={handleCloseCkycOtp}>
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Submit" onclick={submitCkycOtp} class="slds-m-left_small">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- CKYC OTP modal ends here -->
+
+    <!-- View Details ModalPersonal Discussion START -->
+    <template if:true={showPersonalDiscussionView}>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 70rem;">
+                <!-- Header -->
+                <header class="slds-modal__header slds-modal__header_empty">
+                    <h2 class="slds-text-heading_medium slds-text-align_center slds-p-around_medium slds-theme_shade">
+                        Personal Discussion - Details
+                    </h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+        title="Close" onclick={closeModal}>
+        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+        <span class="slds-assistive-text">Close</span>
+    </button>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_large slds-scrollable_y" style="max-height: 80vh;">
+                    <div class="slds-box slds-theme_default" style="padding:1rem;">
+                        <div class="slds-grid slds-wrap slds-gutters">
+
+                            <!-- LEFT COLUMN -->
+                            <div class="slds-col slds-size_1-of-2" style="padding-right:1rem;">
+
+                                <!-- Personal Discussion Name -->
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Name}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Personal Discussion Name</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">{pd.Name}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Credit_PD_Mode__c}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Credit PD Mode</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">
+                                                {pd.Credit_PD_Mode__c}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <!-- Application (read-only) -->
+                                <template if:true={pd.Application__c}>
+                                    <div class="slds-form-element slds-p-vertical_x-small">
+                                        <label class="slds-form-element__label">Application</label>
+                                        <div class="slds-form-element__control slds-m-top_x-small">
+                                            {pd.Application__r.Name}</div>
+                                    </div>
+                                    <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                </template>
+
+                                <!-- Industry -->
+                                <!-- <template if:true={isEditMode}>
+                                <div class="slds-form-element slds-p-vertical_x-small">
+                                    <label class="slds-form-element__label">Industry</label>
+                                    <lightning-input type="text" value={pd.Industry__c} data-field="Industry__c"
+                                        onchange={handlePDFieldChange}></lightning-input>
+                                </div>
+                                <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                            </template> 
+                            <template if:false={isEditMode}>
+                                <template if:true={pd.Industry__c}>
+                                    <div class="slds-form-element slds-p-vertical_x-small">
+                                        <label class="slds-form-element__label">Industry</label>
+                                        <div class="slds-form-element__control slds-m-top_x-small">{pd.Industry__c}
+                                        </div>
+                                    </div>
+                                    <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                </template>
+                            </template> ---->
+
+
+                                <!-- Loan Applicant -->
+                                <template if:true={pd.Loan_Applicant__c}>
+                                    <div class="slds-form-element slds-p-vertical_x-small">
+                                        <label class="slds-form-element__label">Loan Applicant</label>
+                                        <div class="slds-form-element__control slds-m-top_x-small">
+                                            {pd.Loan_Applicant__r.Name}</div>
+                                    </div>
+                                    <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                </template>
+
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Are_you_salaried_or_self_employed__c}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Are you salaried or self employed?</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">
+                                                {pd.Are_you_salaried_or_self_employed__c}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Is_the_GST_Report_available__c}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Is the GST Report available?</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">
+                                                {pd.Is_the_GST_Report_available__c}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Is_BankStatement_avail_for_BankSurrogate__c}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Is a Bank Statement available for the Banking Surrogate Program?</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">
+                                                {pd.Is_BankStatement_avail_for_BankSurrogate__c}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Can_Customer_Income_be_assessed__c}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Can Customer Income be assessed?</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">
+                                                {pd.Can_Customer_Income_be_assessed__c}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Is_the_last_2_month_salary_slip_availabl__c}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Is last 2 month salary slip available?</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">
+                                                {pd.Is_the_last_2_month_salary_slip_availabl__c}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <template if:false={isEditMode}>
+                                    <template if:true={pd.Is_Form_16_available__c}>
+                                        <div class="slds-form-element slds-p-vertical_x-small">
+                                            <label class="slds-form-element__label">Is Form 16 available?</label>
+                                            <div class="slds-form-element__control slds-m-top_x-small">
+                                                {pd.Is_Form_16_available__c}</div>
+                                        </div>
+                                        <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                    </template>
+                                </template>
+
+                                <template if:true={isEditMode}>
+
+                                    <lightning-record-edit-form object-api-name="Personal_Discussion__c"
+                                        record-id={pd.Id} onsuccess={handleSuccess} onerror={handleError}>
+
+                                        <template if:true={pd.Name}>
+                                            <lightning-input-field field-name="Name"></lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+                                        <template if:true={pd.Are_you_salaried_or_self_employed__c}>
+                                            <lightning-input-field field-name="Are_you_salaried_or_self_employed__c">
+                                            </lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+                                        <template if:true={pd.Is_salary_credited_in_Bank_Account__c}>
+                                            <lightning-input-field field-name="Is_salary_credited_in_Bank_Account__c">
+                                            </lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+                                        <template if:true={pd.Is_Form_16_available__c}>
+                                            <lightning-input-field field-name="Is_Form_16_available__c">
+                                            </lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+                                        <template if:true={pd.Is_the_last_2_month_salary_slip_availabl__c}>
+                                            <lightning-input-field
+                                                field-name="Is_the_last_2_month_salary_slip_availabl__c">
+                                            </lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+
+                                        <template if:true={pd.Can_Customer_Income_be_assessed__c}>
+                                            <lightning-input-field field-name="Can_Customer_Income_be_assessed__c">
+                                            </lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+                                        <template if:true={pd.Is_BankStatement_avail_for_BankSurrogate__c}>
+                                            <label class="">Is a Bank Statement available for the Banking Surrogate Program?</label>
+                                            <lightning-input-field
+                                                field-name="Is_BankStatement_avail_for_BankSurrogate__c"
+                                                variant="label-hidden"></lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+                                        <template if:true={pd.Is_the_GST_Report_available__c}>
+                                            <lightning-input-field field-name="Is_the_GST_Report_available__c">
+                                            </lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+                                        <template if:true={pd.Credit_PD_Mode__c}>
+                                            <lightning-input-field field-name="Credit_PD_Mode__c">
+                                            </lightning-input-field>
+                                            <div class="divider"></div>
+                                        </template>
+
+
+
+
+                                        <!-- Save Button Centered -->
+                                        <div class="slds-m-top_medium slds-align_absolute-center">
+                                            <lightning-button type="submit" variant="brand" label="Save">
+                                            </lightning-button>
+                                        </div>
+
+                                    </lightning-record-edit-form>
+
+                                </template>
+                            </div>
+
+                            <!-- RIGHT COLUMN -->
+                            <div class="slds-col slds-size_1-of-2" style="padding-left:1rem;">
+                                <template if:true={pd.Owner}>
+                                    <div class="slds-form-element slds-p-vertical_x-small">
+                                        <label class="slds-form-element__label">Owner</label>
+                                        <div class="slds-form-element__control slds-m-top_x-small">{pd.Owner.Name}</div>
+                                    </div>
+                                    <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                </template>
+
+                                <template if:true={pd.CreatedBy}>
+                                    <div class="slds-form-element slds-p-vertical_x-small">
+                                        <label class="slds-form-element__label">Created By</label>
+                                        <div class="slds-form-element__control slds-m-top_x-small">{pd.CreatedBy.Name}
+                                        </div>
+                                    </div>
+                                    <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                </template>
+
+                                <template if:true={pd.LastModifiedBy}>
+                                    <div class="slds-form-element slds-p-vertical_x-small">
+                                        <label class="slds-form-element__label">Last Modified By</label>
+                                        <div class="slds-form-element__control slds-m-top_x-small">
+                                            {pd.LastModifiedBy.Name}</div>
+                                    </div>
+                                    <div style="border-bottom:1px solid #e3e6ea;margin:8px 0;"></div>
+                                </template>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer slds-text-align_center">
+                    <!--<template if:true={isEditMode}>
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button variant="brand" label="Save" class="slds-m-left_small" onclick={handleSavePD}>
+                    </lightning-button>
+                </template> -->
+                    <template if:false={isEditMode}>
+                        <lightning-button variant="neutral" label="Close" onclick={closeModal}></lightning-button>
+                    </template>
+                </footer>
+
+            </div>
+        </section>
+    </template>
+
+    <template if:true={showCreditPDView}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-modal="true"
+            aria-labelledby="modal-heading-01">
+            <div class="slds-modal__container slds-modal-large" style="max-width:100rem; width:75vw;">
+                <header class="slds-modal__header slds-modal__header_empty">
+                    <h2 class="slds-text-heading_medium slds-text-align_center slds-p-around_medium slds-theme_shade">
+                        Personal Discussion - Details
+                    </h2>
+
+                    <button class="slds-button slds-button_icon slds-modal__close"
+                            title="Close"
+                            onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                                        alternative-text="Close"
+                                        variant="bare"
+                                        size="small">
+                        </lightning-icon>
+                    </button>
+                </header>
+
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-edit-form object-api-name="Personal_Discussion__c"
+                        record-id={selectedPersonalDiscussionId} onsuccess={handleCreditPDSuccess}
+                        onsubmit={handleSubmit} onerror={handleError}>
+                        <lightning-messages></lightning-messages>
+
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <!-- Two-column layout: repeat for each field -->
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="nature_of_employers_business__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Documents_Verified__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="item__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Person_Met__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="office_name_board_photo__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="cibil_crif_score__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="education__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Is_salary_credited_in_Bank_Account__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="asset_owner__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="employer_name__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="margin_per_unit__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="SelfieCapturedWithReportingMa__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="telephone__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="property_owner_name__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Stock_Value_observed_during_PD_visit__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name_of_Successor_Alternate_Handler__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="commission_paid_external_parties__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="previous_employment_brief__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="water_tea_expense__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="name_of_applicant__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="pd_snaps_video__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="status__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="incentive_received_monthly__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Whether_the_applicant_is_involved_in_onl__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="asset_created_last_48_months__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Is_the_last_2_month_salary_slip_availabl__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="is_company_operating_in_shifts__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Occupied_Since_When__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Critical_Medical_History_Details__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Enter_Landmark_details__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Is_BankStatement_avail_for_BankSurrogate__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="gross_monthly_income__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="salary_deducted_for_leaves__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="work_details__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="employer_industry__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="sale_value_per_unit__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="total_experience__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="notes_from_credit_manager__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="chits_pigmy__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="office_outside_photo__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Business_board_seen__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="description_of_assets__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="water_electricity__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="rent__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Are_you_salaried_or_self_employed__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="other_fixed_expenses__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="food_expense__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Any_other_Prior_Occupatoin__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="saving_per_unit__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Total_Expences__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Distance_from_Branch__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Nature_of_Business__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Relationship__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="KYC_validation_at_Visit_docs_seen_like__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="total_cost_per_unit__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="office_inside_photo__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Year_in_business__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Application__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="medical_expenditure__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="period_of_service__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="employer_classification__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="fixed_salary_all_employees__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="PD_Type_Selection__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Size_of_the_Premises__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="proof_of_document__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Avg_amount_of_Electricity_bill_of_last_3__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="daily_volume__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="stationery_expense__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Remarks__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="shop_rent_business_premises__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="contract_value__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="application_no__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="date_of_purchase__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="type_of_employer_premises__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="SelectConditionOfEmployerSPremises__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="DoesApplicantTakeAdvance__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="PD_Visit_Remarks_Recommendation_Note__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="salary_payment_mode__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="sourcing_channel__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Business_Ownership_proof_if_available__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="IsAnyAttendanceRecordMaintained__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="total__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="No_of_family_members_in_the_family_with__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="previous_employer_name__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Is_Form_16_available__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="insurance__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Constitution_of_Business__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="investment_value__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Prior_Occupaton_if_different_From_Curren__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="loan_amount_applied_in_rs_lacs__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="StartingSalaryOfBorrowerWithC__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="job_profile_of_borrower__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name_of_the_Business__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="KYC_Validated_At_Business_Place__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Involved_In_Speculative_Activities__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="property_address__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="current_fixed_salary__c" disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Are_there_any_critical_medical_history_o__c" disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="office_timing__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="type_of_asset_declared__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="employer_issued_id_card__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Can_Customer_Income_be_assessed__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="house_keeping_expense__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="transport__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Resi_Stability__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="branch_name__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="week_off_day__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="employer_representative_met__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="cost__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Is_the_GST_Report_available__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="gross_daily_income__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Locality_of_Business_Premises_Shop__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Type_of_Business_premises__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="estimate_value__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="site_details__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Business_Premises__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="salary_date__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="end_use_of_loan__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Industry__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Current_Office_Business_Address__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Residence_Status__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Any_Alternate_Successor_of_Family_Who_C__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Credit_PD_Mode__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="date_of_joining_current_employer__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="no_of_coworkers_in_office__c"  disabled={isDisabled}>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="PD_Activity_Status__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="clothing_expense__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="entertainment__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="other__c"  disabled={isDisabled}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="OwnerId"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="IsDeleted"></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="CreatedDate"></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="CreatedById"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="LastModifiedDate"></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="LastModifiedById"></lightning-input-field>
+                            </div>
+                        </div>
+
+                        <!-- <footer class="slds-modal__footer slds-grid slds-grid_align-end slds-p-top_medium">
+                            <div class="slds-col">
+                                <lightning-button variant="neutral" label="Cancel" onclick={closeModal}></lightning-button>
+                                <lightning-button variant="brand" type="submit" label="Save" class="slds-m-left_small"></lightning-button>
+                            </div>
+                        </footer> -->
+
+                    </lightning-record-edit-form>
+                </div>
+                <div>
+                    <footer class="slds-modal__footer slds-grid slds-grid_align-end slds-p-top_medium">
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeModal}>
+                        </lightning-button>
+
+                        <lightning-button variant="brand" type="submit" label="Save" class="slds-m-left_small">
+                        </lightning-button>
+                    </footer>
+                </div>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- View Details ModalPersonal Discussion END -->
+
+
+
+    <!-- End PD Page --->
+    <!-- open confirmation modal before delete the record added by mansur on 06-11-2025---->
+    <template if:true={isConfirmModalOpen}>
+        <section class="slds-modal slds-fade-in-open" role="dialog" tabindex="-1">
+            <div class="slds-modal__container">
+                <!-- Header -->
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Confirm Deletion</h2>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <p class="slds-align_absolute-center"> <b>Are you sure you want to Delete the Record? </b></p>
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeConfirmModal}
+                        class="slds-m-right_small">
+                    </lightning-button>
+
+                    <lightning-button variant="brand" label="OK" onclick={handleConfirm}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showInsuranceModal}>
+        <c-shf_-icici-insurance-api-modal application-id={recordId} applicant-id={selectedApplicantId}
+            is-icici={isICICI} is-kotak={isKotak} applicant-data={selectedApplicantData} application-data={selectedApplicationData} onclose={handleModalClose}
+            onsave={handleICICISave}>
+        </c-shf_-icici-insurance-api-modal>
+    </template>
+    <!-- Employment UAN Confirmation -->
+    <template if:true={showUanModal}>
+        <section class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Confirm UAN Number</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input
+                        label="UAN Number"
+                        value={uanNumber}
+                        onchange={handleUanChange}
+                        maxlength="12"
+                        message-when-pattern-mismatch="UAN must be 12 digits"
+                        pattern="[0-9]{12}"
+                        required>
+                    </lightning-input>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button variant="brand" label="Confirm & Proceed" onclick={handleUanConfirm}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- UAN Confirmation Ends -->
+
+
+    <c-shf-aadhaar-o-c-r-upload></c-shf-aadhaar-o-c-r-upload>
+
+</template>

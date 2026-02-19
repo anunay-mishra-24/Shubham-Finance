@@ -1,0 +1,26 @@
+.pdf-viewer {
+    width: 100%;
+    height: calc(100vh - 200px);
+    border: none;
+    display: block;
+}
+
+:host .slds-card__body {
+    overflow: hidden !important; 
+    margin: 0;
+}
+
+.iframe-container {
+    overflow: hidden;
+}
+
+.spinner-container {
+    height: 200px;
+    position: relative;
+}
+
+.button-footer {
+    height: 64px;
+    background: white;
+    border-top: 1px solid #dddbda;
+}

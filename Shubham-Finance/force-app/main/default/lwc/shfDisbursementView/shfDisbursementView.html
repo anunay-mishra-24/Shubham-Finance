@@ -1,0 +1,389 @@
+<template>
+    <lightning-card title="Disbursement Screen">
+        <lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
+
+        <div class="slds-p-around_medium">
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error slds-m-bottom_small">{errorMessage}</div>
+            </template>
+
+            <div class="slds-text-title_bold slds-m-bottom_small">Application Details</div>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="text" label="Application ID" value={viewData.applicationId} disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="text" label="Branch Name" value={viewData.branchName} disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="text" label="Applicant Name (Primary)" value={viewData.applicantName}
+                        disabled></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="date" label="Sanction Date" value={viewData.sanctionDate} disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="number" label="Maximum Sanctioned Amount"
+                        value={viewData.maximumSanctionedAmount} formatter="currency" step="0.01" disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="number" label="Sanctioned Amount" value={viewData.sanctionedAmount}
+                        formatter="currency" step="0.01" disabled></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="number" label="Disbursed Amount" value={viewData.disbursedAmount}
+                        formatter="currency" step="0.01" disabled></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="number" label="Available Amount" value={viewData.availableAmount}
+                        formatter="currency" step="0.01" disabled></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="number" label="ROI" value={viewData.roi} step="0.01" disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="number" label="Maximum Sanctioned Tenure" value={viewData.tenure} disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="number" label="Tenure" value={viewData.tenure} disabled></lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-combobox label="Disbursal Type" value={disbursalType} options={disbursalTypeOptions}
+                        disabled>
+                    </lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="text" label="Application Status" value={viewData.applicationStatus} disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="text" label="Loan Account Number" value={viewData.loanAccountNumber}
+                        placeholder="Will populate at Disbursement Checker stage" disabled>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+
+                    <!-- When NOT locked: show record picker -->
+                    <template if:false={viewData.lanToBeLinkedLocked}>
+                        <lightning-record-picker label="LAN to be Linked" object-api-name="LAN_Master__c"
+                            value={viewData.lanToBeLinkedId} onchange={handleLanToBeLinkedChange} disabled={isLoading}
+                            placeholder="Search LAN Master by Name">
+                        </lightning-record-picker>
+                    </template>
+
+                    <!-- When locked: show clickable “readonly” link -->
+                    <template if:true={viewData.lanToBeLinkedLocked}>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label">LAN to be Linked</label>
+                            <div class="slds-form-element__control">
+                                <a class="slds-input slds-truncate" href={lanMasterUrl} target="_blank" rel="noopener"
+                                    title="Open LAN Master">
+                                    {viewData.lanToBeLinkedName}
+                                </a>
+                            </div>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                    <lightning-input type="checkbox" label="Loan Curtailment" checked={viewData.loanCurtailment}
+                        onchange={handleLoanCurtailmentChange} disabled={isFieldDisabled}>
+                    </lightning-input>
+                </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small">
+                </lightning-layout-item>
+
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" large-device-size="4"
+                    class="slds-p-horizontal_x-small slds-p-vertical_x-small slds-text-align_right">
+                    <div class="slds-m-top_large">
+                        <lightning-button label="Save" variant="brand" onclick={handleSaveApplication}
+                            disabled={isApplicationSave}></lightning-button>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+
+
+            <div class="slds-m-top_large">
+                <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+                    <div>
+                        <div class="slds-text-title_bold">Tranche Details</div>
+                        <div class="slds-text-body_small slds-text-color_weak">
+                            Selected Tranche:
+                            <template if:true={selectedTrancheName}>{selectedTrancheName}</template>
+                            <template if:false={selectedTrancheName}>None</template>
+                        </div>
+                    </div>
+
+                    <div class="slds-button-group" role="group">
+                        <lightning-button label="Create a New Tranche" variant="neutral" onclick={handleCreateTranche}
+                            disabled={isCreateTrancheDisabled}>
+                        </lightning-button>
+
+                        <lightning-button label="Initiate Disbursement" variant="brand" class="slds-m-left_small"
+                            onclick={handleInitiateDisbursement} disabled={isInitiateDisbursementDisabled}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <template if:true={tranches.length}>
+                    <lightning-datatable key-field="id" data={tranches} columns={trancheColumns} max-row-selection="1"
+                        is-row-selectable={isRowSelectable} selected-rows={selectedRows}
+                        onrowselection={handleRowSelection} onrowaction={handleRowAction}>
+                    </lightning-datatable>
+                </template>
+
+                <template if:false={tranches.length}>
+                    <div class="slds-text-color_weak slds-p-vertical_small">No tranche records found.</div>
+                </template>
+
+                <template if:true={singleTypeHint}>
+                    <div class="slds-text-color_weak slds-p-top_x-small">
+                        Single Disbursal Type allows only one tranche. Create button is disabled after first tranche.
+                    </div>
+                </template>
+            </div>
+        </div>
+
+
+        <template if:true={showCreateModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-text-heading_medium">Create a New Tranche</h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-input type="date" name="date" label="Disbursal Date" value={newTrancheDate}
+                            onchange={handleNewTrancheChange} required></lightning-input>
+
+                        <lightning-input type="number" name="amount" label="Disbursal Amount" value={newTrancheAmount}
+                            onchange={handleNewTrancheChange} formatter="currency" step="0.01" required>
+                        </lightning-input>
+
+
+                        <lightning-input
+                            type="checkbox"
+                            name="pr"
+                            label="Principal Recovery"
+                            checked={newPrincipalRecovery}
+                            onchange={handleNewTrancheChange}
+                            disabled={isLoading}>
+                        </lightning-input>
+
+                        <lightning-input
+                            type="date"
+                            name="prFrom"
+                            label="Principal Recovery From"
+                            value={newPrincipalRecoveryFrom}
+                            onchange={handleNewTrancheChange}
+                            required={isNewPrRequired}
+                          >
+                        </lightning-input>
+
+                        <lightning-input
+                            type="date"
+                            name="prOn"
+                            label="Principal Recovery On"
+                            value={newPrincipalRecoveryOn}
+                            onchange={handleNewTrancheChange}
+                            required={isNewPrRequired}
+                           >
+                        </lightning-input>
+
+
+                        <lightning-record-picker label="Disbursement Bank" object-api-name="Bank_master__c"
+                            value={newDisbursementBankId} filter={bankFilter} display-info={bankDisplayInfo}
+                            matching-info={bankMatchingInfo} onchange={handleNewDisbursementBankChange} required>
+                        </lightning-record-picker>
+
+                        <!-- <lightning-combobox label="Status" value={newStatus} options={statusOptions} required
+                            onchange={handleNewStatusChange}>
+                        </lightning-combobox>-->
+
+                        <div class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+                            Available Amount: {viewData.availableAmount}
+                        </div>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeCreateModal}></lightning-button>
+                        <lightning-button class="slds-m-left_small" variant="brand" label="Create"
+                            onclick={handleCreateSave}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- ===================== Edit Tranche Modal ===================== -->
+        <template if:true={showEditModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-text-heading_medium">Edit Tranche</h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-input type="text" label="Tranche ID" value={editTrancheName} disabled>
+                        </lightning-input>
+
+                        <lightning-input type="date" name="editDate" label="Disbursal Date" value={editDisbursalDate}
+                            onchange={handleEditChange} required></lightning-input>
+
+                        <lightning-input type="number" name="editAmount" label="Disbursal Amount"
+                            value={editDisbursalAmount} onchange={handleEditChange} formatter="currency" step="0.01"
+                            required></lightning-input>
+
+
+                        <lightning-input
+                            type="checkbox"
+                            name="editPr"
+                            label="Principal Recovery"
+                            checked={editPrincipalRecovery}
+                            onchange={handleEditChange}
+                            disabled={isLoading}>
+                        </lightning-input>
+
+                        <lightning-input
+                            type="date"
+                            name="editPrFrom"
+                            label="Principal Recovery From"
+                            value={editPrincipalRecoveryFrom}
+                            onchange={handleEditChange}
+                           >
+                        </lightning-input>
+
+                        <lightning-input
+                            type="date"
+                            name="editPrOn"
+                            label="Principal Recovery On"
+                            value={editPrincipalRecoveryOn}
+                            onchange={handleEditChange}
+                            required={isEditPrRequired}
+                           >
+                        </lightning-input>
+
+
+                        <lightning-record-picker label="Disbursement Bank" object-api-name="Bank_master__c"
+                            value={editDisbursementBankId} filter={bankFilter} display-info={bankDisplayInfo}
+                            matching-info={bankMatchingInfo} onchange={handleEditDisbursementBankChange} required>
+                        </lightning-record-picker>
+
+                        <!-- <lightning-combobox label="Status" value={editStatus} options={statusOptions}
+                            onchange={handleEditStatusChange} required> 
+                        </lightning-combobox>-->
+
+                        <div class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+                            Available Amount: {viewData.availableAmount}
+                        </div>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeEditModal}></lightning-button>
+                        <lightning-button class="slds-m-left_small" variant="brand" label="Save"
+                            onclick={handleEditSave}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+
+
+        <template if:true={showDeleteModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-text-heading_medium">Delete Tranche</h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p>Are you sure you want to delete tranche <b>{deleteTrancheName}</b>?</p>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeDeleteModal}></lightning-button>
+                        <lightning-button class="slds-m-left_small" variant="destructive" label="Delete"
+                            onclick={handleDeleteConfirm}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </lightning-card>
+    <template if:true={showConfirmModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+
+            <div class="slds-modal__container">
+
+                <!-- Header -->
+                <header class="slds-modal__header slds-theme_warning">
+                    <h2 class="slds-text-heading_medium">Confirmation</h2>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Please confirm if you want to move forward.</p>
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                    <lightning-button variant="neutral" label="Cancel" onclick={handleCancelConfirm}>
+                    </lightning-button>
+
+                    <lightning-button class="slds-m-left_small" variant="brand" label="Yes" onclick={handleConfirmYes}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

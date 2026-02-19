@@ -1,0 +1,60 @@
+<template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+    </template>
+
+    <div class="slds-p-around_medium">
+        <lightning-combobox
+            name="documentFor"
+            label="Create Document For"
+            value={forWhom}
+            options={forWhomOptions}
+            onchange={handleForWhomChange}
+            placeholder="-- Select --"
+            required>
+        </lightning-combobox>
+
+        <template if:true={showApplicantDropdown}>
+            <lightning-combobox
+                name="applicantId"
+                label="Select Applicant"
+                value={selectedApplicantId}
+                options={applicantOptions}
+                onchange={handleApplicantChange}
+                required>
+            </lightning-combobox>
+        </template>
+
+        <lightning-combobox
+            name="documentCategory"
+            label="Document Category"
+            value={selectedCategory}
+            options={categoryOptions}
+            onchange={handleCategoryChange}
+            required>
+        </lightning-combobox>
+
+        <lightning-combobox
+            name="documentType"
+            label="Document Type"
+            value={selectedType}
+            options={typeOptions}
+            onchange={handleTypeChange}
+            required>
+        </lightning-combobox>
+
+        <lightning-combobox
+            name="documentName"
+            label="Document Name"
+            value={selectedDocName}
+            options={nameOptions}
+            onchange={handleDocNameChange}
+            required>
+        </lightning-combobox>
+
+        <div class="slds-m-top_medium slds-align_absolute-center">
+            <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_small"></lightning-button>
+            <lightning-button variant="brand" label="Create" onclick={handleSave}></lightning-button>
+        </div>
+    </div>
+</template>

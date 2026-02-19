@@ -1,0 +1,66 @@
+<template>
+    <div class="slds-scrollable" style="height:200px">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" role="grid">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <template for:each={cibilDeletedTableColumns} for:item="column">
+                        <th key={column.apiName} style="position: sticky;top: 0;z-index: 1;">
+                            <div class="slds-truncate" style="white-space: wrap;">{column.label}</div>
+                        </th>
+                    </template>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={obligationCibilDeletedList} for:item="obligationData" for:index="index">
+                    <tr key={obligationData.id}>
+                        <td><div class="td-currency">{obligationData.srNo}</div></td>
+                        <td><div class="td-currency">{obligationData.cibiliIndex}</div></td>
+                        <td><div class="td-currency">{obligationData.source}</div></td>
+                        <td><div class="td-currency">{obligationData.loanType}</div></td>
+                        <td><div class="td-currency">
+                            <lightning-input variant="label-hidden" disabled type="text"
+                                value={obligationData.nameOfLendingInstution}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency">
+                            <lightning-input variant="label-hidden" disabled type="text"
+                                value={obligationData.loanStatus}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency" style="width: 50px;">
+                            <lightning-input variant="label-hidden" disabled type="number"
+                                value={obligationData.tenureOutstandingInMonths}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency" style="width: 60px;">
+                            <lightning-input variant="label-hidden" disabled type="number"
+                                value={obligationData.emi}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency">
+                            <lightning-input variant="label-hidden" disabled type="number"
+                                value={obligationData.tenureOutstanding}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency">
+                            <lightning-input variant="label-hidden" disabled type="number"
+                                value={obligationData.amountSanctioned}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency">
+                            <lightning-input variant="label-hidden" disabled type="number"
+                                value={obligationData.outstandingAmount}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency">{obligationData.consideredForFOIR}</div></td>
+                        <td><div class="td-currency">
+                            <lightning-input variant="label-hidden" disabled type="text"
+                                value={obligationData.remarks}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency minDateWidth">
+                            <lightning-input variant="label-hidden" disabled type="dateTime"
+                                value={obligationData.createdDate}></lightning-input>
+                        </div></td>
+                        <td><div class="td-currency minDateWidth">
+                            <lightning-input variant="label-hidden" disabled type="dateTime"
+                                value={obligationData.deletedOn}></lightning-input>
+                        </div></td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

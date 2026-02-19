@@ -1,0 +1,137 @@
+<template>
+    <!-- OWNER SECTION -->
+     <template if:true={hasSingleOwner}>
+    <div class="slds-notify slds-notify_alert slds-theme_warning slds-m-bottom_small" role="alert">
+        <span class="slds-assistive-text">warning</span>
+        {singleOwnerWarningText}
+    </div>
+</template>
+    <c-shf-collateral-owner-details
+    collateral-id={collateralId}
+    application-id={applicationId}
+></c-shf-collateral-owner-details>
+
+
+    
+   <template if:false={hideSellerSections}>
+    <c-shf-seller-details
+        collateral-id={collateralId}
+        application-id={applicationId}
+    ></c-shf-seller-details>
+
+    <c-shf-seller-identification-details
+        collateral-id={collateralId}
+        application-id={applicationId}
+    ></c-shf-seller-identification-details>
+    <c-shf-seller-bank-details
+    collateral-id={collateralId}
+    application-id={applicationId}
+></c-shf-seller-bank-details>
+
+</template>
+
+
+
+    <!-- OWNER MODAL -->
+    <template if:true={showOwnerForm}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-modal="true"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={handleOwnerFormCancel}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Close"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">
+                        Collateral Detail Entry
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <c-shf-collateral-seller-owner-form>
+                    record-id={selectedOwnerId}
+                        record-type-name="Owner"
+                        onsuccess={handleOwnerFormSuccess}
+                        oncancel={handleOwnerFormCancel}
+                    ></c-shf-collateral-seller-owner-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- SELLER MODAL -->
+    <template if:true={showSellerForm}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-modal="true"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={handleSellerFormCancel}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Close"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">
+                        Collateral Detail Entry
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <c-shf-collateral-seller-owner-form
+                    key={ownerFormKey}
+                   
+                    collateral-id={collateralId}
+                    application-id={applicationId}
+                    record-id={selectedOwnerId}
+                    record-type-name="Owner"
+                    onsuccess={handleOwnerFormSuccess}
+                    oncancel={handleOwnerFormCancel}
+                ></c-shf-collateral-seller-owner-form>
+
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+   
+
+    <!--Seller Address Details-->
+
+<template if:false={hideSellerSections}>
+    <c-shf-seller-address-details
+        collateral-id={collateralId}
+        application-id={applicationId}
+    ></c-shf-seller-address-details>
+</template>
+<c-shf-property-registration-details
+    collateral-id={collateralId}
+    application-id={applicationId}
+></c-shf-property-registration-details>
+<c-shf-cost-of-property-details
+    collateral-id={collateralId}
+    application-id={applicationId}
+    is-property-cost-disabled={isPropertyCostDisabled}
+></c-shf-cost-of-property-details>
+</template>

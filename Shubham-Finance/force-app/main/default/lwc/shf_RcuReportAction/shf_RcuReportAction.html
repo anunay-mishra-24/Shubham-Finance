@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="RECU Report">
+
+        <template if:true={pdfUrl}>
+            <div style="height:500px;">
+                <iframe src={pdfUrl} width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+        </template>
+
+        <div class="slds-p-around_medium slds-text-align_right">
+            <lightning-button variant="brand" label="Send" onclick={handleSend}></lightning-button>
+        </div>
+
+        <c-shf-upload-document application-id={recordId} context="lwc" ondmsresponse={handleDmsResponse}
+                style="display:none"></c-shf-upload-document>
+    </lightning-card>
+</template>

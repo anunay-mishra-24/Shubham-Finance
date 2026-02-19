@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+
+:host(.bank-modal-open) {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2147483647 !important;
+}
+
+
+:host(.bank-modal-open) .modalWrap {
+  position: fixed !important;
+  inset: 0 !important;
+}
+
+
+:host(.bank-modal-open) .slds-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  opacity: 0.6 !important;
+}
+
+
+:host(.bank-modal-open) .slds-modal {
+  position: fixed !important;
+  inset: 0 !important;
+}

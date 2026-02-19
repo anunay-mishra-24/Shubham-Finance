@@ -1,0 +1,284 @@
+<!-- <template>
+    <lightning-card title="ABB Surrogate Program" icon-name="standard:account">
+        <div class="slds-p-around_medium">
+            
+            <div class="slds-box slds-theme_shade slds-m-bottom_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <label class="slds-form-element__label">
+                            <abbr class="slds-required" title="required">* </abbr>Bank Accounts Selection (Max 4)
+                        </label>
+                        <lightning-dual-listbox
+                            name="bankSelect"
+                            label="Select Bank Accounts"
+                            variant="label-hidden"
+                            source-label="Available"
+                            selected-label="Selected"
+                            options={bankOptions}
+                            value={selectedBanks}
+                            max={maxBanks}
+                            min={minBanks}
+                            onchange={handleBankSelection}>
+                        </lightning-dual-listbox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-align-middle">
+                        <p class="slds-text-body_small">
+                            * Select between 1 (Min) to 4 (Max) bank accounts.<br/>
+                            * Bank columns will generate automatically based on selection.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <template if:true={isTableVisible}>
+                <div class="slds-scrollable_x">
+                    <table class="slds-table slds-table_bordered slds-table_col-bordered slds-no-row-hover">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="blue-header" style="width: 150px;">Month</th>
+                                <th class="blue-header" style="width: 100px;">Year</th>
+                                <template for:each={dynamicColumns} for:item="col">
+                                    <th key={col.order} class="blue-header">
+                                        {col.label}
+                                    </th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={rows} for:item="row">
+                                <tr key={row.id}>
+                                    <td style="font-weight: 600;">{row.month}</td>
+                                    <td>{row.year}</td>
+                                    <template for:each={row.cells} for:item="cell">
+                                        <td key={cell.key}>
+                                            <lightning-input
+                                                type="number"
+                                                variant="label-hidden"
+                                                value={cell.value}
+                                                data-row-index={row.index}
+                                                data-col-order={cell.order}
+                                                onchange={handleInputChange}>
+                                            </lightning-input>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                        <tfoot>
+                            <tr class="slds-theme_shade">
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    Minimum Monthly Balance
+                                </td>
+                                <template for:each={columnMinimums} for:item="min">
+                                    <td key={min.order} class="slds-text-align_right" style="font-weight:bold; color:#005fb2;">
+                                        {min.value}
+                                    </td>
+                                </template>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    {labelAnnualABB}
+                                </td>
+                                <td colspan={dynamicColumns.length} class="total-cell" style="background-color: #fff;">
+                                    <lightning-input 
+                                        type="number" 
+                                        variant="label-hidden" 
+                                        value={totals.annualABB} 
+                                        disabled 
+                                        class="bold-input">
+                                    </lightning-input>
+                                </td>
+                            </tr>
+
+                            
+                            <tr>
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    <abbr class="slds-required" title="required">* </abbr>
+                                    {labelMultiplier}
+                                </td>
+                                <td colspan={dynamicColumns.length} class="total-cell">
+                                    <lightning-input 
+                                        type="number"
+                                        step="any"
+                                        variant="label-hidden" 
+                                        value={totals.multiplier} 
+                                        data-order="multiplier"
+                                        required
+                                        onchange={handleFooterChange}>
+                                    </lightning-input>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    {labelEligibleEMI}
+                                </td>
+                                <td colspan={dynamicColumns.length} class="total-cell" style="background-color: #d1ffbd;">
+                                    <lightning-input 
+                                        type="number" 
+                                        variant="label-hidden" 
+                                        value={totals.eligibleEMI} 
+                                        disabled>
+                                    </lightning-input>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="slds-m-top_medium slds-align_absolute-center">
+                    <lightning-button 
+                        label="Save Data" 
+                        variant="brand" 
+                        onclick={handleSave}>
+                    </lightning-button>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template> -->
+<template>
+    <lightning-card title="ABB Surrogate Program" icon-name="standard:account">
+        <div class="slds-p-around_medium">
+            
+            <div class="slds-box slds-theme_shade slds-m-bottom_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <label class="slds-form-element__label">
+                            <abbr class="slds-required" title="required">* </abbr>Bank Accounts Selection (Max 4)
+                        </label>
+                        <lightning-dual-listbox
+                            name="bankSelect"
+                            label="Select Bank Accounts"
+                            variant="label-hidden"
+                            source-label="Available"
+                            selected-label="Selected"
+                            options={bankOptions}
+                            value={selectedBanks}
+                            max={maxBanks}
+                            min={minBanks}
+                            onchange={handleBankSelection}>
+                        </lightning-dual-listbox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-align-middle">
+                        <p class="slds-text-body_small">
+                            * Select between 1 (Min) to 4 (Max) bank accounts.<br/>
+                            * Bank columns will generate automatically based on selection.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <template if:true={isTableVisible}>
+                <div class="slds-scrollable_x">
+                    <table class="slds-table slds-table_bordered slds-table_col-bordered slds-no-row-hover">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="blue-header" style="width: 150px;">Month</th>
+                                <th class="blue-header" style="width: 100px;">Year</th>
+                                <template for:each={dynamicColumns} for:item="col">
+                                    <th key={col.order} class="blue-header">
+                                        {col.label}
+                                    </th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={rows} for:item="row">
+                                <tr key={row.id}>
+                                    <td style="font-weight: 600;">{row.month}</td>
+                                    <td>{row.year}</td>
+                                    <template for:each={row.cells} for:item="cell">
+                                        <td key={cell.key}>
+                                            <lightning-input
+                                                type="number"
+                                                variant="label-hidden"
+                                                value={cell.value}
+                                                data-row-index={row.index}
+                                                data-col-order={cell.order}
+                                                onchange={handleInputChange}>
+                                            </lightning-input>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                        <tfoot>
+                            <tr class="slds-theme_shade">
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    Minimum Monthly Balance
+                                </td>
+                                <template for:each={columnMinimums} for:item="min">
+                                    <td key={min.order} class="slds-text-align_right" style="font-weight:bold; color:#005fb2;">
+                                        {min.value}
+                                    </td>
+                                </template>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    {labelAnnualABB}
+                                </td>
+                                <td colspan={dynamicColumns.length} class="total-cell" style="background-color: #fff;">
+                                    <lightning-input 
+                                        type="number" 
+                                        variant="label-hidden" 
+                                        value={totals.annualABB} 
+                                        disabled 
+                                        class="bold-input">
+                                    </lightning-input>
+                                </td>
+                            </tr>
+
+                            
+                            <tr>
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    <abbr class="slds-required" title="required">* </abbr>
+                                    {labelMultiplier}
+                                </td>
+                                <td colspan={dynamicColumns.length} class="total-cell">
+                                    <lightning-input 
+                                        type="number" 
+                                        step="0.01"
+                                        variant="label-hidden" 
+                                        value={totals.multiplier} 
+                                        data-order="multiplier"
+                                        min="1"
+                                        max="100"
+                                        message-when-range-underflow="The multiplier must be at least 1."
+                                        message-when-range-overflow="The multiplier cannot exceed 100."
+                                        required
+                                        onchange={handleFooterChange}>
+                                    </lightning-input>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" class="slds-text-align_right slds-text-title_bold">
+                                    {labelEligibleEMI}
+                                </td>
+                                <td colspan={dynamicColumns.length} class="total-cell" style="background-color: #d1ffbd;">
+                                    <lightning-input 
+                                        type="number" 
+                                        variant="label-hidden" 
+                                        value={totals.eligibleEMI} 
+                                        disabled>
+                                    </lightning-input>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="slds-m-top_medium slds-align_absolute-center">
+                    <lightning-button 
+                        label="Save Data" 
+                        variant="brand" 
+                        onclick={handleSave}>
+                    </lightning-button>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

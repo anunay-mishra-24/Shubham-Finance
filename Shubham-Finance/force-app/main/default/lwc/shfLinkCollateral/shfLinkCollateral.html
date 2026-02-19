@@ -1,0 +1,132 @@
+<template>
+    <section
+        role="dialog"
+        tabindex="-1"
+        aria-modal="true"
+        class="slds-modal slds-fade-in-open slds-modal_large"
+    >
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button
+                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close"
+                    onclick={handleCancel}
+                >
+                    <lightning-icon
+                        icon-name="utility:close"
+                        alternative-text="Close"
+                        size="small"
+                    ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_medium">
+                    Link Collateral
+                </h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+
+                
+                <div class="slds-m-bottom_medium">
+    <div class="slds-grid slds-wrap slds-gutters_small">
+
+        
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+            <lightning-input
+                type="text"
+                label="Collateral Name"
+                value={collateralName}
+                onchange={handleCollateralNameChange}
+                placeholder="Enter Collateral Name"
+            ></lightning-input>
+        </div>
+
+        
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-12 slds-align_absolute-center">
+            <div class="slds-text-align_center slds-m-vertical_small">
+                <span class="slds-badge slds-theme_inverse">
+                    OR
+                </span>
+            </div>
+        </div>
+
+        
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+            <lightning-input
+                type="text"
+                label="Application Id"
+                value={applicationKey}
+                onchange={handleApplicationKeyChange}
+                placeholder="Enter Application Id"
+            ></lightning-input>
+        </div>
+
+        
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-m-top_small slds-medium-m-top_none slds-text-align_right">
+            <lightning-button
+                label="Search"
+                variant="neutral"
+                onclick={handleSearch}
+                disabled={isSearchDisabled}
+            ></lightning-button>
+        </div>
+    </div>
+
+    <div class="slds-text-color_weak slds-m-top_x-small slds-text-body_small">
+        You can search by <b>Collateral Name</b> OR <b>Application Id</b>.
+    </div>
+</div>
+
+
+                
+                <template if:true={isSearching}>
+                    <div class="slds-m-vertical_small slds-text-align_center">
+                        <lightning-spinner
+                            alternative-text="Searching"
+                            size="small"
+                        ></lightning-spinner>
+                    </div>
+                </template>
+
+                
+                <template if:true={hasSearchResults}>
+                    <div class="table-wrapper slds-m-top_small">
+                        <lightning-datatable
+                            key-field="Id"
+                            data={searchResults}
+                            columns={searchColumns}
+                            hide-checkbox-column
+                            onrowaction={handleSearchRowAction}
+                        ></lightning-datatable>
+                    </div>
+                </template>
+
+                <template if:true={showNoResultsMessage}>
+                    <p class="slds-m-top_small slds-text-color_weak">
+                        No collaterals found for given search criteria.
+                    </p>
+                </template>
+            </div>
+
+            <footer class="slds-modal__footer slds-text-align_right">
+                <lightning-button
+                    label="Close"
+                    class="slds-m-right_small"
+                    onclick={handleCancel}
+                ></lightning-button>
+            </footer>
+        </div>
+    </section>
+
+    
+    <template if:true={isLinking}>
+        <div class="loader-full">
+            <lightning-spinner
+                alternative-text="Linking"
+                size="small"
+            ></lightning-spinner>
+        </div>
+    </template>
+
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

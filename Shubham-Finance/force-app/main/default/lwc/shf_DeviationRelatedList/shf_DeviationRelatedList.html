@@ -1,0 +1,17 @@
+<template>
+    <!-- <lightning-card title="Deviation & Sanction Conditions"> -->
+        <div class="slds-p-around_medium">
+            <template if:true={hasRecords}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={children}
+                    columns={columns}
+                    hide-checkbox-column="true"
+                ></lightning-datatable>
+            </template>
+            <template if:false={hasRecords}>
+                <p>No pending records found.</p>
+            </template>
+        </div>
+    <!-- </lightning-card> -->
+</template>

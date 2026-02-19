@@ -1,0 +1,344 @@
+<template>
+    <lightning-tabset variant="scoped">
+        <!-- Details Tab -->
+        <lightning-tab label="Details">
+            <div class="slds-p-around_medium">
+
+                <!-- Basic Information -->
+                <section class="slds-m-bottom_large">
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Basic Information
+                        </h3>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Customer type(Seller)" data-field="customerType" options={customerTypeOptions} value={formData.customerType}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Constitution" options={accountTypeOptions}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Total Percentage" type="number"></lightning-input>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seller Details -->
+                <section class="slds-m-bottom_large">
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Seller Details
+                        </h3>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Seller Name" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Present Registered Number" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="TCT / CCT No" type="number"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Lot No" type="number"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Percentage Share" type="number"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="DOB / Incorporation Date" type="date"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Identification Number" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Other Remarks" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Constitution" required></lightning-input>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Banking Section -->
+                <section class="slds-m-bottom_large">
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Banking Section
+                        </h3>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Account Number"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Bank Name"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="IFSC"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Type of Account" options={accountTypeOptions}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Identification -->
+                <section class="slds-m-bottom_large">
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Identification
+                        </h3>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Identification Type" required options={individualIdOptions}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Identification No" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Issue Date" type="date"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Expiry Date" type="date"></lightning-input>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Address Details -->
+                <section>
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Address Details
+                        </h3>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Address Type" options={addressTypeOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-textarea label="Full Address"></lightning-textarea>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Country" options={countryOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Flat/Plot Number" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Address Line 2" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Address Line 3" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Pin Code" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Region" options={regionOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="State" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="City" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="District" options={districtOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Taluka" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Village" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Landmark" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input type="number" label="Duration at current address" required>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input type="number" label="Duration at current city" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input type="Phone" label="Primary Phone" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input type="Phone" label="Mobile" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Is address verified" options={isAddressVerifiedOptions}>
+                            </lightning-combobox>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </lightning-tab>
+
+        <!-- Report Generation Tab -->
+        <lightning-tab label="Report Generation">
+            <div class="slds-p-around_medium">
+
+                <!-- Report -->
+                <section class="slds-m-bottom_large">
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Report
+                        </h3>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="RCU Report Generation Date" type="Date"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="RCU Agency Name" type="Text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Region" options={regionOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="State"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Branch"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Application No."></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Type" options={typeOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Loan Amount" type="number"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Product" options={productOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Program" options={programOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="RCU Manager Name" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Name of Applicant" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Name of Co-Applicant-1" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Sourcing Channel" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Sourcing Officer Name" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Sourcing Officer Employee ID" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Pickup Date" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Reported Date" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="TAT" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Timestamp" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Applicant Type" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Documents Name" type="text"></lightning-input>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Photograph Taken -->
+                <section class="slds-m-bottom_large">
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Photograph Taken
+                        </h3>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Pickup up Criteria" type="text" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="RCU Status" type="text" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Total Docs Sampled" type="number"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Total Docs Sampled" type="number"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Overall Status" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Overall Remarks" type="text"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Residence" type="text" required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Business/ Office" type="text" required></lightning-input>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Photograph Taken -->
+                <section class="slds-m-bottom_large">
+                    <div class="slds-theme_shade slds-p-around_x-small slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small slds-text-title_bold">
+                            Photograph Taken
+                        </h3>
+                    </div>
+
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Pick Up Criteria" options={pickUpCriteriaOptions}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="RCU Status" options={rcuStatusOptions}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Total Docs Verified"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Total Docs Sampled"></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-combobox label="Overall Status" options={overallStatusOptions}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Overall Remarks"></lightning-input>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

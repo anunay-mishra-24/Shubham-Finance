@@ -1,0 +1,30 @@
+<!--
+  @description       : 
+  @author            : Gaurav Kumar
+  @group             : 
+  @last modified on  : 02-12-2026
+  @last modified by  : Gaurav Kumar
+-->
+<template>
+    <!-- Error Modal -->
+    <template if:true={showErrorModal}>
+        <section class="custom-modal-backdrop">
+            <div class="custom-modal">
+                <header class="slds-modal__header slds-theme_error">
+                    <h2 class="slds-text-heading_medium">Error</h2>
+                </header>
+                 <div class="slds-modal__content slds-p-around_medium slds-scrollable_y" style="max-height: 300px;">
+                    <ul class="slds-list_dotted slds-p-left_medium">
+                        <template for:each={errorMessages} for:item="err">
+                            <li key={err} class="error-text">{err}</li>
+                        </template>
+                    </ul>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Close" onclick={handleCloseModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+    </template>
+</template>

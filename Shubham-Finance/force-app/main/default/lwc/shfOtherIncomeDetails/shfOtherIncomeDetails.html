@@ -1,0 +1,166 @@
+<template>
+    <lightning-card title="Other Income Details" icon-name="standard:currency">
+        <lightning-spinner if:true={isLoading} alternative-text="Loading" size="small"></lightning-spinner>
+        
+        <div class="slds-p-around_medium">
+            <table class="slds-table slds-table_bordered slds-table_col-bordered slds-no-row-hover">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="blue-header" scope="col"><span class="slds-required">*</span>Income Head</th>
+                        <th class="blue-header" scope="col"><span class="slds-required">*</span>Income Source</th>
+                        <th class="blue-header" scope="col"><span class="slds-required">*</span>Frequency</th>
+                        <th class="blue-header" scope="col"><span class="slds-required">*</span>Amount</th>
+                        <th class="blue-header" scope="col"><span class="slds-required">*</span>Percentage</th>
+                        <th class="blue-header" scope="col">Net Amount (Annual)</th>
+                        <th class="blue-header" scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={rows} for:item="row">
+                        <tr key={row.key}>
+                            <td class="slds-p-around_xx-small">
+                                <lightning-combobox
+                                    data-id={row.key}
+                                    data-field="Income_Head__c"
+                                    value={row.Income_Head__c}
+                                    options={headOptions}
+                                    variant="label-hidden"
+                                    onchange={handleInputChange}
+                                    required> </lightning-combobox>
+                            </td>
+                            <td class="slds-p-around_xx-small">
+                                <lightning-combobox
+                                    data-id={row.key}
+                                    data-field="Income_source__c"
+                                    value={row.Income_source__c}
+                                    options={sourceOptions}
+                                    variant="label-hidden"
+                                    onchange={handleInputChange}
+                                    required>
+                                </lightning-combobox>
+                            </td>
+                            <td class="slds-p-around_xx-small">
+                                <lightning-combobox
+                                    data-id={row.key}
+                                    data-field="Frequency__c"
+                                    value={row.Frequency__c}
+                                    options={frequencyOptions}
+                                    variant="label-hidden"
+                                    onchange={handleInputChange}
+                                    required>
+                                </lightning-combobox>
+                            </td>
+                            <td class="slds-p-around_xx-small">
+                                <lightning-input
+                                    type="number"
+                                    step="0.01"
+                                    data-id={row.key}
+                                    data-field="Amount__c"
+                                    value={row.Amount__c}
+                                    formatter="currency"
+                                    variant="label-hidden"
+                                    onchange={handleInputChange}
+                                    
+                                    min="0"
+                                    max-length="10"
+                                    
+                                    message-when-range-underflow="Amount cannot be negative"
+                                    message-when-range-overflow="Amount is too large"
+                                    message-when-step-mismatch="Enter a valid amount decimal (e.g. 100.50)"
+                                    
+                                    required>
+                                </lightning-input>
+                            </td>
+                            <td class="slds-p-around_xx-small">
+                                <lightning-input
+                                    type="number"
+                                    formatter="percent-fixed"
+                                    step="0.01"
+                                    data-id={row.key}
+                                    data-field="Percentage__c"
+                                    value={row.Percentage__c}
+                                    variant="label-hidden"
+                                    onchange={handleInputChange}
+                                    
+                                    min="1"
+                                    max="100"
+                                    
+                                    message-when-range-underflow="Percentage cannot be less than 1."
+                                    message-when-range-overflow="Percentage cannot exceed 100%"
+                                    message-when-step-mismatch="Enter a valid percentage decimal (e.g. 90.50)"
+                                    
+                                    required>
+                                </lightning-input>
+                            </td>
+                            <td class="slds-p-around_xx-small">
+                                <lightning-input
+                                    type="number"
+                                    formatter="currency"
+                                    value={row.Net_Amount_Annual__c}
+                                    variant="label-hidden"
+                                    disabled>
+                                </lightning-input>
+                            </td>
+                            <td class="slds-text-align_center">
+                                <lightning-button-icon 
+                                    icon-name="utility:delete" 
+                                    variant="error" 
+                                    data-id={row.key}
+                                    onclick={handleDeleteRow}>
+                                </lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+                <tfoot>
+                    <tr class="slds-theme_shade">
+                        <td colspan="5" class="slds-text-align_right slds-text-title_bold">
+                            Total Income (Annual)
+                        </td>
+                        <td class="total-cell" style="background-color: #d1ffbd;">
+                            <lightning-input 
+                                type="number" 
+                                variant="label-hidden" 
+                                formatter="currency" 
+                                value={totalAnnualIncome} 
+                                disabled
+                                class="footer-input">
+                            </lightning-input>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr class="slds-theme_shade">
+                        <td colspan="5" class="slds-text-align_right slds-text-title_bold">
+                            Total Income (Monthly)
+                        </td>
+                        <td class="total-cell" style="background-color: #e8f5ff;">
+                            <lightning-input 
+                                type="number" 
+                                variant="label-hidden" 
+                                formatter="currency" 
+                                value={totalMonthlyIncome} 
+                                disabled
+                                class="footer-input">
+                            </lightning-input>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="slds-m-top_medium slds-grid slds-grid_align-center slds-p-bottom_medium">
+            <lightning-button 
+                label="Add Row" 
+                icon-name="utility:add" 
+                onclick={handleAddRow}
+                class="slds-m-right_small">
+            </lightning-button>
+            <lightning-button 
+                label="Save Details" 
+                variant="brand" 
+                onclick={handleSave}>
+            </lightning-button>
+        </div>
+    </lightning-card>
+</template>

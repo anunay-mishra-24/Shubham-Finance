@@ -1,0 +1,179 @@
+<template>
+    <lightning-card icon-name="standard:medication_reconciliation" title="Personal Discussion"
+        class="centered-card slds-m-top_x-small">
+
+        <lightning-button slot="actions" label="New" variant="brand" onclick={openModal}>
+        </lightning-button>
+    </lightning-card>
+
+    <!--  Read-only PD Details shown below list  -->
+    <template if:true={isViewDetailOpen}>
+        <div class="slds-box slds-m-top_medium slds-p-around_medium" style="background:#f3f3f3;">
+            <h2 class="slds-text-heading_medium slds-text-align_center slds-m-bottom_small">
+                Personal Discussion Details
+            </h2>
+
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Personal Discussion Name:</strong> {pdDetailRec.Name}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Application:</strong> {pdDetailRec.Application__r.Name}
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Loan Applicant:</strong> {pdDetailRec.Loan_Applicant__r.Account_Name__c}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Owner:</strong> {pdDetailRec.Owner.Name}
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Employment Type:</strong> {pdDetailRec.Are_you_salaried_or_self_employed__c}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>GST Report Available:</strong> {pdDetailRec.Is_the_GST_Report_available__c}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Bank Statement Available:</strong> {pdDetailRec.Is_BankStatement_avail_for_BankSurrogate__c}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Customer Income Assessed:</strong> {pdDetailRec.Can_Customer_Income_be_assessed__c}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Salary Slip Available:</strong> {pdDetailRec.Is_the_last_2_month_salary_slip_availabl__c}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Form 16 Available:</strong> {pdDetailRec.Is_Form_16_available__c}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" padding="around-small">
+                    <strong>Salary Credited in Bank:</strong> {pdDetailRec.Is_salary_credited_in_Bank_Account__c}
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <div class="slds-m-top_medium slds-text-align_center">
+                <lightning-button label="Close" variant="neutral" onclick={closeViewDetail}></lightning-button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal Section -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open personal-discussion-modal">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">New Personal Discussion</h2>
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={closeModal}>
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Close"
+                            size="small">
+                        </lightning-icon>
+                    </button>
+                </header>
+
+
+                <div class="slds-modal__content modal-body" style="max-height:70vh;overflow:auto;">
+                    <div class="form-container">
+                        <div class="slds-p-around_medium">
+                            <div class="field-container">
+                                <lightning-combobox label="Loan Applicant" value={pdRec.Loan_Applicant__c}
+                                    options={loanApplicantOptions} required data-field="Loan_Applicant__c"
+                                    onchange={handlePicklistChange}>
+                                </lightning-combobox>
+                            </div>
+
+                            <div class="field-container">
+                                <lightning-combobox label="Are you salaried or self employed?"
+                                    value={pdRec.Are_you_salaried_or_self_employed__c} options={employmentOptions}
+                                    data-field="Are_you_salaried_or_self_employed__c" onchange={handlePicklistChange} disabled>
+                                </lightning-combobox>
+                            </div>
+
+                            <!-- Self Employed Section -->
+                            <template if:true={showSelfEmpSection}>
+                                <template if:true={showQ2}>
+                                    <div class="field-container">
+                                        <lightning-combobox label="Is the GST Report available?"
+                                            value={pdRec.Is_the_GST_Report_available__c} options={yesNoOptions}
+                                            data-field="Is_the_GST_Report_available__c" onchange={handlePicklistChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </div>
+                                </template>
+
+                                <template if:true={showQ3}>
+                                    <div class="field-container">
+                                        <lightning-combobox
+                                            label="Is a Bank Statement available for the Banking Surrogate Program?"
+                                            value={pdRec.Is_BankStatement_avail_for_BankSurrogate__c}
+                                            options={yesNoOptions}
+                                            data-field="Is_BankStatement_avail_for_BankSurrogate__c"
+                                            onchange={handlePicklistChange} required>
+                                        </lightning-combobox>
+                                    </div>
+                                </template>
+
+                                <template if:true={showQ4}>
+                                    <div class="field-container">
+                                        <lightning-combobox label="Can Customer Income be assessed?"
+                                            value={pdRec.Can_Customer_Income_be_assessed__c} options={yesNoOptions}
+                                            data-field="Can_Customer_Income_be_assessed__c"
+                                            onchange={handlePicklistChange} required>
+                                        </lightning-combobox>
+                                    </div>
+                                </template>
+                            </template>
+
+                            <!-- Salaried Section -->
+                            <template if:true={showSalSection}>
+                                <template if:true={showQ2}>
+                                    <div class="field-container">
+                                        <lightning-combobox label="Is the last 2 month salary slip available?"
+                                            value={pdRec.Is_the_last_2_month_salary_slip_availabl__c}
+                                            options={yesNoOptions}
+                                            data-field="Is_the_last_2_month_salary_slip_availabl__c"
+                                            onchange={handlePicklistChange} required>
+                                        </lightning-combobox>
+                                    </div>
+                                </template>
+
+                                <template if:true={showQ3}>
+                                    <div class="field-container">
+                                        <lightning-combobox label="Is Form 16 available?"
+                                            value={pdRec.Is_Form_16_available__c} options={yesNoOptions}
+                                            data-field="Is_Form_16_available__c" onchange={handlePicklistChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </div>
+                                </template>
+
+                                <template if:true={showQ4}>
+                                    <div class="field-container">
+                                        <lightning-combobox label="Is salary credited in Bank Account?"
+                                            value={pdRec.Is_salary_credited_in_Bank_Account__c} options={yesNoOptions}
+                                            data-field="Is_salary_credited_in_Bank_Account__c"
+                                            onchange={handlePicklistChange} required>
+                                        </lightning-combobox>
+                                    </div>
+                                </template>
+                            </template>
+                            <!---end--->
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="slds-modal__footer save-button-container">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeModal}>
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleSave} disabled={isLoading}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

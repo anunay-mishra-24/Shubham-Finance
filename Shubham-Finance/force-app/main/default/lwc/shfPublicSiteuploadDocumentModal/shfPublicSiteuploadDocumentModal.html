@@ -1,0 +1,87 @@
+<template>
+	<div style="border-top: 1px solid rgb(201, 201, 201)">
+		<!-- Desktop -->
+		<template if:false={isMobile}>
+			<lightning-datatable
+				key-field="Id"
+				data={recordsToDisplay}
+				columns={columns}
+				selected-rows={selectedRowIds}
+				onrowselection={getSelectedAction}>
+			</lightning-datatable>
+		</template>
+
+		<!-- Mobile tiles -->
+		<template if:true={isMobile}>
+			<div class="slds-p-horizontal_small slds-m-bottom_small">
+				<lightning-input
+					type="checkbox"
+					label="Select All"
+					checked={isAllTilesSelected}
+					onchange={handleSelectAllTiles}>
+				</lightning-input>
+			</div>
+			<div class="slds-grid slds-wrap">
+				<template for:each={recordsToDisplay} for:item="rec">
+					<div key={rec.Id} class="slds-size_1-of-1 slds-p-small">
+						<div class="slds-box">
+							<lightning-input
+								type="checkbox"
+								data-id={rec.Id}
+								label={rec.DocumentName}
+								checked={rec.isChecked}
+								onchange={handleTileSelect}>
+							</lightning-input>
+
+							<p>Type: {rec.Document_Type__c}</p>
+							<p>Category: {rec.Document_Category__c}</p>
+						</div>
+					</div>
+				</template>
+			</div>
+		</template>
+
+		<!-- SHARED PAGINATION -->
+		<div class="slds-clearfix slds-m-top_small">
+			<div class="slds-align_absolute-center">
+
+				<lightning-button-icon
+					disabled={bDisableFirst}
+					icon-name="utility:jump_to_left"
+					onclick={firstPage}>
+				</lightning-button-icon>
+
+				<lightning-button-icon
+					disabled={bDisableFirst}
+					icon-name="utility:chevronleft"
+					onclick={previousPage}>
+				</lightning-button-icon>
+
+				<span class="slds-p-horizontal_small">
+					Page {pageNumber} / {totalPages}
+				</span>
+
+				<lightning-button-icon
+					disabled={bDisableLast}
+					icon-name="utility:chevronright"
+					onclick={nextPage}>
+				</lightning-button-icon>
+
+				<lightning-button-icon
+					disabled={bDisableLast}
+					icon-name="utility:jump_to_right"
+					onclick={lastPage}>
+				</lightning-button-icon>
+
+			</div>
+		</div>
+
+			<div class="slds-m-top_medium slds-align_absolute-center">
+				<lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_small"></lightning-button>
+				<lightning-button variant="brand" label="Send" onclick={handleSave}></lightning-button>
+			</div>
+	</div>
+	<template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+    </template>
+</template>

@@ -1,0 +1,47 @@
+<template>
+    <lightning-card>
+
+        <!-- Header -->
+        <div class="slds-align_absolute-center slds-text-heading_medium slds-p-around_small">
+            Reassign Verification
+        </div>
+
+        <!-- Body -->
+        <div class="slds-p-around_medium">
+            <lightning-combobox
+                label="Assign To"
+                placeholder="Select user"
+                options={userOptions}
+                value={selectedUser}
+                onchange={handleChange}>
+            </lightning-combobox>
+
+            <!-- Optional Comments -->
+            <lightning-textarea
+                class="slds-m-top_medium"
+                label="Reassign Comments"
+                placeholder="Add comments (optional)"
+                value={comments}
+                onchange={handleCommentChange}>
+            </lightning-textarea>
+        </div>
+
+        <!-- Footer -->
+        <div class="slds-modal__footer slds-grid slds-grid_align-end">
+            <lightning-button
+                label="Cancel"
+                variant="neutral"
+                onclick={handleCancel}>
+            </lightning-button>
+
+            <lightning-button
+                class="slds-m-left_small"
+                label="Reassign"
+                variant="brand"
+                onclick={handleReassign}
+                disabled={disableButton}>
+            </lightning-button>
+        </div>
+
+    </lightning-card>
+</template>

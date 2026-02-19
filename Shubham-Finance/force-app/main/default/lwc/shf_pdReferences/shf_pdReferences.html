@@ -1,0 +1,260 @@
+<template>
+    <template if:true={showModal}>
+    <section class="slds-modal slds-fade-in-open" role="dialog" tabindex="-1" aria-modal="true">
+        <div class="slds-modal__container" style="width:90vw; max-width:1200px;">
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">PD — Suppliers & Customers</h2>
+                <button class="slds-button slds-button_icon slds-modal__close" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" variant="bare" size="small"></lightning-icon>
+                </button>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning-card>
+                    <div class="equal-cols slds-grid slds-wrap slds-gutters">
+                        <!-- Suppliers -->
+                        <div class="slds-col slds-size_1-of-1">
+                            <section class="slds-card">
+                                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Suppliers</h2>
+                                        </div>
+                                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                                data-table="suppliers" onclick={addRow} title="Add row">
+                                            </lightning-button-icon>&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <div class="slds-scrollable_y slds-scrollable_x">
+                                        <table class="slds-table slds-table_bordered slds-table_fixed-layout"
+                                            role="grid">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Contact / Address Details</th>
+                                                    <th scope="col">Nature of Transaction</th>
+                                                    <th scope="col">Value of Transaction</th>
+                                                    <th scope="col">Frequency of Transaction</th>
+                                                    <th scope="col">Doing Business since when</th>
+                                                    <th scope="col">Credit Period</th>
+                                                    <th scope="col" class="slds-size_1-of-12">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={suppliers} for:item="row" for:index="idx">
+                                                    <tr key={row.sfId}>
+                                                        <td>
+                                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                                data-field="contact" value={row.contact}
+                                                                onchange={handleInputChange} variant="label-hidden"
+                                                                required=true>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                                data-field="nature" value={row.nature}
+                                                                onchange={handleInputChange} variant="label-hidden"
+                                                                required=true>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                                data-field="value" value={row.value}
+                                                                onchange={handleInputChange} variant="label-hidden"
+                                                                required=true>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                                data-field="frequency" value={row.frequency}
+                                                                onchange={handleInputChange} variant="label-hidden"
+                                                                required=true>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                                data-field="doingSince" value={row.doingSince}
+                                                                required=true onchange={handleInputChange}
+                                                                variant="label-hidden">
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                                data-field="creditPeriod" value={row.creditPeriod}
+                                                                required=true onchange={handleInputChange}
+                                                                variant="label-hidden">
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                                            <lightning-button-icon icon-name="utility:close"
+                                                                alternative-text="Remove" data-table="suppliers"
+                                                                data-index={idx} onclick={removeRow} title="Remove row"
+                                                                disabled={disableRemoveSupplier}>
+                                                            </lightning-button-icon>
+                                                            <lightning-button-icon icon-name="utility:delete"
+                                                                alternative-text="Remove" data-table="suppliers"
+                                                                data-index={idx} data-id={row.sfId} data-uid={row.uid}
+                                                                onclick={deleteRowRecord} title="Remove row">
+                                                            </lightning-button-icon>
+                                                        </td>
+
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Customers -->
+                        <div class="slds-col slds-size_1-of-1">
+                            <section class="slds-card">
+                                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                                        <div class="slds-media__body">
+                                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Customers</h2>
+                                        </div>
+                                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                                data-table="customers" onclick={addRow} title="Add row">
+                                            </lightning-button-icon>&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <div class="slds-scrollable_y slds-scrollable_x">
+                                        <table class="slds-table slds-table_bordered slds-table_fixed-layout"
+                                            role="grid">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Contact / Address Details</th>
+                                                    <th scope="col">Nature of Transaction</th>
+                                                    <th scope="col">Value of Transaction</th>
+                                                    <th scope="col">Frequency of Transaction</th>
+                                                    <th scope="col">Doing Business since when</th>
+                                                    <th scope="col">Credit Period</th>
+                                                    <th scope="col" class="slds-size_1-of-12">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={customers} for:item="row" for:index="idx">
+                                                    <tr key={row.sfId}>
+                                                        <td>
+                                                            <lightning-input data-table="customers" data-index={idx}
+                                                                required=true data-field="contact" value={row.contact}
+                                                                onchange={handleInputChange} variant="label-hidden">
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="customers" data-index={idx}
+                                                                data-field="nature" value={row.nature}
+                                                                onchange={handleInputChange} variant="label-hidden"
+                                                                required=true>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="customers" data-index={idx}
+                                                                data-field="value" value={row.value}
+                                                                onchange={handleInputChange} variant="label-hidden"
+                                                                required=true>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="customers" data-index={idx}
+                                                                data-field="frequency" value={row.frequency}
+                                                                required=true onchange={handleInputChange}
+                                                                variant="label-hidden">
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="customers" data-index={idx}
+                                                                data-field="doingSince" value={row.doingSince}
+                                                                required=true onchange={handleInputChange}
+                                                                variant="label-hidden">
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td>
+                                                            <lightning-input data-table="customers" data-index={idx}
+                                                                data-field="creditPeriod" value={row.creditPeriod}
+                                                                required=true onchange={handleInputChange}
+                                                                variant="label-hidden">
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                                            <lightning-button-icon icon-name="utility:close"
+                                                                alternative-text="Remove" data-table="customers"
+                                                                data-index={idx} onclick={removeRow} title="Remove row"
+                                                                disabled={disableRemoveCustomer}>
+                                                            </lightning-button-icon>
+                                                            <lightning-button-icon icon-name="utility:delete"
+                                                                alternative-text="Remove" data-table="customers"
+                                                                data-index={idx} data-id={row.sfId} data-uid={row.uid}
+                                                                onclick={deleteRowRecord} title="Remove row">
+                                                            </lightning-button-icon>
+                                                        </td>
+
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                        <lightning-layout>
+                                            <lightning-layout-item size="12" small-device-size="6"
+                                                medium-device-size="4" large-device-size="6"
+                                                class="slds-p-horizontal_x-small">
+                                                <div>
+                                                    <lightning-input type="file" label="PD Snaps / Video" name="image"
+                                                        onchange={handleFileChange} required={isRequired}>
+                                                    </lightning-input>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </div>
+                                </div>
+                                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                                    <!-- <lightning-button variant="neutral" label="Cancel" onclick={closeModal}>
+                </lightning-button>
+
+                <lightning-button class="slds-m-left_small" variant="brand" label="Send DMS" if:true={sendDMS}
+                    onclick={sendToDMSHandler}>
+                </lightning-button> -->
+
+                                    <lightning-button class="slds-m-left_small" variant="brand" label="Save"
+                                        onclick={savePdRefrence} disabled={isLoading}>
+                                    </lightning-button>
+                                </footer>
+                            </section>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+        </div>
+    </section>
+    </template>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    <template if:true={showConfirm}>
+        <section class="slds-modal slds-fade-in-open" role="dialog" tabindex="-1" style="z-index:10001;">
+            <div class="slds-modal__container slds-modal_small">
+                <header class="slds-modal__header slds-theme_warning">
+                    <h2 class="slds-text-heading_medium">{confirmTitle}</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>{confirmMessage}</p>
+                </div>
+
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                    <lightning-button variant="neutral" label="No" onclick={handleConfirmNo}></lightning-button>
+                    <lightning-button variant="brand" class="slds-m-left_small" label="Yes" onclick={handleConfirmYes}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" style="z-index:10000;"></div>
+    </template>
+</template>

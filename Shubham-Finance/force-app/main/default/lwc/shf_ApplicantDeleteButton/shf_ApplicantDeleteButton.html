@@ -1,0 +1,46 @@
+<!--
+  @author            : Preeti
+  @group             : TechMatrix Consulting
+  @description       : 
+  @created on        : 
+  @last modified on  : 01-10-2025
+  @last modified by  : Preeti
+  @Contributor       : 
+  @Version History   :
+ * 
+ * 
+-->
+
+
+<template>
+    	<lightning-spinner if:true={isLoading} alternative-text="Loading" size="large"></lightning-spinner>
+
+    <template if:true={showModal}>
+        <!-- Container -->
+        <div class="slds-modal__content slds-p-around_medium slds-text-align_center">
+
+            <!-- Message -->
+            <div class="slds-m-bottom_medium">
+                <p class="slds-text-title_bold slds-truncate">{message}</p>
+            </div>
+
+            <!-- Footer / Buttons -->
+            <div class="slds-modal__footer slds-has-divider_top slds-grid slds-grid_align-center slds-gutters">
+                <template if:true={canDelete}>
+                    <button class="slds-button slds-button_neutral slds-button_small" onclick={handleClose}>
+                        Cancel
+                    </button>
+                    <button class="slds-button slds-button_destructive slds-button_small" onclick={handleProceed}>
+                        Proceed
+                    </button>
+                </template>
+                <template if:false={canDelete}>
+                    <button class="slds-button slds-button_brand slds-button_small" onclick={handleClose}>
+                        OK
+                    </button>
+                </template>
+            </div>
+
+        </div>
+    </template>
+</template>

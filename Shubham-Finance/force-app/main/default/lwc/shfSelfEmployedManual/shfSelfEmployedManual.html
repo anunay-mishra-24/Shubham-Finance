@@ -1,0 +1,41 @@
+<template>
+    <lightning-card title="Self Employed Manual Income Program">
+        <div class="slds-p-around_medium">
+            <table class="slds-table slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr>
+                        <th class="blue-header">Particulars</th>
+                        <th class="blue-header">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={dataFields} for:item="f">
+                        <tr key={f.key}>
+                            <td style="font-weight: bold;">{f.Label__c}</td>
+                            <td>
+                                <lightning-input
+                                    type="number"
+                                    variant="label-hidden"
+                                    value={f.value}
+                                    data-order={f.Order__c}
+                                    disabled={f.Is_Disabled__c}
+                                    formatter={f.formatter}
+                                    min={f.minValue}
+                                    max-length={f.maxLength}
+                                    message-when-range-underflow={f.minMessage}
+                                    message-when-too-long={f.lengthMessage}
+                                    step="0.01" 
+                                    message-when-step-mismatch="Please enter a value with up to 2 decimal places (e.g., 90.50)."
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div class="slds-grid slds-grid_align-center slds-p-bottom_medium">
+            <lightning-button label="Save Manual Income" variant="brand" onclick={handleSave}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

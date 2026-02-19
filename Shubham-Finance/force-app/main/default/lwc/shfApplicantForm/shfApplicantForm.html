@@ -1,0 +1,189 @@
+<!--
+  @author            : Preeti
+  @group             : TechMatrix Consulting
+  @description       : 
+  @created on        : 08-10-2025
+  @last modified on  : 09-10-2025
+  @last modified by  : Preeti
+  @Contributor       : 
+  @Version History   :
+ * 
+ * 
+-->
+<template>
+
+<section class="slds-modal slds-fade-in-open slds-modal_large">
+    <div class="slds-modal__container">
+    
+        <!-- Spinner / Loader -->
+        <template if:true={isLoading}>
+            <div class="slds-is-relative slds-p-around_small"> <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner> </div>
+        </template>
+        <header class="slds-modal__header">
+            <h2 class="slds-text-heading_medium">New Applicant : {recordTypeLabelValue}</h2>
+        </header>
+
+        <div class="slds-modal__content slds-p-around_medium">
+
+            <!-- Type of Applicant -->
+            <lightning-combobox name="typeValue" label="Type of Applicant" placeholder="Select Type" options={typeOptions} value={typeValue} onchange={handleTypeChange} required></lightning-combobox>
+
+            <!-- Basic Details -->
+            <h3 class="slds-text-title_caps slds-m-top_medium" style="background:#f4f6f9;padding:8px;border-radius:4px;">Basic Details</h3>
+            <div class="slds-grid slds-wrap slds-gutters_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <template if:true={isNonIndividual}>
+                     <lightning-input type="text" label="Entity Name" name="entityName" value={entityName} pattern="^[A-Za-z]+( [A-Za-z]+)*$" message-when-pattern-mismatch="Name Should Contains Alphabets Only" disabled={isEntityNameDisabled} onchange={handleFieldChange} required> </lightning-input>
+                    </template>
+                        <template if:true={isIndividual}>
+                        <lightning-input type="text" label="First Name" name="firstName" value={firstName} disabled={isFirstNameDisabled} pattern="[A-Za-z]*" message-when-pattern-mismatch="First Name Should Contains Alphabets Only"  onchange={handleFieldChange} required></lightning-input>
+                        <lightning-input type="text" label="Middle Name" name="middleName" value={middleName} pattern="[A-Za-z]*" message-when-pattern-mismatch="Middle Name Should Contains Alphabets Only" disabled={isLastNameDisabled} onchange={handleFieldChange}></lightning-input>
+                        <lightning-input type="text" label="Last Name" name="lastName" value={lastName} pattern="[A-Za-z]*" message-when-pattern-mismatch="Last Name Should Contains Alphabets Only" disabled={isLastNameDisabled} onchange={handleFieldChange} required></lightning-input>
+                        
+                        <lightning-input type="text" label="PAN Number" name="pan" value={pan} disabled={disablePanField} pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" message-when-pattern-mismatch="Enter a valid PAN." oninput={convertPanToUppercase} onchange={handleFieldChange}></lightning-input>
+                        <!-- PF Deducted -->
+                        <lightning-combobox name="pfDeducted" label="PF Deducted" value={pfDeducted} options={pfDeductedOptions} onchange={handleFieldChange} > </lightning-combobox>
+
+                        <!-- UAN (visible only if PF = Yes) -->
+                        <template if:true={showUanField}>
+                            <lightning-input type="text" name="uanNumber" label="UAN Number" value={uanNumber} maxlength="12" pattern="[0-9]{12}" message-when-pattern-mismatch="UAN must be exactly 12 digits" onchange={handleFieldChange} required></lightning-input>
+                        </template>
+                    </template>
+                    <template if:true={isNonIndividual}>
+                    <lightning-combobox name="constitution" label="Constitution" value={constitution} options={constitutionOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="isfinancial" label="Is Financial Applicant" value={isfinancial} options={isfinancialOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="employmentType" label="Employment Type" value={employmentType} options={employmentOptions} onchange={handleEmploymentChange} disabled={disableEmploymentType}>></lightning-combobox>
+
+                    </template>
+                </div>
+
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input type="text" label="Primary Mobile Number" name="phone" value={phone} disabled={disablePhoneField} pattern="[6-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit phone number" onchange={handleFieldChange} required></lightning-input>
+                    <lightning-input type="text" label="Alternate Mobile Number" name="alternateMobile" value={alternateMobile} pattern="[6-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit phone number" onchange={handleFieldChange}></lightning-input>
+                    <template if:true={isNonIndividual}>
+                    <lightning-input type="date" label="Date of Incorporation" name="dateOfIncorporation" value={dateOfIncorporation} max={yesterDayDate} disabled={isDOIDisabled} onchange={handleFieldChange} required></lightning-input>
+                    </template>
+                    <template if:true={isIndividual}>
+                    <lightning-input type="date" label="Date of Birth" name="dob" value={dob} disabled={disableDobField} onchange={handleDobChange} ></lightning-input>
+                    </template>
+                    <lightning-input type="email" label="Email Id" name="email" value={email} onchange={handleFieldChange}></lightning-input>
+
+                </div>
+            </div>
+
+            <!-- Personal Details -->
+            <template if:true={isIndividual}>
+            <h3 class="slds-text-title_caps slds-m-top_medium" style="background:#f4f6f9;padding:8px;border-radius:4px;">Personal Details</h3>
+            <div class="slds-grid slds-wrap slds-gutters_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox name="salutation" label="Salutation" value={salutation} options={salutationOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-input type="text" label="Father's Name" name="fatherName" value={fatherName} pattern="^[A-Za-z]+( [A-Za-z]+)*$" maxlength="100" message-when-pattern-mismatch="Father's Name Should Contains Alphabets Only" onchange={handleFieldChange} required></lightning-input>
+                    <lightning-input type="text" label="Mother's Name" name="motherName" value={motherName} pattern="^[A-Za-z]+( [A-Za-z]+)*$" maxlength="100" message-when-pattern-mismatch="Mother's Name Should Contains Alphabets Only" onchange={handleFieldChange} required></lightning-input>
+                    <lightning-combobox name="religion" label="Religion" value={religion} options={religionOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="casteCategory" label="Caste Category" value={casteCategory} options={casteOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="nationality" label="Nationality" value={nationality} options={nationalityOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="gender" label="Gender" value={gender} options={genderOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="maritalStatus" label="Marital Status" value={maritalStatus} options={maritalOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <template if:true={isHusbandRequired}>
+                    <lightning-input type="text" label="Husband's Name" name="husbandName" value={husbandName} pattern="^[A-Za-z]+( [A-Za-z]+)*$" maxlength="100" message-when-pattern-mismatch="Husband's Name Should Contains Alphabets Only" onchange={handleFieldChange} required></lightning-input>
+                    </template>
+                    
+                </div>
+
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox name="isfinancial" label="Is Financial Applicant" value={isfinancial} options={isfinancialOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="qualification" label="Qualification" value={qualification} options={qualificationOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="employmentType" label="Employment Type" value={employmentType} options={employmentOptions} onchange={handleEmploymentChange} placeholder="---Select Employment Type---" required></lightning-combobox>
+                    <lightning-combobox name="customerType" label="Customer Type" value={customerType} options={customerTypeOptions} disabled onchange={handleFieldChange}></lightning-combobox>
+                    <lightning-combobox name="manualScavanger" label="Manual Scavanger" value={manualScavanger} options={manualScavangerOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="personWithDisabilities" label="Person with Disabilities" value={personWithDisabilities} options={disabilityOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <template if:true={showRelatedImpairmentField}>
+                    <lightning-combobox name="typeOfImpairment" label="Type of Impairment" value={typeOfImpairment} options={impairmentOptions} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-input type="text" label="Percentage of Impairment" name="percentageOfImpairment" value={percentageOfImpairment} onchange={handleFieldChange} max-length="3" min="1" max="100" message-when-range-overflow="Percentage of Impairment cannot exceed 100."  message-when-range-underflow="Percentage of Impairment must greater than 0." required></lightning-input>
+                    <lightning-input type="text" label="UDID Number" name="udidNumber" value={udidNumber} onchange={handleFieldChange} pattern="[A-Z]{2}\d{16}" message-when-pattern-mismatch="Please enter a valid UDID. Example: AB1234567890123456" required></lightning-input>
+                    </template>
+                    <lightning-combobox name="occupation" label="Occupation" placeholder="Select Occupation" options={occupationOptions} value={occupationValue} onchange={handleOccupationChange} required></lightning-combobox>
+            <template if:true={showOccupationDescription}>
+                    <lightning-input type="text" label="Description" name="occupationDescription" value={occupationDescription} onchange={handleFieldChange} required></lightning-input>
+            </template>
+            <template if:true={showSubcategory}>
+                    <lightning-combobox name="subcategory" label="Subcategory" placeholder="Select Subcategory" options={subcategoryOptions} value={subcategoryValue} onchange={handleSubcategoryChange} required></lightning-combobox>
+            </template>        
+                    <lightning-input type="number" label="Total Working Experience" name="totalWorkingExperience" value={totalWorkingExperience} onchange={handleFieldChange} required></lightning-input>
+                </div>
+            </div>
+            </template>
+
+            <!-- CUSTOMER DETAILS SECTION (Visible only for Non Individual) -->
+           <template if:true={isNonIndividual}>
+            <h3 class="slds-text-title_caps slds-m-top_medium" style="background:#f4f6f9;padding:8px;border-radius:4px;">Customer Details</h3>
+
+             <div class="slds-grid slds-wrap slds-gutters_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox name="companyType" label="Company Type" options={companyTypeOptions} value={companyType} onchange={handleFieldChange} required></lightning-combobox>
+                    <lightning-combobox name="registrationType" label="Registration Type" options={registrationTypeOptions} value={registrationType} onchange={handleFieldChange} required></lightning-combobox>  
+                    <lightning-input type="date" label="Business Commencement Date" name="businessCommencementDate" value={businessCommencementDate} max={yesterDayDate} onchange={handleFieldChange}></lightning-input>  
+                    <lightning-input type="number" label="No. of Controlling Person" name="noOfControllingPerson" value={noOfControllingPerson}  min="1"  onchange={handleFieldChange} required></lightning-input>            
+                </div>
+
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input type="text" label="Registration No." name="registrationNo" value={registrationNo} onchange={handleFieldChange}></lightning-input> 
+                    <lightning-input type="date" label="Registration Expiry Date" name="registrationExpiryDate" value={registrationExpiryDate} min={tomorrowDate} onchange={handleFieldChange}></lightning-input>
+                    <lightning-input type="text" label="Group Name" name="groupName" value={groupName} onchange={handleFieldChange}></lightning-input> 
+                    <lightning-input type="text" label="Sub Group Name" name="subGroupName" value={subGroupName} onchange={handleFieldChange}></lightning-input>
+                  
+                  </div>
+             </div>
+           </template>
+
+            <template if:true={isIndividual}>
+            <!-- Family & Other Details -->
+            <h3 class="slds-text-title_caps slds-m-top_medium" style="background:#f4f6f9;padding:8px;border-radius:4px;">Family & Other Details</h3>
+            <div class="slds-grid slds-wrap slds-gutters_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox name="preferredLanguage" label="Preferred Language" value={preferredLanguage} options={languageOptions} onchange={handleFieldChange} required></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input type="number" label="No of Dependents" name="numberOfDependents" value={numberOfDependents} onchange={handleFieldChange} required></lightning-input>
+                </div>
+            </div>
+
+            <!-- Contact Details -->
+            <h3 class="slds-text-title_caps slds-m-top_medium" style="background:#f4f6f9;padding:8px;border-radius:4px;">Contact Details</h3>
+            <div class="slds-grid slds-wrap slds-gutters_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-input type="checkbox" name="isWhatsAppChange" label="Whatsapp number same as mobile number"
+                        checked={isWhatsAppChange} onchange={handleWhatsappCheckboxChange}>
+                    </lightning-input>
+                    <template if:true={showWhatsappNumber}>
+                    <lightning-input type="phone" label="Whatsapp Number" name="whatsappNumber" value={whatsappNumber} onchange={handleFieldChange} required></lightning-input>
+                    </template>
+                    
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox name="isCustomerVernacular" label="Is Customer vernacular?" value={isCustomerVernacular} options={CustomerVernacularOptions} onchange={handleFieldChange}></lightning-combobox>
+                </div>
+            </div>
+
+            <!-- KYC Details -->
+            <h3 class="slds-text-title_caps slds-m-top_medium" style="background:#f4f6f9;padding:8px;border-radius:4px;">KYC Details</h3>
+            <div class="slds-grid slds-wrap slds-gutters_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <lightning-combobox name="typeOfAadharOptions" label="Do you want to edit the aadhar address?" value={typeOfAadharOptions} options={aadharOptions} onchange={handleFieldChange}></lightning-combobox>
+                </div>
+            </div>
+             </template>
+        </div>
+
+       
+
+        <!-- Footer -->
+        <div class="slds-modal__footer slds-text-align_center">
+            <lightning-button variant="neutral" label="Previous" onclick={handlePrevious} class="slds-m-right_x-small"></lightning-button>
+            <lightning-button variant="neutral" label="Cancel" onclick={handleCancel} class="slds-m-right_x-small"></lightning-button>
+            <lightning-button variant="brand" label="Save" onclick={handleSubmit} disabled={isSubmitting}></lightning-button>
+        </div>
+    </div>
+</section>
+<div class="slds-backdrop slds-backdrop_open"></div>
+</template>

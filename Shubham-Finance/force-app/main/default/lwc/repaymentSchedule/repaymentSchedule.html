@@ -1,0 +1,94 @@
+<!--
+  @description       : 
+  @author            : Gaurav Kumar
+  @group             : 
+  @last modified on  : 12-27-2025
+  @last modified by  : Gaurav Kumar
+-->
+<template>
+
+
+
+    <!-- Loading Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+        <!-- MODAL HEADER -->
+        <lightning-modal-header label="Repayment Schedule">
+        </lightning-modal-header>
+
+        <!-- MODAL BODY -->
+        <lightning-modal-body>
+
+            <!-- Input Fields -->
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="3" class="slds-p-around_xx-small slds-align_absolute-center">
+                    <lightning-input disabled name="LoanAmount" label="Sanction Loan Amount" type="number"
+                        value={selectedProduct.loanAmount} onchange={handleInputChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="3" class="slds-p-around_xx-small slds-align_absolute-center">
+                    <lightning-input disabled name="ROI" label="Revised ROI" type="number" step="any"
+                        value={selectedProduct.roi} onchange={handleInputChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="3" class="slds-p-around_xx-small slds-align_absolute-center">
+                    <lightning-input disabled name="Tenure" label="Tenure (Months)" type="number"
+                        value={selectedProduct.tenure} onchange={handleInputChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- Repayment Schedule Table -->
+            <template if:true={isRepaymentTableVisible}>
+                <div class="slds-m-top_medium slds-scrollable_y" style="max-height: 20rem;">
+                    <template if:true={repaymentScheduleList}>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered" role="grid">
+                            <thead class="slds-text-title_caps"
+                                style="position: sticky; top: 0; background: #f3f3f3; z-index: 1;">
+                                <tr>
+                                    <th scope="col">EMI No.</th>
+                                    <th scope="col">EMI Date</th>
+                                    <th scope="col">EMI</th>
+                                    <th scope="col">Interest</th>
+                                    <th scope="col">Principal</th>
+                                    <th scope="col">Closing Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={repaymentScheduleList} for:item="scheduleItem">
+                                    <tr key={scheduleItem.emiNo}>
+                                        <td>{scheduleItem.emiNo}</td>
+                                        <td>{scheduleItem.formattedEmiDate}</td>
+                                        <td>{scheduleItem.emi}</td>
+                                        <td>{scheduleItem.interest}</td>
+                                        <td>{scheduleItem.principle}</td>
+                                        <td>{scheduleItem.closingBalance}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </div>
+            </template>
+
+        </lightning-modal-body>
+
+        <!-- MODAL FOOTER -->
+        <lightning-modal-footer>
+            <div class="slds-grid slds-grid_align-center slds-gutters">
+                <div class="slds-col">
+                    <lightning-button label="Generate" variant="brand" onclick={handleGenerateSchedule}
+                        disabled={isGenerateDisabled}>
+                    </lightning-button>
+                </div>
+
+                <div class="slds-col">
+                    <lightning-button label="Cancel" variant="neutral" onclick={handleCloseAction}>
+                    </lightning-button>
+                </div>
+            </div>
+        </lightning-modal-footer>
+</template>

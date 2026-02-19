@@ -1,0 +1,51 @@
+<template>
+    <lightning-card title="Search Customer" icon-name="standard:account">
+        <div class="slds-grid slds-gutters slds-wrap slds-p-around_small">
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input 
+                    label="Loan Application Name" 
+                    value={loanAppName} 
+                    onchange={handleLoanAppChange}>
+                </lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input 
+                    label="Mobile Number" 
+                    value={mobileNumber} 
+                    onchange={handleMobileChange}>
+                </lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-m-around_small slds-align_absolute-center">
+            <lightning-button 
+                variant="neutral" 
+                label="Clear" 
+                onclick={handleClear} 
+                class="slds-m-right_small">
+            </lightning-button>
+
+            <lightning-button 
+                variant="brand" 
+                label="Search" 
+                onclick={handleSearch}>
+            </lightning-button>
+        </div>
+
+        <!-- Search Results -->
+        <template if:true={results}>
+            <div class="slds-m-around_medium">
+                <template if:true={results.length}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={results}
+                        columns={columns}>
+                    </lightning-datatable>
+                </template>
+                <template if:false={results.length}>
+                    <p>No records found.</p>
+                </template>
+            </div>
+        </template>
+    </lightning-card>
+</template>

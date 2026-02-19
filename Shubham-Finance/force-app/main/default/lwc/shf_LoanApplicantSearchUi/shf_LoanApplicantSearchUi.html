@@ -1,0 +1,189 @@
+<!--
+  @author            : 
+  @group             : TechMatrix Consulting
+  @description       : 
+  @created on        : 
+  @last modified on  : 09-10-2025
+  @last modified by  : Preeti
+  @Contributor       : 
+  @Version History   :
+ * 
+ * 
+-->
+<template>
+    <lightning-card title="Search Customer / Applicant">
+
+        <!-- Spinner / Loader -->
+        <template if:true={isLoading}>
+            <div class="slds-is-relative slds-p-around_small">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+        
+        <!-- Search fields -->
+        <template if:true={showSearchComponent}>
+            <div class="slds-p-around_small slds-grid slds-grid_vertical-align-center slds-wrap">
+
+                <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                    <lightning-input type="text" label="Phone Number" name="phone" value={phone} maxlength="10"
+                        pattern="[6-9][0-9]{9}" message-when-pattern-mismatch="Enter a valid 10-digit phone number"
+                        onchange={handleInputChange}>
+                    </lightning-input>
+                </div>
+
+                <div class="slds-col slds-align-middle slds-text-align_center slds-p-horizontal_small">OR</div>
+
+                <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                    <lightning-input type="text" label="PAN Number" name="pan" value={pan}
+                        pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" message-when-pattern-mismatch="Enter a valid PAN."
+                        onchange={handleInputChange}>
+                    </lightning-input>
+                </div>
+
+                <div class="slds-col slds-align-middle slds-text-align_center slds-p-horizontal_small">OR</div>
+
+                <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                    <lightning-input type="date" label="Date Of Birth" name="dob" value={dob}
+                        onchange={handleInputChange}>
+                    </lightning-input>
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="slds-p-around_small slds-grid slds-grid_align-center">
+                <lightning-button label="Clear" title="Clear" onclick={handleClearClick} disabled={isClearDisabled}
+                    class="slds-m-right_x-small">
+                </lightning-button>
+                <lightning-button variant="brand" label="Search" onclick={handleSearch} disabled={isSearchDisabled}></lightning-button>
+            </div>
+        </template>
+
+        <!-- Search Results -->
+        <template if:true={hasSearched}>
+            <div class="slds-p-around_small">
+                <template if:true={hasAccounts}>
+                    <!-- MOBILE -->
+                    <template if:true={isMobile}>
+                        <div class="tile-container">
+                            <template for:each={accounts} for:item="acc">
+                                <div key={acc.Id} class="account-tile slds-box slds-m-bottom_small">
+                                    <!-- Radio + Name row -->
+                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                        <lightning-input
+                                            type="radio"
+                                            name="accountRadio"
+                                            value={acc.Id}
+                                            checked={acc.isSelected}
+                                            data-id={acc.Id}
+                                            onchange={handleTileSelection}>
+                                        </lightning-input>
+
+                                        <div class="slds-text-heading_small slds-m-left_small">
+                                            {acc.Name}
+                                        </div>
+                                    </div>
+                                    <!-- Details -->
+                                    <div class="slds-p-left_large slds-m-top_x-small">
+                                        <div>Phone: {acc.Phone}</div>
+                                        <div>PAN: {acc.PAN_Number__c}</div>
+                                        <div>DOB: {acc.Date_of_Birth__c}</div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- DESKTOP TABLE VIEW  -->
+                    <template if:false={isMobile}>
+                        <lightning-datatable 
+                            key-field="Id" 
+                            data={accounts} 
+                            columns={columns} 
+                            hide-checkbox-column={hideCheckboxColumn} 
+                            max-row-selection="1"
+                            selected-rows={rowSelection}
+                            onrowselection={handleRowSelection}>
+                        </lightning-datatable>
+                    </template>
+                </template>
+                <template if:true={noAccountsFound}>
+                    <p class="slds-text-color_error">No records found</p>
+                </template>
+            </div>
+        </template>
+
+        <!-- Create New Applicant -->
+        <template if:true={showSearchComponent}>
+            <div class="slds-p-around_small slds-grid slds-grid_align-end">
+                <lightning-button variant="brand" label="Create New Applicant" onclick={handleCreateNewApplicantClick}
+                    disabled={isCreateDisabled}>
+                </lightning-button>
+            </div>
+        </template>
+
+    </lightning-card>
+
+    <template if:true={showRecordTypeModal}>
+        <section class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Choose Customer Type</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-radio-group
+                        name="recordType"
+                        options={recordTypeOptions}
+                        value={selectedRecordType}
+                        onchange={handleRecordTypeChange}
+                        disabled={isRecordTypeDisabled}>
+                    </lightning-radio-group>
+                    <template if:true={showPanInlineError}>
+                        <div class="slds-text-color_error slds-m-top_x-small">
+                            For Individual customer type, 4th character of PAN must be 'P'.
+                        </div>
+                    </template>
+
+                </div>
+
+                <footer class="slds-modal__footer slds-text-align_right">
+                    <lightning-button variant="neutral" label="Cancel" onclick={handleCloseRecordTypeModal} class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button variant="brand" label="Continue" onclick={handleProceedToApplicantForm}  disabled={showPanInlineError}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Co-applicant Limit Reached Modal -->
+<template if:true={showLimitMessage}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Maximum Applicants Reached</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium">
+                <p>{limitMessage}</p>
+            </div>
+            <footer class="slds-modal__footer slds-text-align_right">
+                <lightning-button variant="brand" label="OK" onclick={handleCloseLimitMessage}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+
+    <template if:true={showApplicantForm}>
+        <c-shf-applicant-form
+            application-id={applicationId}
+            account-id={selectedAccountId}
+            record-type={selectedRecordType}
+            search-params={searchParams}
+            onapplicantsaved={handleApplicantSaved}
+            onpreviousstep={handlePreviousStep}
+            onclosemodal={handleCloseModal}>
+        </c-shf-applicant-form>
+    </template>
+</template>

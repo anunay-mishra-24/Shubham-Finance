@@ -1,0 +1,19 @@
+<template>
+
+    <!-- Spinner -->
+    <lightning-spinner if:true={isLoading} size="small"></lightning-spinner>
+
+    <!-- VF Preview -->
+    <template if:true={kfsVFUrl}>
+
+        <lightning-card title="Key Fact Statement (KFS Preview)">
+
+            <div style="height:600px;">
+                <iframe src={kfsVFUrl} width="100%" height="100%"></iframe>
+            </div>
+
+        </lightning-card>
+
+    </template>
+
+</template>

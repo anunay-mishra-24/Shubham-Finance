@@ -1,0 +1,47 @@
+<template>
+    <lightning-spinner alternative-text="Loading" size="small" if:true={spinnerActive}></lightning-spinner>
+    <div class="slds-box slds-box_xx-small" style="border:none">
+        <template if:true={showCustomerData}>
+            <div>
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <b class="custom-combobox-label slds-form-element__label">Select Borrower</b>
+                        <lightning-combobox name="BorrowerName" label="Select Borrower" value={selectedBorrowerId}
+                            placeholder="Select the borrower" options={existingLoanApplicant}
+                            onchange={handleChange} required variant="label-hidden">
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col">
+                        <b class="custom-combobox-label slds-form-element__label">Customer Profile</b>
+                        <lightning-input 
+                            value={applicantIncomeType} 
+                            disabled 
+                            variant="label-hidden">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col">
+                        <template if:true={showIncomeType}>
+                            <b class="custom-combobox-label slds-form-element__label">Select Income Program</b>
+                            <lightning-combobox name="Income Program Name" label="Select Income Program"
+                                value={selectedIncomeProgram} placeholder="Select the Income Program"
+                                options={IncomeProgramValues} 
+                                disabled={isIncomeProgramDisabled}
+                                onchange={handleIncomeProgramChange} required
+                                variant="label-hidden">
+                            </lightning-combobox>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="slds-grid slds-grid_align-center">
+                <lightning-button class="slds-button" variant="brand" label="Clear" title="Clear"
+                    onclick={handleClick}>
+                </lightning-button>
+                <lightning-button class="slds-button slds-m-left_x-small" variant="brand" label="Submit"
+                    title="Submit" onclick={handleClick} style="margin-right:5px">
+                </lightning-button>
+            </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,23 @@
+<template>
+    <template if:true={obligations.length}>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th>Sr No</th>
+                    <th>Sanction Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={obligations} for:item="obl">
+                    <tr key={obl.srNo}>
+                        <td>{obl.srNo}</td>
+                        <td>{obl.description}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+    <template if:false={obligations.length}>
+        <p>No obligations to display.</p>
+    </template>
+</template>

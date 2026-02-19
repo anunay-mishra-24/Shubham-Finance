@@ -1,0 +1,397 @@
+<template>
+    <div class="slds-card__footer slds-no-flex" style="text-align: right;padding-bottom: 0px;margin-bottom: -10px;">
+        <lightning-button class="slds-m-top_xx-large" variant="brand" label="New Address" name="New Address"
+            onclick={createNewAddress}></lightning-button>
+    </div>
+
+    <lightning-spinner if:true={isLoading} alternative-text="Loading" size="large"></lightning-spinner>
+
+   <template if:true={isShowModal}>
+     <div class="modal-overlay">
+ <section class={modalClass}>
+
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header slds-p-around_small">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={handleCloseMethod}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close"
+                        variant="filled" size="small"></lightning-icon>
+                </button>
+
+                 <h2 id="modal-heading-01"
+                    class="slds-text-heading_medium slds-hyphenate slds-truncate slds-text-align_center">
+                    Address Record
+                </h2>
+            </header>
+
+               
+                    <lightning-record-edit-form record-id={addressRecordId} object-api-name="Address__c" density="comfy"
+                        onsuccess={handleSuccess} onsubmit={handleSubmit} onerror={handleError}   onload={handleOnLoad}>
+
+                        <div class="slds-modal__content slds-p-around_medium modal-body" id="modal-content-id-1"
+                            >
+
+                            <!-- ALWAYS VISIBLE 5 FIELDS -->
+                            <lightning-layout multiple-rows="true">
+
+                                <!--. Address Type (Non-Individual) -->
+                                <template if:true={isNonIndividual}>
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="4"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Address_Type__c" data-name="addressType"
+                                            onchange={handleAddressTypeChange} required disabled={isAlwaysEditable}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+                                </template>
+
+                                <!--  Mailing Address (Individual) -->
+                                <template if:true={isIndividual}>
+                                    <lightning-layout-item size="12" padding="around-small" small-device-size="12"
+                                        medium-device-size="6" large-device-size="6">
+                                        <lightning-input-field field-name="Mailing_Address__c"
+                                            onchange={handleAddressTypeChange} data-name="mailingAddress" required
+                                            disabled={isAlwaysEditable}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+                                </template>
+
+                                <!-- Loan Applicant -->
+                                <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                    padding="around-small">
+                                    <lightning-input-field field-name="Loan_Applicant__c"
+                                        value={addressObj.loanApplicant} disabled>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+
+                                <!--  Communication Address -->
+                                <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                    padding="around-small">
+                                    <lightning-input-field field-name="Communication_Address__c"
+                                        value={communicationAddressValue} onchange={handleAddressTypeChange}
+                                        data-name="Communication_Address__c" required>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+
+                                <!--  Copy Address -->
+                                <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                    padding="around-small">
+                                    <lightning-input-field field-name="Copy_Address__c" data-name="CopyAddress"
+                                        onchange={handleAddressTypeChange} required disabled={fieldsAreReadOnly}>
+                                    </lightning-input-field>
+
+                                    <!-- <template if:true={isCopyAddressReadOnly}>
+                                        <lightning-helptext
+                                            content="Copy Address is locked to No because only one address exists for this applicant.">
+                                        </lightning-helptext>
+                                    </template> -->
+                                    <template if:true={isCopyAddressReadOnly}>
+    <div class="custom-tooltip-container">
+        <lightning-icon 
+            icon-name="utility:info" 
+            size="x-small" 
+            class="tooltip-icon">
+        </lightning-icon>
+
+        <div class="custom-tooltip-content">
+            Copy Address is locked to No because only one address exists for this applicant.
+        </div>
+    </div>
+</template>
+
+                                </lightning-layout-item>
+
+                                <!-- Copy Address From -->
+                                <template if:true={showCopyAddressFrom}>
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-combobox name="Copy_Address_From__c" label="Copy Address From"
+                                            value={copyAddressFromValue} options={copyAddressFromOptions}
+                                            placeholder="--None--" onchange={handleCopyFromChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                </template>
+
+                            </lightning-layout>
+
+                            <!-- HIDE all other fields WHEN COPY ADDRESS = YES -->
+
+                            <template if:false={isCopyAddressYes}>
+
+
+
+                                <template if:false={hideCopyAddress}>
+                                    <lightning-layout multiple-rows="true">
+                                        <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                            padding="around-small">
+
+                                                
+                                                    <lightning-input-field field-name="Address_Category__c"
+                                                        onchange={handleAddressTypeChange} data-name="AddressCategory" required
+                                                        disabled={fieldsAreReadOnly}>
+                                                    </lightning-input-field>
+                                              
+                                            </lightning-layout-item>
+                                    </lightning-layout>
+                                </template>
+
+                                <lightning-layout multiple-rows="true">
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="4"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Address_Line_1__c" required
+                                            disabled={fieldsAreReadOnly}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Address_Line_2__c"
+                                            disabled={fieldsAreReadOnly}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <template if:true={isIndividual}>
+                                        <template if:true={showPrimaryAddress}>
+                                            <lightning-layout-item size="12" large-device-size="6"
+                                                small-device-size="12" padding="around-small">
+                                                <lightning-input-field field-name="Is_Primary_Address__c" required
+                                                    disabled={fieldsAreReadOnly}>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </template>
+
+                                </lightning-layout>
+
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Address_Line_3__c"
+                                            disabled={fieldsAreReadOnly}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Districts__c" required
+                                            disabled={fieldsAreReadOnly}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Pincode__c" onchange={handleChange}
+                                           data-name="pincode" required disabled={fieldsAreReadOnly}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input type="text" label="City" value={addressObj.City} name="City"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input type="text" label="State" value={addressObj.State} name="State"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input type="text" label="Country" value={addressObj.Country}
+                                            name="Country" disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Duration_at_Current_Address__c" required
+                                            disabled={fieldsAreReadOnly} onchange={handleDurationValidation}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Duration_at_current_city_In_Months__c"
+                                            required disabled={fieldsAreReadOnly} onchange={handleDurationValidation}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" large-device-size="6" small-device-size="12"
+                                        padding="around-small">
+                                        <lightning-input-field field-name="Duration_at_current_address_In_Months__c"
+                                            required disabled={fieldsAreReadOnly} onchange={handleDurationValidation}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" padding="around-small" small-device-size="12"
+                                        medium-device-size="6" large-device-size="6">
+                                        <lightning-input-field field-name="Duration_at_Current_City__c" required
+                                            disabled={fieldsAreReadOnly} onchange={handleDurationValidation}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" padding="around-small" small-device-size="12"
+                                        medium-device-size="6" large-device-size="6">
+                                        <lightning-input-field field-name="Landmark__c" required
+                                            disabled={fieldsAreReadOnly}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="12" padding="around-small" small-device-size="12"
+                                        medium-device-size="6" large-device-size="6">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label">Address Location</label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_small slds-text-color_weak">
+                                                    This field is calculated upon save
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" padding="around-small" small-device-size="12"
+                                        medium-device-size="6" large-device-size="6">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label">OGL</label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_small slds-text-color_weak">
+                                                    This field is calculated upon save
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+
+                                    <template if:true={isIndividual}>
+                                        <lightning-layout-item size="12" padding="around-small" small-device-size="12"
+                                            medium-device-size="6" large-device-size="6">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label">OVD</label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_small slds-text-color_weak">
+                                                        This field is calculated upon save
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                </lightning-layout>
+
+                                <template if:true={isIndividual}>
+                                    <template if:true={showCurrentSameAsResidence}>
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <div style="max-width: 50%;">
+                                                <lightning-input-field field-name="Current_Address_same_as_Residence__c"
+                                                    data-name="Current_Address_same_as_Residence"
+                                                    onchange={handleAddressTypeChange} disabled={fieldsAreReadOnly}>
+                                                </lightning-input-field>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                </template>
+
+                                <template if:true={isNonIndividual}>
+                                    <lightning-layout multiple-rows>
+                                        <template if:true={showNonIndividualAddressFields}>
+                                            <lightning-layout-item size="12" padding="around-small"
+                                                small-device-size="12" medium-device-size="6" large-device-size="6">
+                                                <lightning-input-field field-name="Flat_Plot_Number__c" required
+                                                    disabled={fieldsAreReadOnly}>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="12" padding="around-small"
+                                                small-device-size="12" medium-device-size="6" large-device-size="6">
+                                                <lightning-input-field field-name="Region__c" required
+                                                    disabled={fieldsAreReadOnly}>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                        </template>
+
+                                        <template if:false={hideIndividualOnlyFields}>
+                                            <template if:true={isNonIndividual}>
+                                                <lightning-layout-item size="12" large-device-size="6"
+                                                    small-device-size="12" padding="around-small">
+                                                    <lightning-input-field field-name="Is_Address_Verified__c"
+                                                        disabled={fieldsAreReadOnly}>
+                                                    </lightning-input-field>
+                                                </lightning-layout-item>
+                                            </template>
+                                        </template>
+                                    </lightning-layout>
+
+                                    <lightning-layout multiple-rows>
+                                        <template if:true={showNonIndividualAddressFields}>
+                                            <lightning-layout-item size="12" padding="around-small"
+                                                small-device-size="12" medium-device-size="6" large-device-size="6">
+                                                <lightning-input-field field-name="Taluka__c"
+                                                    disabled={fieldsAreReadOnly}>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="12" padding="around-small"
+                                                small-device-size="12" medium-device-size="6" large-device-size="6">
+                                                <lightning-input-field field-name="Village__c" required
+                                                    disabled={fieldsAreReadOnly}>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+                                </template>
+
+                                <template if:true={isIndividual}>
+                                    <lightning-layout multiple-rows>
+                                        <template if:true={showResidentialType}>
+                                            <lightning-layout-item size="12" padding="around-small"
+                                                small-device-size="12" medium-device-size="6" large-device-size="6">
+                                                <lightning-input-field field-name="Present_Residential_Type__c"
+                                                    disabled={fieldsAreReadOnly}>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+                                </template>
+
+                                <lightning-input-field field-name="OVD__c" class="slds-hide"></lightning-input-field>
+
+
+
+                            </template>
+                            <!-- END HIDE all other fields -->
+
+                        </div>
+
+                        <footer class="slds-modal__footer">
+                    <lightning-button name="cancel" label="Cancel"
+                        onclick={handleCloseMethod}></lightning-button>
+
+                    <lightning-button variant="brand" type="submit"
+                        disabled={isDisableSave}
+                        label="Save"></lightning-button>
+                </footer>
+
+                    </lightning-record-edit-form>
+             
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+          </div>
+    </template>
+    
+</template>

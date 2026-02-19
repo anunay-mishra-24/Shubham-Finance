@@ -1,0 +1,36 @@
+<template>
+    <template if:true={showModal}>
+        <h2 class="slds-modal__title slds-text-heading_medium slds-text-align_center slds-p-bottom_x-full slds-p-top_medium">
+            Repayment Schedule
+        </h2>
+
+        <lightning-card>
+            <div class="section-padding slds-p-horizontal_medium">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </template>
+
+                <template if:false={isLoading}>
+                    <template if:true={error}>
+                        <div class="slds-text-color_error slds-text-align_center slds-p-vertical_medium">
+                            {error}
+                        </div>
+                    </template>
+
+                    <template if:true={repaymentData.length}>
+                        <!-- Scrollable container -->
+                        <div class="datatable-wrapper scrollable-datatable">
+                            <lightning-datatable 
+                                key-field="installmentNumber" 
+                                data={repaymentData} 
+                                columns={columns}
+                                hide-checkbox-column="true" 
+                                resize-column-disabled="true">
+                            </lightning-datatable>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </lightning-card>
+    </template>
+</template>

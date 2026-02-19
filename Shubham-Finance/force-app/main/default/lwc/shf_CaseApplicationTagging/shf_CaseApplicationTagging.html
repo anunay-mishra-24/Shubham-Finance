@@ -1,0 +1,131 @@
+<template>
+    <lightning-card title="Search Customer / Applicant">
+
+        <!-- Spinner -->
+        <template if:true={isLoading}>
+            <div class="slds-p-around_small">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Search Fields -->
+        <div class="slds-p-around_small slds-grid slds-wrap">
+
+            <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                <lightning-input type="text" label="Application Name"
+                    name="application" value={application}
+                    onchange={handleInputChange}>
+                </lightning-input>
+            </div>
+
+            <div class="slds-col slds-align-middle slds-text-align_center slds-p-horizontal_small">
+                OR
+            </div>
+
+            <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                <lightning-input type="text" label="Loan Agreement No"
+                    name="loanAggrement" value={loanAggrement}
+                    onchange={handleInputChange}>
+                </lightning-input>
+            </div>
+
+            <div class="slds-col slds-align-middle slds-text-align_center slds-p-horizontal_small">
+                OR
+            </div>
+
+            <div class="slds-col slds-size_1-of-4 slds-p-around_xx-small">
+                <lightning-input type="text" label="Phone"
+                    name="phone" value={phone}
+                    onchange={handleInputChange}>
+                </lightning-input>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="slds-p-around_small slds-grid slds-grid_align-center">
+            <lightning-button label="Clear"
+                class="slds-m-right_x-small"
+                onclick={handleClearClick}
+                disabled={isClearDisabled}>
+            </lightning-button>
+
+            <lightning-button variant="brand"
+                label="Search"
+                onclick={handleSearch}
+                disabled={isSearchDisabled}>
+            </lightning-button>
+        </div>
+
+        <!-- Search Results -->
+        <template if:true={hasSearched}>
+            <div class="slds-p-around_small">
+
+                <!-- Datatable -->
+                <template if:true={hasApplications}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={applications}
+                        columns={columns}
+                        max-row-selection="1"
+                        selected-rows={rowSelection}
+                        onrowselection={handleRowSelection}>
+                    </lightning-datatable>
+                </template>
+
+                <!-- Manual Entry -->
+                <template if:true={noApplicationsFound}>
+                    <p class="slds-text-color_error slds-m-bottom_small">
+                        No records found with the provided details
+                    </p>
+                
+                    <lightning-card title="Customer Details">
+                        <div class="slds-p-around_medium">
+                
+                            <lightning-layout vertical multiple-rows>
+                                <lightning-layout-item size="12" class="field-spacing">
+                                    <lightning-input label="Customer Name" name="customerName" value={nameOfCustomer}
+                                        onchange={handleManualInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                
+                                <lightning-layout-item size="12" class="field-spacing">
+                                    <lightning-input label="Email" name="email" value={email} onchange={handleManualInput} >
+                                    </lightning-input>
+                                </lightning-layout-item>
+                
+                                <lightning-layout-item size="12" class="field-spacing">
+                                    <lightning-input label="Contact No" name="contact" value={contact} onchange={handleManualInput} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                
+                                <lightning-layout-item size="12" class="field-spacing">
+                                    <lightning-combobox label="Dummy Application Tagging" name="selectedApplication"
+                                        value={selectedApplication} options={dummyApplications} onchange={handleManualInput} required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                
+                                <lightning-layout-item size="12" class="field-spacing">
+                                    <lightning-record-edit-form object-api-name="Case">
+                                        <lightning-input-field field-name="Branch__c" variant="label-stacked" onchange={handleBranchChange} required>
+                                        </lightning-input-field>
+                                    </lightning-record-edit-form>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                
+                        </div>
+                    </lightning-card>
+                </template>
+            </div>
+        </template>
+
+        <!-- Submit -->
+        <div class="slds-p-around_small slds-grid slds-grid_align-end">
+            <lightning-button
+                variant="brand"
+                label="Submit"
+                onclick={handleSubmit}>
+            </lightning-button>
+        </div>
+
+    </lightning-card>
+</template>

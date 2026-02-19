@@ -1,0 +1,22 @@
+.blue-header {
+    background-color: #5ab0e2 !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #d8dde6;
+}
+
+.total-cell {
+    font-weight: bold;
+    text-align: left;
+    border: 1px solid #d8dde6;
+    font-size: 1.1em;
+}
+
+.yellow-bg {
+    background-color: #ffff00 !important; /* Yellow for inputs/important */
+}
+
+.green-bg {
+    background-color: #90ee90 !important; /* Green for Final result */
+}

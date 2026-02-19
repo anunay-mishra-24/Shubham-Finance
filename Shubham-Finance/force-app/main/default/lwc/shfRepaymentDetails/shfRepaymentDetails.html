@@ -1,0 +1,98 @@
+<template>
+    <lightning-card title="Repayment Details">
+        <div class="slds-p-around_medium slds-grid slds-wrap">
+
+            <!-- Dynamic Fields -->
+            <template for:each={fieldConfigWithVisibility} for:item="field">
+                <template if:true={field.isVisible}>
+                    <div key={field.name} class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+
+                        <!-- Picklist -->
+                        <template if:true={field.isPicklist}>
+                            <lightning-combobox
+                                label={field.label}
+                                name={field.name}
+                                value={field.value}
+                                options={field.options}
+                                required={field.required}
+                                disabled={field.disabled}
+                                onchange={handleChange}>
+                            </lightning-combobox>
+                        </template>
+
+                        <!-- Lookup -->
+                        <template if:true={field.isLookup}>
+                            <lightning-input
+                                type="text"
+                                label={field.label}
+                                name={field.name}
+                                value={field.value}
+                                required={field.required}
+                                disabled={field.disabled}
+                                onchange={handleChange}>
+                            </lightning-input>
+                        </template>
+
+                        <!-- Date -->
+                        <template if:true={field.isDate}>
+                            <lightning-input
+                                type="date"
+                                label={field.label}
+                                name={field.name}
+                                value={field.value}
+                                required={field.required}
+                                disabled={field.disabled}
+                                onchange={handleChange}>
+                            </lightning-input>
+                        </template>
+
+                        <!-- Number -->
+                        <template if:true={field.isNumber}>
+                            <lightning-input
+                                type="number"
+                                label={field.label}
+                                name={field.name}
+                                value={field.value}
+                                step=0.01
+                                required={field.required}
+                                disabled={field.disabled}
+                                formatter={field.formatter}
+                                onchange={handleChange}
+                                field-level-help={field.helpText}>
+                            </lightning-input>
+                        </template>
+
+                        <!-- Text -->
+                        <template if:true={field.isText}>
+                            <lightning-input
+                                type="text"
+                                label={field.label}
+                                name={field.name}
+                                value={field.value}
+                                required={field.required}
+                                disabled={field.disabled}
+                                onchange={handleChange}>
+                            </lightning-input>
+                        </template>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Error Message -->
+            <!--<template if:true={errorMessage}>
+                <div class="slds-text-color_error slds-p-top_small slds-size_1-of-1">
+                     {errorMessage}
+                </div>
+            </template>-->
+
+            <!-- Save Button -->
+            <div class="slds-col slds-size_1-of-1 slds-p-top_medium slds-align_absolute-center">
+                <lightning-button 
+                    variant="brand" 
+                    label="Save Repayment Details" 
+                    onclick={handleSave}>
+                </lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

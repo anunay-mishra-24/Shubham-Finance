@@ -1,0 +1,138 @@
+<template>
+    <div class="slds-box slds-theme_default">
+        <div class="slds-text-heading_medium slds-p-bottom_medium">Common Income Program</div>
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+
+        <div class="slds-grid slds-border_bottom slds-p-vertical_x-small slds-text-title_bold slds-theme_alert-texture slds-theme_info">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Parameter</div>
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Value</div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Sum of Monthly Income of Financial Applicants</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="0.01" variant="label-hidden" 
+                    name="totalAppraisedIncome" value={totalAppraisedIncome} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Monthly Deductions (Excl. Household)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="0.01" variant="label-hidden" 
+                    name="sumDeductions" value={sumDeductions} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Monthly Obligations (Considered for FOIR)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="0.01" variant="label-hidden" 
+                    name="obligationsEmiSum" value={obligationsEmiSum} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Gross Monthly Salary (1-2)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" variant="label-hidden" 
+                    value={grossMonthlySalary} disabled></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Policy FOIR (%)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="0.01" variant="label-hidden" 
+                    name="policyFOIR" value={policyFOIR} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Initial Serviceable EMI (4*5)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" variant="label-hidden" 
+                    value={initialServiceableEMI} disabled></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Final Serviceable EMI (6-3)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" variant="label-hidden" 
+                    value={finalServiceableEMI} disabled></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Rate (ROI) (%)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="0.01" variant="label-hidden" 
+                    name="roi" value={roi} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Tenure (Months)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="1" variant="label-hidden" 
+                    name="tenure" value={tenure} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Eligible Fundable Value (Based on Income)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" variant="label-hidden" 
+                    value={eligibleFundableValueIncome} disabled></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Policy LTV (Based on Program) (%)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="0.01" variant="label-hidden" 
+                    name="policyLTV" value={policyLTV} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Technical Accepted Valuation</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="1" variant="label-hidden" 
+                    name="technicalAcceptedValuation" value={technicalAcceptedValuation} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Property Cost</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" step="1" variant="label-hidden" 
+                    name="propertyCost" value={propertyCost} onchange={handleChange}></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-border_bottom slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small">Eligible Fundable Value (Based on LTV)</div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" variant="label-hidden" 
+                    value={eligibleFundableValueLTV} disabled></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-grid slds-p-vertical_x-small slds-theme_alert-texture slds-theme_info slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_small"><strong>Maximum Eligible Loan Amount</strong></div>
+            <div class="slds-col slds-size_1-of-2">
+                <lightning-input type="number" variant="label-hidden" 
+                    value={finalEligibleFundableValue} disabled class="slds-text-heading_small"></lightning-input>
+            </div>
+        </div>
+
+        <div class="slds-m-top_medium" align="center">
+            <button class="slds-button slds-button_brand" onclick={handleSave}>Save</button>
+        </div>
+    </div>
+</template>

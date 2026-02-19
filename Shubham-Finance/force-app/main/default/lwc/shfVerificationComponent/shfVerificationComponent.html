@@ -1,0 +1,102 @@
+<template>
+    <div if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+    <div align="right">
+        <lightning-button
+            label="New Activity"
+            variant="brand"
+            class="slds-m-left_x-small"
+            onclick={handleClick}
+        ></lightning-button>
+    </div>
+    <div class="slds-card__body slds-card__body_inner">
+        <lightning-datatable
+            key-field="Id"
+            data={verificationRecordList}
+            columns={columns}
+            hide-checkbox-column
+        ></lightning-datatable>
+    </div>
+
+    <!-- Modal Start From Here -->
+    <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClick} name="Cancel">
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" name="Cancel"></lightning-icon>
+                    <span class="slds-assistive-text" name="Cancel">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Verification</h2>
+            </header>
+        
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-combobox 
+                                label="Verification Type" 
+                                name="RecordTypeId"
+                                value={verification.RecordTypeId} 
+                                onchange={handleChange}
+                                options={recordTypeOptions}
+                                required=true
+                                data-field="validation"
+                            >
+                            </lightning-combobox>
+                        </div>                            
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                        large-device-size="6" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-combobox 
+                                label="Type" 
+                                name="Type__c"
+                                value={verification.Type__c} 
+                                onchange={handleChange}
+                                options={typeOptions}
+                                required=true
+                                data-field="validation"
+                            >
+                            </lightning-combobox>
+                        </div>                            
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                        large-device-size="12" class="slds-p-horizontal_x-small">
+                        <div>
+                            <lightning-textarea 
+                                label="Suspicious Triggers" 
+                                name="Suspicious_Triggers__c"
+                                value={verification.Suspicious_Triggers__c}
+                                onchange={handleChange}
+                                data-field="validation"
+                                max-length="250"
+                                required=true
+                            >
+                            </lightning-textarea>
+                        </div>                            
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick={handleClick} name="Cancel">Cancel</button>
+                <button class="slds-button slds-button_brand" onclick={handleClick} name="Save">Save</button>
+            </footer>
+        
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+</template>

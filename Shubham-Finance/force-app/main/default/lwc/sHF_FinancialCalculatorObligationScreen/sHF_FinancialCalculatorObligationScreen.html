@@ -1,0 +1,272 @@
+<!--
+  @author            : Preeti
+  @group             : TechMatrix Consulting
+  @description       : This table will be apper on Financial calculator in obligation.
+  @created on        : 
+  @last modified on  : 07-07-2025
+  @last modified by  : Preeti
+  @Contributor       : 
+  @Version History   :
+ * 
+ * 
+-->
+<template>
+	<div class="slds-box slds-box_xx-small" style="margin-bottom: 15px;">
+		<lightning-spinner alternative-text="Loading" size="small" if:true={activeSpinner}></lightning-spinner>
+		<lightning-card class="slds-grid_vertical-stretch">
+
+			<template if:true={isCurrentUser}>
+				<lightning-button variant="brand" label="Add Obligation" id="Add-Row-btn" onclick={handleAddrow}
+					disabled={isReadonly} slot="actions">
+				</lightning-button>
+			</template>	
+
+			<div class="slds-scrollable" style="height:250px">
+				<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+					role="grid">
+					<!-- ----------------------- Header ------------------------ -->
+					<thead style="position: sticky;top: 0;z-index: 1;">
+						<tr class="slds-text-title_caps">
+							<template for:each={dynamicColumns} for:item="column">
+								<th key={column.apiName}>
+									<div class="slds-truncate" style="white-space: wrap;">{column.label}</div>
+								</th>
+							</template>
+							<th colspan="2">Action</th>
+						</tr>
+					</thead>
+
+					<!-- ----------------------- BODY -------------- -->
+					<tbody>
+						<template for:each={obligationList} for:item="obligationData" for:index="index">
+							<tr key={obligationData.id}>
+
+
+								<td data-id="7" rowspan="2">
+									<div class="td-currency">
+										{obligationData.srNo}
+									</div>
+								</td>
+
+								<!--<td data-id="7">
+									<div class="td-currency" style="width: 50px;">
+										{obligationData.cibiliIndex}
+									</div>
+								</td>-->
+
+								<td data-id="7">
+									<div class="td-currency" style="width: 100px;">
+										<lightning-input variant="label-hidden" label="Source" name="source"
+											data-index={index} value={obligationData.source} type="text" disabled>
+										</lightning-input>
+									</div>
+								</td>
+
+								<!-- New LoanId column -->
+								<td data-id="7">
+									<div class="td-currency" style="width: 120px;">
+										<lightning-input variant="label-hidden" label="Loan Id" name="loanId"
+											onchange={handleChange} data-index={index} value={obligationData.loanId} type="text"
+											disabled={obligationData.disableFlags.loanId}>
+										</lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency">
+										<lightning-input variant="label-hidden" label="nameOfLendingInstution"
+											name="nameOfLendingInstution" onchange={handleChange} data-index={index}
+											value={obligationData.nameOfLendingInstution}
+											disabled={obligationData.disableFlags.nameOfLendingInstution} type="Text">
+										</lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="loanAmount" style="width: 180px;">
+										<select class="slds-select" id={index} data-index={index} onchange={handleChange}
+				                             name="loanType" required disabled={obligationData.disableFlags.loanType}>
+
+			                                <!-- Show default placeholder if no value -->
+			                                <template if:false={obligationData.loanType}>
+				                                <option value="" selected disabled hidden>Select an option</option>
+			                                </template>
+
+			                                <!-- If there's a preloaded value (even if not in options), inject it as selected -->
+			                                <template if:true={obligationData.loanType}>
+				                                <option value={obligationData.loanType} selected disabled hidden>{obligationData.loanType}</option>
+			                                </template>
+
+			                                <!-- List all actual options -->
+			                                <template for:each={loanTypeOptions} for:item="listViewItem">
+				                                <option key={listViewItem.label} value={listViewItem.value}>
+					                            {listViewItem.label}
+				                                </option>
+			                                </template>
+		                                </select>
+									</div>
+								</td>
+
+
+								<td data-id="7">
+									<div class="td-currency" style="width: 50px;">
+										<lightning-input variant="label-hidden" label="Loan Status" name="loanStatus"
+											onchange={handleChange} data-index={index} value={obligationData.loanStatus}
+											disabled={obligationData.disableFlags.loanStatus} type="text">
+										</lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency" style="width: 50px;">
+										<lightning-input variant="label-hidden" label="tenureOutstandingInMonths"
+											name="tenureOutstandingInMonths" onchange={handleChange} data-index={index}
+											value={obligationData.tenureOutstandingInMonths}
+											disabled={obligationData.disableFlags.tenureOutstandingInMonths}
+											type="number">
+										</lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency" style="width: 70px;">
+										<lightning-input variant="label-hidden" label="emi" name="emi"
+											onchange={handleChange} data-index={index} value={obligationData.emi}
+											disabled={obligationData.disableFlags.emi} type="number">
+										</lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency" style="width: 100px;">
+										<lightning-input variant="label-hidden" label="tenureOutstanding"
+											name="tenureOutstanding" onchange={handleChange} data-index={index}
+											value={obligationData.tenureOutstanding}
+											disabled={obligationData.disableFlags.tenureOutstanding} type="number">
+										</lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency" style="width: 90px;">
+										<lightning-input variant="label-hidden" label="amountSanctioned"
+											name="amountSanctioned" onchange={handleChange} data-index={index}
+											value={obligationData.amountSanctioned}
+											disabled={obligationData.disableFlags.amountSanctioned} type="number">
+										</lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency" style="width: 100px;">
+										<lightning-input variant="label-hidden" label="outstandingAmount"
+											name="outstandingAmount" onchange={handleChange} data-index={index}
+											disabled={obligationData.disableFlags.outstandingAmount}
+											value={obligationData.outstandingAmount} type="number"></lightning-input>
+									</div>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency">
+										<select class="slds-select" id={index}
+																data-index={index}
+																onchange={handleChange} required name="consideredForFOIR" disabled={obligationData.disableFlags.consideredForFOIR}>
+
+																<template if:false={obligationData.consideredForFOIR}>
+																<option value="" selected disabled hidden>Select an option
+																</option>
+																</template>
+																<template if:true={obligationData.consideredForFOIR}>
+																	  <option value={obligationData.consideredForFOIR} selected disabled hidden>{obligationData.consideredForFOIR}
+																</option>
+																</template>
+																<template for:each={consideredForFOIROptoins}
+																	for:item="listViewItem">
+																	<option key={listViewItem.label}
+																		value={listViewItem.value} >
+																		{listViewItem.label}
+																	</option>
+																</template>
+															</select>
+									</div>
+									<template if:true={obligationData.errorMessage}>
+										<div class="slds-form-element__help slds-text-color_error">
+											{obligationData.errorMessage}</div>
+									</template>
+								</td>
+
+								<td data-id="7">
+									<div class="td-currency minDateWidth">
+										<lightning-input variant="label-hidden" label="Created On" name="Created on"
+											data-index={index} disabled value={obligationData.createdDate}
+											type="dateTime"></lightning-input>
+									</div>
+								</td>
+
+								<td data-id="14" rowspan="2">
+									<div class="td-currency">
+										<template if:true={isCurrentUser}>
+											<template if:true={obligationData.showDelete}>
+												<lightning-button-icon icon-name="utility:delete" variant="brand"
+													alternative-text="Delete" disabled={isReadonly}
+													onclick={handledeleteRow} data-id={obligationData.id}
+													data-index={obligationData.srNo}>
+												</lightning-button-icon>
+											</template>
+										</template>
+
+										<!-- <lightning-button label="Repayment Track" class="slds-m-left_small"
+											variant="Brand" onclick={onAddRepayment} data-id={obligationData.id}
+											data-index={index} disabled={isReadonly}
+											data-currentemi={obligationData.emi}>
+										</lightning-button> -->
+									</div>
+								</td>
+
+							</tr>
+							<tr key={obligationData.id}>
+								<td data-id="1" colspan="2" class="slds-border_left">
+									<div class="td-currency slds-text-align_left">
+										Remarks
+									</div>
+								</td>
+								<td data-id="2" colspan="10">
+									<div class="td-currency">
+										<lightning-textarea name="remarks" variant="label-hidden" label="remarks"
+											placeholder="type here..." onchange={handleChange} data-index={index}
+											value={obligationData.remarks} required={obligationData.isRequired}>
+										</lightning-textarea>
+									</div>
+								</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+
+			</div>
+
+			<div class="slds-align_absolute-center">
+				<template if:true={isCurrentUser}>
+					<template if:true={showSaveButton}>
+						<lightning-button variant="brand" disabled={hasInlineErrors} type="submit" label="Save"
+							id="Sanction-btn" onclick={handleSave}>
+						</lightning-button>
+					</template>
+				</template>	
+			</div>
+
+
+			<template if:true={obligationCibilDeletedList}>
+				<br/>
+				<br/>
+
+				<div class="slds-text-heading_medium slds-align_absolute-center"><b>Deleted Obligations</b></div>
+				<br/>
+				<!-- <h1>CIBIL Deleted Data</h1> -->
+				<c-cibil-deleted-data-table obligation-cibil-deleted-list={obligationCibilDeletedList}
+					cibil-deleted-table-columns={cibilDeletedTableColumns}>
+				</c-cibil-deleted-data-table>
+			</template>
+		</lightning-card>
+	</div>
+</template>

@@ -1,0 +1,36 @@
+<template>
+    <lightning-spinner if:true={isUploading} size="small"></lightning-spinner>
+
+    <template if:true={showErrorScreen}>
+        <div class="slds-p-around_large slds-text-align_center">
+            <h2 class="slds-text-heading_medium slds-text-color_error">
+                {errorMessage}
+            </h2>
+            <!-- <lightning-button label="Close" variant="brand" onclick={handleClose}></lightning-button> -->
+        </div>
+    </template>
+
+    <template if:false={showErrorScreen}>
+        <!-- PDF VIEW -->
+        <div style="height:600px;">
+            <iframe src={repaymentVFUrl} width="100%" height="100%"></iframe>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="slds-modal__footer slds-align_absolute-right">
+            <lightning-button
+                variant="brand"
+                label="Send Tentative Repayment Schedule"
+                onclick={handleSendRepayment}
+                disabled={isRepaymentSent}>
+            </lightning-button>
+        </div>
+    </template>
+
+    <!-- DMS uploader -->
+    <c-shf-upload-document
+        style="display:none"
+        application-id={recordId}
+        ondmsresponse={handleDmsResponse}>
+    </c-shf-upload-document>
+</template>

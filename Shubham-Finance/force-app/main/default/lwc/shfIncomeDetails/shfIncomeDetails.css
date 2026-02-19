@@ -1,0 +1,11 @@
+.blue-header {
+    background-color: #54a3e5 !important;
+    color: white !important;
+    text-align: center !important;
+}
+
+.slds-required {
+    color: #ea001e;
+    font-weight: bold;
+    text-decoration: none;
+}

@@ -1,0 +1,26 @@
+@media only screen and (max-width: 768px) {
+  .slds-tabs_scoped__nav,
+  .slds-tabs_default__nav {
+    overflow: visible !important;
+  }
+
+  .slds-dropdown {
+    position: absolute !important;
+    left: 0 !important;
+    min-width: 90vw !important;
+    transform: none !important;
+    z-index: 9999 !important;
+  }
+
+  .slds-dropdown__list,
+  .slds-dropdown__item,
+  .slds-dropdown__item > a,
+  .slds-dropdown__item > span {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    text-align: left !important;
+  }
+
+  .slds-dropdown__list { max-height: 50vh !important; overflow-y: auto !important; }
+}

@@ -1,0 +1,752 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Credit PD (SENP)
+                </h2>
+            </header>
+
+            <!-- Modal Body  -->
+            <div class="slds-modal__content slds-p-around_medium custom-body" id="modal-content-id-1">
+                <div style="padding:0 0.5rem">
+                    <!-- Applicant Detail Section-->
+                    <div class="section">Applicant Details</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Name Of Applicant" name="Applicant__c"
+                                    value={loanApplicantOptions.nameOfApplicant} disabled=true></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Branch Name" name="Applicant__c"
+                                    value={loanApplicantOptions.branchName} disabled=true></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Application No." name="Applicant__c"
+                                    value={loanApplicantOptions.applicationNumber} disabled=true></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Sourcing Channel" name="Applicant__c"
+                                    value={loanApplicantOptions.sourcingChannel} disabled=true></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Loan Amount Applied in Rs Lacs" name="Applicant__c"
+                                    value={loanApplicantOptions.loanAmountApplied} disabled=true></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="CIBIL/ CRIF Score" name="Applicant__c"
+                                    value={loanApplicantOptions.cibilScore} disabled=true></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <!-- Personal Details Section-->
+                    <div class="section">Personal Details</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="No of family members in the family with proper details" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.No_of_family_members_in_the_family_with__c} required=true data-field="No_of_family_members_in_the_family_with__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Residence status" name="Funded__c"
+                                    value={pdRec.Residence_Status__c} placeholder="--Select--" options={residenceOptions}
+                                    onchange={handleChange} required=true data-field="Residence_Status__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Distance from Branch" name="Age__c"
+                                    value={pdRec.Distance_from_Branch__c} onchange={handleChange} required =true data-field="Distance_from_Branch__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Resi Stability" name="Age__c"
+                                    value={pdRec.Resi_Stability__c} onchange={handleChange} required=true data-field="Resi_Stability__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox
+                                    label="Are there any critical medical history of customer or any family members?"
+                                    name="Funded__c" value={pdRec.Are_there_any_critical_medical_history_o__c} placeholder="--Select--"
+                                    options={yesNoOptions} onchange={handleChange} required=true data-field="Are_there_any_critical_medical_history_o__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox
+                                    label="Whether the applicant is involved in online gaming, gambling, betting or other speculative or addictive activties?"
+                                    name="Funded__c" value={pdRec.Whether_the_applicant_is_involved_in_onl__c} placeholder="--Select--"
+                                    options={yesNoOptions} onchange={handleChange} required =true data-field="Whether_the_applicant_is_involved_in_onl__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox
+                                    label="Any Alternate/ Successor of Family Who Can Handle the Business and Pay Emi in Absence of Main Person, have we added him/her in loan structure."
+                                    name="Funded__c" value={pdRec.Any_Alternate_Successor_of_Family_Who_C__c} placeholder="--Select--"
+                                    options={yesNoOptions} onchange={handleChange} required= true data-field="Any_Alternate_Successor_of_Family_Who_C__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+
+
+                    <!-- Business Details Section-->
+                    <div class="section">Business Details</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Name of the Business" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Name_of_the_Business__c} required=true data-field="Name_of_the_Business__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Person Met" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Person_Met__c} required=true data-field="Person_Met__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Relationship" name="Funded__c"
+                                    value={pdRec.Relationship__c} placeholder="--Select--" options={relationshipOptions}
+                                    onchange={handleChange} required=true data-field="Relationship__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="KYC validation at Business place ( docs seen like Aadhar , PAN or Voter card etc)" name="Funded__c"
+                                    value={pdRec.KYC_Validated_At_Business_Place__c} placeholder="--Select--" options={yesNoOptions}
+                                    onchange={handleChange} required=true data-field="KYC_Validated_At_Business_Place__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Documents Verified" name="Funded__c"
+                                    value={pdRec.Documents_Verified__c} placeholder="--Select--" options={documentTypeOptions}
+                                    onchange={handleChange} required=true data-field="Documents_Verified__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Business board seen" name="Funded__c"
+                                    value={pdRec.Business_board_seen__c} placeholder="--Select--" options={yesNoOptions}
+                                    onchange={handleChange} required = true data-field="Business_board_seen__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Constitution of Business" name="Funded__c"
+                                    value={pdRec.Constitution_of_Business__c} placeholder="--Select--" options={businessTypeOptions}
+                                    onchange={handleChange} required= true data-field="Constitution_of_Business__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Current Office / Business Address" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Current_Office_Business_Address__c} required=true data-field="Current_Office_Business_Address__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Enter Landmark details" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Enter_Landmark_details__c} required=true data-field="Enter_Landmark_details__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Business Ownership proof if available" name="Funded__c"
+                                    value={pdRec.Business_Ownership_proof_if_available__c} placeholder="--Select--" options={yesNoOptions}
+                                    onchange={handleChange} data-field="Business_Ownership_proof_if_available__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Locality of Business Premises Shop" name="Funded__c"
+                                    value={pdRec.Locality_of_Business_Premises_Shop__c} placeholder="--Select--" options={areaTypeOptions}
+                                    onchange={handleChange} required=true data-field="Locality_of_Business_Premises_Shop__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Year in business" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Year_in_business__c} required=true data-field="Year_in_business__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Prior Occupaton if different From Current" name="Funded__c"
+                                    value={pdRec.Prior_Occupaton_if_different_From_Curren__c} placeholder="--Select--" options={yesNoOptions}
+                                    onchange={handleChange} data-field="Prior_Occupaton_if_different_From_Curren__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Business Premises" name="Funded__c"
+                                    value={pdRec.Business_Premises__c} placeholder="--Select--" options={residenceTypeOptions}
+                                    onchange={handleChange} data-field="Business_Premises__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Occupied Since When" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Occupied_Since_When__c} data-field="Occupied_Since_When__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Size of the Premises" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Size_of_the_Premises__c} data-field="Size_of_the_Premises__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Select condition of premises" name="Funded__c"
+                                    value={pdRec.SelectConditionOfEmployerSPremises__c} placeholder="--Select--" options={constructionTypeOptions}
+                                    onchange={handleChange} data-field="SelectConditionOfEmployerSPremises__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Type of Business premises" name="Funded__c"
+                                    value={pdRec.Type_of_Business_premises__c} placeholder="--Select--" options={propertyTypeOptions}
+                                    onchange={handleChange} data-field="Type_of_Business_premises__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Stock Value observed during PD visit" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Stock_Value_observed_during_PD_visit__c} data-field="Stock_Value_observed_during_PD_visit__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Nature of Business ( Brief Description ) Free Text" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.Nature_of_Business__c} required= true data-field="Nature_of_Business__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        
+                    </lightning-layout>
+
+                    <div class="section">Business Income</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Profiles" name="Funded__c"
+                                    value={pdObject.Applicant__c} placeholder="--Select--" options={profileOptions}
+                                    onchange={handleChange} ></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <div class="section" if:true={selectedProfile}>Retail</div>
+                    <lightning-layout multiple-rows if:true={selectedProfile}>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Item" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.item__c} data-field="item__c" ></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Daily Volume" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.daily_volume__c} data-field="daily_volume__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Cost" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.cost__c} data-field="cost__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Total Cost/ Unit" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.total_cost_per_unit__c} data-field="total_cost_per_unit__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Sale Value/ Unit" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.sale_value_per_unit__c} data-field="sale_value_per_unit__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Saving/ Unit" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.saving_per_unit__c} data-field="saving_per_unit__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Gross Daily Income" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.gross_daily_income__c} data-field="gross_daily_income__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Gross Monthly Income" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.gross_monthly_income__c} data-field="gross_monthly_income__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        
+                    </lightning-layout>
+
+                    <div class="section" if:true={selectedProfile}>Service Provider</div>
+                    <lightning-layout multiple-rows if:true={selectedProfile}>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Item" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.item__c} data-field="item__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Daily Volume" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.daily_volume__c} data-field="daily_volume__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Sale Value/ Unit" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.sale_value_per_unit__c} data-field="sale_value_per_unit__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Margin/Unit" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.margin_per_unit__c} data-field="margin_per_unit__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Gross Daily Income" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.gross_daily_income__c} data-field="gross_daily_income__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Gross Monthly Income" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.gross_monthly_income__c} data-field="gross_monthly_income__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        
+                    </lightning-layout>
+
+                    <div class="section" if:true={selectedProfile}>Contractor</div>
+                    <lightning-layout multiple-rows if:true={selectedProfile}>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Site Details" name="site_details__c" onchange={handleChange}
+                                    value={pdRec.site_details__c} data-field="site_details__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Status" name="status__c"
+                                    value={pdRec.status__c} placeholder="--Select--" options={statusOptions}
+                                    onchange={handleChange} data-field="status__c"></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Period of Service" name="period_of_service__c" onchange={handleChange}
+                                    value={pdRec.period_of_service__c} data-field="period_of_service__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Work Details" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.work_details__c} data-field="work_details__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Contract Value" name="contract_value__c" onchange={handleChange}
+                                    value={pdRec.contract_value__c} data-field="contract_value__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text"
+                                    label="Remarks" name="Remarks__c" onchange={handleChange}
+                                    value={pdRec.Remarks__c} data-field="Remarks__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>                        
+                    </lightning-layout>
+
+                    <div class="section" if:true={selectedProfile}>Others</div>
+                    <lightning-layout multiple-rows if:true={selectedProfile}>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number"
+                                    label="Gross Monthly Income" name="Applicant__c" onchange={handleChange}
+                                    value={pdRec.gross_monthly_income__c} data-field="gross_monthly_income__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        
+                    </lightning-layout>
+                    
+                    <div class="section">Business Expenses</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Shop rent if Business Premises is rented" name="Age__c"
+                                    value={pdRec.shop_rent_business_premises__c} data-field="shop_rent_business_premises__c	" onchange={handleChange}></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Avg amount of Electricity bill of last 3 month" name="Age__c"
+                                    value={pdRec.Avg_amount_of_Electricity_bill_of_last_3__c} data-field="Avg_amount_of_Electricity_bill_of_last_3__c" onchange={handleChange}></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Other Fixed Expenses" name="Age__c" value={pdRec.other_fixed_expenses__c}
+                                    onchange={handleChange} data-field="other_fixed_expenses__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Water / Tea Expense" name="Age__c"
+                                    value={pdRec.water_tea_expense__c} onchange={handleChange} data-field="water_tea_expense__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Stationery Expense" name="stationery_expense__c"
+                                    value={pdRec.stationery_expense__c} onchange={handleChange} data-field="stationery_expense__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Commision Paid to external parties" name="Age__c"
+                                    value={pdRec.commission_paid_external_parties__c} data-field="commission_paid_external_parties__c" onchange={handleChange}></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="House Keeping Expense" name="house_keeping_expense__c"
+                                    value={pdRec.house_keeping_expense__c} onchange={handleChange} data-field="house_keeping_expense__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Fixed Salary of all employees" name="fixed_salary_all_employees__c"
+                                    value={pdRec.fixed_salary_all_employees__c} data-field="fixed_salary_all_employees__c" onchange={handleChange}></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Other" name="other__c"
+                                    value={pdRec.other__c} onchange={handleChange} data-field="other__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+
+                    <div class="section">Household Expenses as per PD visit remarks</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Food Expense" name="food_expense__c"
+                                    value={pdRec.food_expense__c} onchange={handleChange} data-field="food_expense__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Clothing Expense" name="clothing_expense__c"
+                                    value={pdRec.clothing_expense__c} onchange={handleChange} data-field="clothing_expense__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Rent" name="rent__c" value={pdRec.rent__c}
+                                    onchange={handleChange} data-field="rent__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Water & Electricity" name="Age__c"
+                                    value={pdRec.water_electricity__c} onchange={handleChange} data-field="water_electricity__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Telephone" name="telephone__c"
+                                    value={pdRec.telephone__c} onchange={handleChange} data-field="telephone__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Transport" name="transport__c"
+                                    value={pdRec.transport__c} onchange={handleChange} data-field="transport__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Education" name="education__c"
+                                    value={pdRec.education__c} onchange={handleChange} data-field="education__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Medical Expenditure" name="medical_expenditure__c"
+                                    value={pdRec.medical_expenditure__c} onchange={handleChange} data-field="medical_expenditure__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Entertainment" name="entertainment__c"
+                                    value={pdRec.entertainment__c} onchange={handleChange} data-field="entertainment__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Insurance" name="insurance__c"
+                                    value={pdRec.insurance__c} onchange={handleChange} data-field="insurance__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Chits/ Pigmy" name="chits_pigmy__c"
+                                    value={pdRec.chits_pigmy__c} onchange={handleChange} data-field="chits_pigmy__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Other" name="other__c" value={pdRec.other__c}
+                                    onchange={handleChange} data-field="other__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="number" label="Total" name="total__c" value={pdRec.total__c}
+                                    disabled data-field="total__c"></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <!-- Assets Creation Details Section-->
+                    <div class="section">Assets Creation Details</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Asset created in last 48 months" name="asset_created_last_48_months__c"
+                                    value={pdRec.asset_created_last_48_months__c} placeholder="--Select--" options={yesNoOptions}
+                                    onchange={handleChange} data-field="asset_created_last_48_months__c" required></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-combobox label="Type of Asset declared" name="type_of_asset_declared__c"
+                                    value={pdRec.type_of_asset_declared__c} placeholder="--Select--" options={purposeOptions}
+                                    onchange={handleChange} data-field="type_of_asset_declared__c" required></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Description of the Assets" name="description_of_assets__c"
+                                    value={pdRec.description_of_assets__c} onchange={handleChange} data-field="description_of_assets__c" required></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Asset Owner" name="asset_owner__c"
+                                    value={pdRec.asset_owner__c} onchange={handleChange} data-field="asset_owner__c" required></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="date" label="Date of Purchase" name="date_of_purchase__c"
+                                    value={pdRec.date_of_purchase__c} data-field="date_of_purchase__c" onchange={handleChange} required></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Proof of Document" name="proof_of_document__c"
+                                    value={pdRec.proof_of_document__c} data-field="proof_of_document__c" onchange={handleChange} required></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="Investment Value" name="investment_value__c"
+                                    value={pdRec.investment_value__c} onchange={handleChange} data-field="investment_value__c" required></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <!-- Assets Creation Details Section-->
+                    <div class="section">PD Remarks/Recommendation</div>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-textarea type="text" label="Description of the Assets" name="description_of_assets__c"
+                                    value={pdRec.description_of_assets__c} onchange={handleChange} data-field="description_of_assets__c" required></lightning-textarea>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="text" label="End use of Loan" name="end_use_of_loan__c"
+                                    value={pdRec.end_use_of_loan__c} onchange={handleChange} data-field="end_use_of_loan__c" required></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4"
+                            large-device-size="6" class="slds-p-horizontal_x-small">
+                            <div>
+                                <lightning-input type="file" label="PD Snaps / Video" name="Age__c"
+                                    onchange={handleChange}></lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer custom-footer">
+                    <button class="slds-button slds-button_neutral" onclick={handleClose}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={saveEVerification}>Save</button>
+                </footer>
+
+            </div>
+        </div>
+    </section>
+</template>

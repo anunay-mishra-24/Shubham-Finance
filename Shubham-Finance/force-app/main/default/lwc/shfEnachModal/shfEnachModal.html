@@ -1,0 +1,75 @@
+<template>
+    <section class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+
+            <!-- HEADER -->
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">E-Nach Details</h2>
+            </header>
+
+            <!-- BODY -->
+            <div class="slds-modal__content slds-p-around_medium">
+
+                <!-- ROW 1 -->
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Customer Name"
+                            value={customerName}
+                            data-field="customerName"
+                            onchange={handleChange}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Account Number"
+                            value={accountNo}
+                            data-field="accountNo"
+                            onchange={handleChange}>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <!-- ROW 2 -->
+                <div class="slds-grid slds-gutters slds-m-top_medium">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Mobile Number"
+                            value={mobile}
+                            data-field="mobile"
+                            onchange={handleChange}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Email ID"
+                            value={email}
+                            data-field="email"
+                            onchange={handleChange}>
+                        </lightning-input>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                <lightning-button
+                    label="Cancel"
+                    onclick={handleClose}
+                    class="slds-m-right_small">
+                </lightning-button>
+
+                <lightning-button
+                    variant="brand"
+                    label="Proceed with E-Nach"
+                    onclick={handleProceedClick}>
+                </lightning-button>
+            </footer>
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

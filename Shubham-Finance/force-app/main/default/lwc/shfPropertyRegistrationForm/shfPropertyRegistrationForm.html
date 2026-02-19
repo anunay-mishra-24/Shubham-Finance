@@ -1,0 +1,181 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters">
+        <lightning-layout multiple-rows class="slds-gutters">
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-input
+                    type="text"
+                    name="Registration_Number__c"
+                    label="Registration Number"
+                    value={record.Registration_Number__c}
+                    data-field="Registration_Number__c"
+                    required
+                    onchange={handleInputChange}
+                ></lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-combobox
+                    name="Agreement_Type__c"
+                    label="Agreement Type"
+                    options={agreementTypeOptions}
+                    value={record.Agreement_Type__c}
+                    data-field="Agreement_Type__c"
+                    required
+                    onchange={handleInputChange}
+                ></lightning-combobox>
+            </lightning-layout-item>
+
+            
+
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-record-picker
+                    name="SRO_Master__c"
+                    label="SRO Name"
+                    placeholder="Search SRO..."
+                    object-api-name="SRO_Master__c"
+                    value={record.SRO_Master__c}
+                    required
+                    onchange={handleSroChange}
+                ></lightning-record-picker>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-input
+                    type="number"
+                    name="Sale_Deed_Number__c"
+                    label="Sale Deed Number"
+                    value={record.Sale_Deed_Number__c}
+                    data-field="Sale_Deed_Number__c"
+                    min="1"
+                    required
+                    onchange={handleInputChange}
+                ></lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-input
+                    type="date"
+                    name="Registration_Date__c"
+                    label="Registration Date"
+                    value={record.Registration_Date__c}
+                    data-field="Registration_Date__c"
+                    max={today}
+                    required
+                    onchange={handleInputChange}
+                ></lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-input
+                    type="date"
+                    name="Sale_Deed_Date__c"
+                    label="Sale Deed Date"
+                    value={record.Sale_Deed_Date__c}
+                    data-field="Sale_Deed_Date__c"
+                    max={today}
+                    required
+                    onchange={handleInputChange}
+                ></lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-input
+                    type="number"
+                    name="Agreement_Value_INR__c"
+                    label="Agreement Value (INR)"
+                    value={record.Agreement_Value_INR__c}
+                    data-field="Agreement_Value_INR__c"
+                    min="1"
+                    max="999999999"
+                    required
+                    onchange={handleInputChange}
+                ></lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+                size="12"
+                medium-device-size="4"
+                padding="around-small"
+            >
+                <lightning-input
+                    type="number"
+                    name="Amenities_Agreement_Value_INR__c"
+                    label="Amenities Agreement Value (INR)"
+                    value={record.Amenities_Agreement_Value_INR__c}
+                    data-field="Amenities_Agreement_Value_INR__c"
+                    min="1"
+                    max="999999999"
+                    required
+                    onchange={handleInputChange}
+                ></lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+                size="12"
+                padding="around-small"
+            >
+                <lightning-textarea
+                    name="Remarks__c"
+                    label="Remarks"
+                    value={record.Remarks__c}
+                    data-field="Remarks__c"
+                    required
+                    onchange={handleInputChange}
+                ></lightning-textarea>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <template if:false={hideButtons}>
+        <div class="slds-m-top_medium slds-text-align_right">
+            <lightning-button
+                label="Cancel"
+                class="slds-m-right_small"
+                onclick={handleCancel}
+            ></lightning-button>
+            <lightning-button
+                label="Save"
+                variant="brand"
+                onclick={handleSave}
+                disabled={isSaving}
+            ></lightning-button>
+        </div>
+    </template>
+
+    <template if:true={isSaving}>
+        <div class="loader-full">
+            <lightning-spinner
+                alternative-text="Saving"
+                size="small"
+            ></lightning-spinner>
+        </div>
+    </template>
+</template>

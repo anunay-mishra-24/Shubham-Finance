@@ -1,0 +1,32 @@
+<!-- expenseCalculator.html -->
+<template>
+    <lightning-card title="Expenses Calculator" icon-name="utility:table">
+
+        <template if:true={isLoading}>
+            <div class="slds-p-around_medium">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- (Only show errors; no info/warning messages) -->
+        <template if:true={errorMessage}>
+            <div class="slds-p-around_medium">
+                <div class="slds-text-color_error">{errorMessage}</div>
+            </div>
+        </template>
+
+        <template if:true={showTable}>
+            <div class="slds-p-around_medium">
+                <lightning-datatable
+                    key-field="id"
+                    data={tableData}
+                    columns={columns}
+                    hide-checkbox-column
+                    show-row-number-column>
+                </lightning-datatable>
+            </div>
+        </template>
+
+        <!-- If not applicable => show nothing (no message) -->
+    </lightning-card>
+</template>

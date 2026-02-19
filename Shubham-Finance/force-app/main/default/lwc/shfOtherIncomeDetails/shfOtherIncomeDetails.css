@@ -1,0 +1,14 @@
+.blue-header {
+    background-color: #54a3e5 !important;
+    color: white !important;
+    text-align: center !important;
+}
+
+.slds-required {
+    color: rgb(234, 0, 30);
+    margin-right: 0.25rem;
+}
+
+.total-cell {
+    font-weight: bold;
+}

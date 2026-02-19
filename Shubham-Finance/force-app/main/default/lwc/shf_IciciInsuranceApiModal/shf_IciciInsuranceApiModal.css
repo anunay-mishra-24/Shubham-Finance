@@ -1,0 +1,22 @@
+.custom-container{
+	color : black;
+}
+.section {
+  background-color: #d7d7cf;
+  padding: 0.5rem;
+  font-weight: bold;
+}
+.blocking-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.4);
+    z-index: 9999;
+    cursor: not-allowed;
+}
+.slds-modal__container{
+	width: 60rem !important;
+	max-width: 60rem !important;
+}

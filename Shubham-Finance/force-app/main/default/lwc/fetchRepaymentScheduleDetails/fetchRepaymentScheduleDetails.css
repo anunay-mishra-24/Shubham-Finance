@@ -1,0 +1,18 @@
+/* repaymentScheduleModal.css */
+.slds-modal__content {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.uiModal--medium .modal-container {
+    max-width: 1120px !important;
+}
+.datatable-wrapper {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.scrollable-datatable {
+    max-height: 400px;
+    overflow-y: auto;
+}

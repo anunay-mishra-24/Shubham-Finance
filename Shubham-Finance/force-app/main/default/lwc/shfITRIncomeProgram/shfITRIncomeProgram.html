@@ -1,0 +1,116 @@
+<template>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <tbody>
+            <template for:each={fieldList} for:item="f">
+                <template if:true={f.isVisible}>
+                    <tr key={f.order}>
+
+                        <td style="width:40%; font-weight:600;">
+                            <template if:true={f.isRequired}>
+                                <abbr class="slds-required" title="required">*</abbr>
+                            </template>
+                            {f.label}
+                        </td>
+
+                        <td style="width:60%;">
+
+                            <template if:true={f.is44ADRow}>
+                                <lightning-combobox
+                                    value={f.value.fy1}
+                                    options={f.picklistOptions}
+                                    data-order={f.order}
+                                    variant="label-hidden" 
+                                    required
+                                    onchange={handleChange}>
+                                </lightning-combobox>
+                            </template>
+
+                            <template if:true={f.isFYSelector}>
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <lightning-combobox
+                                            value={f.value.fy1}
+                                            options={f.picklistOptions}
+                                            disabled>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col">
+                                        <lightning-combobox
+                                            value={f.value.fy2}
+                                            options={f.picklistOptions}
+                                            disabled>
+                                        </lightning-combobox>
+                                    </div>
+                                </div>
+                            </template>
+
+
+                            <template if:true={f.isDualValue}>
+                                <div class="slds-grid slds-gutters">
+                                    <div class="slds-col">
+                                        <lightning-input
+                                            type={f.inputType}
+                                            value={f.value.fy1}
+                                            data-order={f.order}
+                                            formatter={f.formatter}
+                                            data-col="fy1"
+                                            max-length="10"
+                                            min="0"
+                                            message-when-range-underflow="Value cannot be negative"
+                                            message-when-too-long="Please enter a maximum of 10 digits."
+                                            variant="label-hidden" 
+                                            required
+                                            onchange={handleChange}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="slds-col">
+                                        <lightning-input
+                                            type={f.inputType}
+                                            formatter={f.formatter}
+                                            value={f.value.fy2}
+                                            data-order={f.order}
+                                            data-col="fy2"
+                                            max-length="10"
+                                            min="0"
+                                            message-when-range-underflow="Value cannot be negative"
+                                            message-when-too-long="Please enter a maximum of 10 digits."
+                                            required
+                                            variant="label-hidden"  
+                                            onchange={handleChange}>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <template if:true={f.isSingleValue}>
+                                <lightning-input
+                                    type={f.inputType}
+                                    formatter={f.formatter}
+                                    value={f.value.fy1}
+                                    disabled={f.disableFy1}
+                                    data-order={f.order}
+                                    min="0"
+                                    max-length="10"
+                                    message-when-range-underflow="Value cannot be negative"
+                                    message-when-too-long="Please enter a maximum of 10 digits."
+                                    variant="label-hidden" 
+                                    required
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </template>
+
+                        </td>
+                    </tr>
+                </template>
+            </template>
+        </tbody>
+    </table>
+
+    <div class="slds-m-top_medium slds-align_absolute-center slds-p-bottom_medium">
+        <lightning-button
+            label="Save Details"
+            variant="brand"
+            onclick={handleSave}>
+        </lightning-button>
+    </div>
+</template>

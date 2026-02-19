@@ -1,0 +1,39 @@
+<template>
+    <div class="spinner">
+        <template if:true={isUploading}>
+             <lightning-spinner alternative-text="Loading" variant="brand" size="medium">
+             </lightning-spinner>
+        </template>
+    </div>
+
+    <!-- Missing Fields Screen -->
+    <template if:true={showMissingScreen}>
+        <lightning-card title="Missing Fields">
+            <div class="slds-p-around_medium">
+                <p>Following fields are missing:</p>
+                <ul>
+                    <template for:each={missingFields} for:item="field">
+                        <li key={field}>• {field}</li>
+                    </template>
+                </ul>
+            </div>
+            <div slot="footer" class="slds-text-align_right">
+                <lightning-button variant="brand" label="Close" onclick={handleClose}></lightning-button>
+            </div>
+        </lightning-card>
+    </template>
+
+    <!-- PDF Preview Screen -->
+    <template if:true={showPdfScreen}>
+        <lightning-card title="CAM Form Preview">
+            <iframe src={pdfUrl} width="100%" height="500px"></iframe>
+
+            <div class="slds-p-around_medium slds-text-align_right">
+                <lightning-button variant="brand" label="Send" onclick={handleSend}></lightning-button>
+            </div>
+            <c-shf-upload-document application-id={recordId} context="lwc" ondmsresponse={handleDmsResponse} style="display:none"></c-shf-upload-document>
+
+        </lightning-card>
+    </template>
+
+</template>

@@ -1,0 +1,34 @@
+<template>
+     <lightning-spinner if:true={isLoading} alternative-text="Loading" size="large"></lightning-spinner>
+        <!----------approval modal--------------->
+          <template if:true={approvalModal}>
+            <div class="slds-p-around_medium">
+                <lightning-layout multiple-rows="true">
+                    <!-- Recommendation -->
+                    <lightning-layout-item size="12" large-device-size="6" padding="around-small">
+                        <lightning-textarea name="Comment"
+                                            label="Comment"
+                                            required
+                                            placeholder="Enter some Comments"
+                                            onchange={handleChange}
+                                            class="requiredField">
+                        </lightning-textarea>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <!-- Footer -->
+            <div class="slds-modal__footer slds-p-around_small" 
+                 style="display:flex; justify-content:flex-end; gap:1rem;">
+                <lightning-button variant="neutral" 
+                                  label="Close" 
+                                  onclick={closeModal}>
+                </lightning-button>
+                <lightning-button variant="brand" 
+                                  label="Save" 
+                                  onclick={handleSubmit}>
+                </lightning-button>
+            </div>
+        </template>
+
+</template>

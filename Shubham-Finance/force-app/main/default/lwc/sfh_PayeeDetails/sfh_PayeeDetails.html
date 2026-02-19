@@ -1,0 +1,289 @@
+<template>
+    <!-- Whole screen wrapper for read-only mode -->
+    <div class={containerClass}>
+
+        <lightning-spinner if:true={isLoading} alternative-text="Loading" size="small"></lightning-spinner>
+
+        <div class="slds-grid slds-grid_align-end slds-m-top_small">
+            <lightning-button label="Add Payee"
+                onclick={openAddModal}
+                variant="brand"
+                disabled={isFormDisabled}>
+            </lightning-button>
+        </div>
+
+        <!-- MODAL -->
+        <template if:true={showModal}>
+            <section class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="max-width:90rem;width:90%; ">
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-layout multiple-rows class="slds-gutters">
+
+                            <!-- Applicant Type -->
+                            <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                large-device-size="6" class="slds-p-around_x-small">
+                                <lightning-combobox label="Business Partner Type/ Applicant Type"
+                                    value={payeeWrapper.applicantType} options={applicantTypeOptions}
+                                    onchange={handleApplicantTypeChange} required>
+                                </lightning-combobox>
+                            </lightning-layout-item>
+
+                            <!-- Applicant Name -->
+                            <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                large-device-size="6" class="slds-p-around_x-small">
+
+                                <template if:true={showApplicantDropdown}>
+                                    <lightning-combobox label="Business Partner Name/ Applicant Name"
+                                        value={payeeWrapper.applicantName} options={applicantOptions}
+                                        data-id="applicantName" onchange={handleChange} required>
+                                    </lightning-combobox>
+                                </template>
+
+                                <template if:true={showApplicantText}>
+                                    <lightning-input label="Business Partner Name/ Applicant Name"
+                                        data-id="applicantName"
+                                        value={payeeWrapper.applicantName}
+                                        onchange={handleChange}
+                                        required>
+                                    </lightning-input>
+                                </template>
+                            </lightning-layout-item>
+
+                            <!-- Disbursal Amount -->
+                            <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                large-device-size="6" class="slds-p-around_x-small">
+                                <lightning-input type="number" label="Disbursal Amount"
+                                    value={payeeWrapper.disbursalAmount}
+                                    data-id="disbursalAmount"
+                                    onchange={handleChange}
+                                    max={maxDisbursementAmount}
+                                    min="1"
+                                    message-when-range-overflow="Disbursal Amount cannot exceed Disbursement Disbursal Amount."
+                                    required>
+                                </lightning-input>
+                            </lightning-layout-item>
+
+                            <!-- Adjustment Amount -->
+                            <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                large-device-size="6" class="slds-p-around_x-small">
+                                <lightning-input type="number" label="Adjustment Amount"
+                                    value={payeeWrapper.adjustmentAmount}
+                                    data-id="adjustmentAmount" required disabled>
+                                </lightning-input>
+                            </lightning-layout-item>
+
+                            <!-- Payment Amount -->
+                            <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                large-device-size="6" class="slds-p-around_x-small">
+                                <lightning-input type="number" label="Payment Amount"
+                                    value={payeeWrapper.paymentAmount}
+                                    data-id="paymentAmount" disabled>
+                                </lightning-input>
+                            </lightning-layout-item>
+
+                            <!-- Effective Payment Date -->
+                            <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                large-device-size="6" class="slds-p-around_x-small">
+                                <lightning-input type="date" label="Effective Payment Date"
+                                    value={payeeWrapper.effectivePaymentDate}
+                                    data-id="effectivePaymentDate" disabled>
+                                </lightning-input>
+                            </lightning-layout-item>
+
+                            <!-- Type of Payment Mode -->
+                            <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                large-device-size="6" class="slds-p-around_x-small">
+                                <lightning-combobox label="Type of Payment mode"
+                                    value={payeeWrapper.typeOfPaymentMode}
+                                    options={paymentModeOptions}
+                                    onchange={handlePaymentModeChange}
+                                    required>
+                                </lightning-combobox>
+                            </lightning-layout-item>
+
+                            <!-- CHEQUE DETAILS -->
+                            <template if:true={isCheque}>
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input type="text" label="Payee Name"
+                                        value={payeeWrapper.payeeName}
+                                        data-id="payeeName" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-record-picker label="Customer Bank"
+                                        placeholder="Search Bank..."
+                                        object-api-name="Bank_master__c"
+                                        display-info={bankDisplayInfo}
+                                        matching-info={bankMatchingInfo}
+                                        filter={bankFilter}
+                                        value={payeeWrapper.customerBank}
+                                        data-id="customeBank"
+                                        onchange={handleBankChange}
+                                        required>
+                                    </lightning-record-picker>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                     <lightning-input type="number" label="Account Number"
+                                        value={payeeWrapper.accountNumber} data-id="accountNumber" min="0"
+                                         message-when-range-underflow="Negative value not allowed"
+                                        onchange={handleChange} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input label="In Favour Of" type="text"
+                                        value={payeeWrapper.inFavourOf}
+                                        data-id="inFavourOf" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-record-picker label="Instrument Number"
+                                        placeholder="Search ..."
+                                        object-api-name="Cheque_Master__c"
+                                        display-info={instrumentDisplayInfo}
+                                        matching-info={instrumentMatchingInfo}
+                                        value={payeeWrapper.instrumentNumber}
+                                        data-id="instrumentNumber"
+                                        onchange={handleInstrumentNumber}
+                                        required>
+                                    </lightning-record-picker>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input type="date" label="Instrument Date"
+                                        value={payeeWrapper.instrumentDate}
+                                        data-id="instrumentDate" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input label="Printing Branch"
+                                        value={payeeWrapper.printingBranch}
+                                        data-id="printingBranch" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input label="Bank Validation Status"
+                                        value={payeeWrapper.bankValidationStatus}
+                                        data-id="bankValidationStatus" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </template>
+
+                            <!-- EFT DETAILS -->
+                            <template if:true={isEFT}>
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-combobox label="Sub-Payment Mode"
+                                        value={payeeWrapper.subPaymentMode}
+                                        options={subPaymentModeOptions}
+                                        onchange={handleChange}
+                                        data-id="subPaymentMode"
+                                        required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input type="text" label="Beneficiary Name"
+                                        value={payeeWrapper.beneficiaryName}
+                                        data-id="beneficiaryName" onchange={handleChange} required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-combobox label="Beneficiary Account Type"
+                                        value={payeeWrapper.beneficiaryAccountType}
+                                        options={beneficiaryAccountTypeOptions}
+                                        onchange={handleChange}
+                                        data-id="beneficiaryAccountType"
+                                        required>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input type="number" label="Beneficiary Account Number"
+                                        value={payeeWrapper.beneficiaryAccountNumber}
+                                        data-id="beneficiaryAccountNumber"
+                                        onchange={handleChange}
+                                        required>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input label="Bank Validation Status"
+                                        value={payeeWrapper.bankValidationStatus}
+                                        data-id="bankValidationStatus" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-record-picker label="IFSC Code"
+                                        placeholder="Search Bank..."
+                                        object-api-name="Bank_master__c"
+                                        display-info={bankDisplayInfo}
+                                        matching-info={bankMatchingInfo}
+                                        filter={bankFilter}
+                                        value={payeeWrapper.ifscCode}
+                                        data-id="ifscCode"
+                                        onchange={handleBankChange}
+                                        required>
+                                    </lightning-record-picker>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input label="Bank Name" value={bankName} data-id="bankName" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6"
+                                    large-device-size="6" class="slds-p-around_x-small">
+                                    <lightning-input label="Branch" value={branchName} data-id="Branch" disabled>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </template>
+
+                        </lightning-layout>
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                        <lightning-button label="Save"
+                            variant="brand"
+                            onclick={savePayee}
+                            disabled={isFormDisabled}>
+                        </lightning-button>
+                    </footer>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- PAYEE TABLE -->
+        <lightning-datatable key-field="Id"
+            data={payeeDetailList}
+            columns={columns}
+            hide-checkbox-column
+            onrowaction={handleRowAction}>
+        </lightning-datatable>
+
+    </div>
+</template>

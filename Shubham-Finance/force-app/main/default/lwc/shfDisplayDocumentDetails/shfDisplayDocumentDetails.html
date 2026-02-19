@@ -1,0 +1,123 @@
+<template>
+	<template if:true={showSpinner}>
+		<lightning-spinner alternative-text="Loading"></lightning-spinner>
+	</template>
+	<template if:true={documentList}>
+		<template if:true={isApplicationContext}>
+			<div class="slds-grid slds-wrap slds-p-vertical_xx-small">
+				<!-- Search Input - always visible on the left -->
+				<div class="slds-col slds-size_6-of-12 slds-medium-size_4-of-12 slds-large-size_3-of-12">
+					<lightning-input 
+						type="search" 
+						placeholder="Search by Name or Type"
+						onchange={handleSearchChange}
+						variant="label-hidden">
+					</lightning-input>
+				</div>
+
+				<!-- Spacer (optional) -->
+				<div class="slds-col slds-size_0-of-12 slds-medium-size_2-of-12"></div>
+
+				<!-- Action Buttons - always visible on the right -->
+				<div class="slds-col slds-grid slds-grid_align-end slds-size_6-of-12 slds-medium-size_6-of-12">
+					<template if:true={showRCUInitiate}>
+						<lightning-button 
+							variant="brand" 
+							label="Initiate RCU" 
+							title="Initiate RCU"
+							onclick={handleRCUInitiateToVendors}
+							class="slds-m-left_x-small"
+							disabled={isRCUInitiateDisbale}>
+						</lightning-button>
+					</template>
+				</div>
+			</div>
+		</template>	
+
+		<div style="border-top: 1px solid rgb(201, 201, 201)">
+			<div class="slds-grid">
+				<div class="slds-col slds-size_12-of-12 slds-box slds-box_xx-small"
+					>
+					<lightning-datatable key-field="Id" 
+                                        data={recordsToDisplay} 
+										columns={columns} onrowaction={handleRowAction} 
+										min-column-width="100"
+										max-column-width="1000"
+										onrowselection={getSelectedAction} 
+										style="display: block;" 
+										sorted-by={sortBy}
+                                     	sorted-direction={sortDirection} 
+										onsort={handleSortAccountData}
+						 ></lightning-datatable>
+						<div class="slds-clearfix slds-m-top_small">
+							<div class="slds-float_right">
+								<!--<span class="slds-badge"> Total Records: {totalRecords}</span>-->
+								<lightning-button-icon disabled={bDisableFirst} icon-name="utility:jump_to_left" label="First" class="slds-p-horizontal_x-small" alternative-text="first page" onclick={firstPage}></lightning-button-icon>
+								<lightning-button-icon disabled={bDisableFirst} icon-name="utility:chevronleft" label="Previous" alternative-text="Previous" onclick={previousPage}></lightning-button-icon>
+								<span>&nbsp;&nbsp; Page {pageNumber} &nbsp;/&nbsp; {totalPages} &nbsp;&nbsp;</span>
+								<lightning-button-icon disabled={bDisableLast} icon-name="utility:chevronright" label="Next" alternative-text="Next" onclick={nextPage} class="slds-p-horizontal_x-small" icon-position="right"></lightning-button-icon>
+								<lightning-button-icon disabled={bDisableLast} icon-name="utility:jump_to_right" label="Last" alternative-text="last page" onclick={lastPage} icon-position="right"></lightning-button-icon>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</template>
+	<c-shf-preview-document></c-shf-preview-document>
+
+
+	<template if:true={isDialogVisible}>
+    <c-s-h-f_-acknowledgement-confirmation-dialog
+	    title={title}
+	    is-open={isDialogVisible} 
+        status-options={ackStatusOptions}
+        oncancel={closeModal}
+        onconfirm={handleModalConfirm}>
+    </c-s-h-f_-acknowledgement-confirmation-dialog>
+	</template>
+
+	<template if:true={showModal}>
+		<c-shf-upload-document 
+		onclosemodal={closeModal} 
+		doc-name={docName}
+		doc-id={documentId}
+		application-id={applicationId}
+		applicant-id={applicantId}
+		context="modal"
+		doc-category={docCategory}
+		></c-shf-upload-document>
+	</template>
+
+	
+
+	<template if:false={documentList}>
+    	No Records Found!!
+	</template>
+	<template if:true={showTypeSelectionModal}>
+		<section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+			class="slds-modal slds-fade-in-open slds-modal_medium">
+			<div class="slds-modal__container modal-width">
+				<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"  onclick={handleCloseRCUModel}>
+					<h1 class="slds-text-heading_medium">X</h1>
+					<span class="slds-assistive-text">Cancel and close</span>
+				</button>
+				<div class="slds-modal__content slds-p-around_medium">
+					<lightning-combobox name="RCU Type" label="RCU Type" class="rcuvendors"
+						placeholder="Select RCU Vendors" options={rcuTypeOptions} onchange={handleChange}
+						required value={rcuType}>
+					</lightning-combobox>
+					<lightning-textarea label="Suspicious Triggers" name="Remark" value={comment} onchange={handleChange}
+						required></lightning-textarea>
+					<div class="slds-m-top_small slds-float_right">
+						<lightning-button variant="brand" label="Submit" title="Submit" class="slds-m-aruond_x-small"
+							onclick={handleSave}></lightning-button>
+						&nbsp;&nbsp;&nbsp;
+						<lightning-button variant="brand" label="Cancel" title="Cancel" class="slds-m-aruond_x-small"
+							onclick={handleCloseRCUModel}></lightning-button>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+	</template>
+</template>

@@ -1,0 +1,1347 @@
+<!--
+  @description       : 
+  @author            : Gaurav Kumar
+  @group             : 
+  @last modified on  : 01-19-2026
+  @last modified by  : Gaurav Kumar
+-->
+<template>
+    <div class={containerClass}>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Applicant Details
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Name Of Applicant" name="Applicant__c"
+                    value={loanApplicantOptions.nameOfApplicant} disabled=true></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Branch Name" name="Applicant__c"
+                    value={loanApplicantOptions.branchName} disabled=true></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Application No." name="Applicant__c"
+                    value={loanApplicantOptions.applicationNumber} disabled=true></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Sourcing Channel" name="Applicant__c"
+                    value={loanApplicantOptions.sourcingChannel} disabled=true></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Loan Amount Applied in Rs Lacs" name="Applicant__c"
+                    value={loanApplicantOptions.loanAmountApplied} disabled=true></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="CRIF Score" name="Applicant__c"
+                    value={loanApplicantOptions.crifScore} disabled=true></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="CIBIL Score" name="Applicant__c"
+                    value={loanApplicantOptions.cibilScore} disabled=true></lightning-input>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Personal Details
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="No of family members in the family with proper details"
+                    name="Applicant__c" onchange={handleChange} value={pdRec.No_of_family_members_in_the_family_with__c}
+                    required=true data-field="No_of_family_members_in_the_family_with__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Residence status" name="Funded__c" value={pdRec.Residence_Status__c}
+                    placeholder="--Select--" options={residenceOptions} onchange={handleChange} required=true
+                    data-field="Residence_Status__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Distance from Branch" name="Age__c"
+                    value={pdRec.Distance_from_Branch__c} onchange={handleChange} disabled=true
+                    data-field="Distance_from_Branch__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Resi Stability" name="Age__c" value={pdRec.Resi_Stability__c}
+                    onchange={handleChange} required=true data-field="Resi_Stability__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Are there any critical medical history of customer or any family members?"
+                    name="Funded__c" value={pdRec.Are_there_any_critical_medical_history_o__c} placeholder="--Select--"
+                    options={yesNoOptions} onchange={handleChange} required=true
+                    data-field="Are_there_any_critical_medical_history_o__c">
+                </lightning-combobox>
+            </div>
+
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isMedical}>
+            <div>
+                <lightning-input type="text" label="Critical Medical Reason" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Medical_Reason__c} data-field="Medical_Reason__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox
+                    label="Whether the applicant is involved in online gaming, gambling, betting or other speculative or addictive activties?"
+                    name="Funded__c" value={pdRec.Whether_the_applicant_is_involved_in_onl__c} placeholder="--Select--"
+                    options={yesNoOptions} onchange={handleChange} required=true
+                    data-field="Whether_the_applicant_is_involved_in_onl__c">
+                </lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isGaming}>
+            <div>
+                <lightning-input type="text" label="Online Gaming Reason" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Online_Gaming_Reason__c} data-field="Online_Gaming_Reason__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox
+                    label="Any Alternate/ Successor of Family Who Can Handle the Business and Pay Emi in Absence of Main Person, have we added him/her in loan structure."
+                    name="Funded__c" value={pdRec.Any_Alternate_Successor_of_Family_Who_C__c} placeholder="--Select--"
+                    options={yesNoOptions} onchange={handleChange} required=true
+                    data-field="Any_Alternate_Successor_of_Family_Who_C__c">
+                </lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isAlternate}>
+            <div>
+                <lightning-input type="text" label="Alternate Successor Reason" name="Applicant__c"
+                    onchange={handleChange} value={pdRec.Alternate_Successor_Reason__c}
+                    data-field="Alternate_Successor_Reason__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Business Details
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Name of the Business" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Name_of_the_Business__c} required=true data-field="Name_of_the_Business__c"
+                    pattern="[A-Za-z ]+" message-when-pattern-mismatch="Only alphabets (A–Z) are allowed.">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Person Met" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Person_Met__c} required=true data-field="Person_Met__c" pattern="[A-Za-z ]+"
+                    message-when-pattern-mismatch="Only alphabets (A–Z) are allowed."></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Relationship" name="Funded__c" value={pdRec.Relationship__c}
+                    placeholder="--Select--" options={relationshipOptions} onchange={handleChange} required=true
+                    data-field="Relationship__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox
+                    label="KYC validation at Business place ( docs seen like Aadhar , PAN or Voter card etc)"
+                    name="Funded__c" value={pdRec.KYC_Validated_At_Business_Place__c} placeholder="--Select--"
+                    options={yesNoOptions} onchange={handleChange} required=true
+                    data-field="KYC_Validated_At_Business_Place__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Documents Verified" name="Funded__c" value={pdRec.Documents_Verified__c}
+                    placeholder="--Select--" options={documentTypeOptions} onchange={handleChange} required={isMand}
+                    data-field="Documents_Verified__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isDocument}>
+            <div>
+                <lightning-input type="text" label="Documents Description" name="Documents_Description__c"
+                    value={pdRec.Documents_Description__c} onchange={handleChange} data-field="Documents_Description__c"
+                    required>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Business board seen" name="Funded__c" value={pdRec.Business_board_seen__c}
+                    placeholder="--Select--" options={yesNoOptions} onchange={handleChange} required=true
+                    data-field="Business_board_seen__c">
+                </lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Constitution of Business" name="Funded__c"
+                    value={pdRec.Constitution_of_Business__c} placeholder="--Select--" options={businessTypeOptions}
+                    onchange={handleChange} required=true data-field="Constitution_of_Business__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Current Office / Business Address" name="Applicant__c"
+                    onchange={handleChange} value={pdRec.Current_Office_Business_Address__c} disabled
+                    data-field="Current_Office_Business_Address__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Enter Landmark details" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Enter_Landmark_details__c} required=true data-field="Enter_Landmark_details__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Business Ownership proof if available" name="Funded__c"
+                    value={pdRec.Business_Ownership_proof_if_available__c} placeholder="--Select--"
+                    options={yesNoOptions} onchange={handleChange}
+                    data-field="Business_Ownership_proof_if_available__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isOwnership}>
+            <div>
+                <lightning-combobox label="Type Of Business" name="Funded__c" value={pdRec.Type_Of_Business__c}
+                    placeholder="--Select--" options={typeOfBusOptions} onchange={handleChange}
+                    data-field="Type_Of_Business__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isBusDes}>
+            <div>
+                <lightning-input type="text" label="Business Description" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Business_Description__c} required=true data-field="Business_Description__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Locality of Business Premises Shop" name="Funded__c"
+                    value={pdRec.Locality_of_Business_Premises_Shop__c} placeholder="--Select--"
+                    options={areaTypeOptions} onchange={handleChange} required=true
+                    data-field="Locality_of_Business_Premises_Shop__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Year in business" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Year_in_business__c} required=true data-field="Year_in_business__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Prior Occupaton if different From Current" name="Funded__c"
+                    value={pdRec.Prior_Occupaton_if_different_From_Curren__c} placeholder="--Select--"
+                    options={yesNoOptions} onchange={handleChange}
+                    data-field="Prior_Occupaton_if_different_From_Curren__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isOccupation}>
+            <div>
+                <lightning-input type="text" label="Prior Occupaton Description" name="Applicant__c"
+                    onchange={handleChange} value={pdRec.Reason_for_Change_in_Occupation__c} required=true
+                    data-field="Reason_for_Change_in_Occupation__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Business Premises" name="Funded__c" value={pdRec.Business_Premises__c}
+                    placeholder="--Select--" options={residenceTypeOptions} required=true onchange={handleChange}
+                    data-field="Business_Premises__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Occupied Since When" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Occupied_Since_When__c} data-field="Occupied_Since_When__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Size of the Premises" name="Applicant__c" onchange={handleChange}
+                    value={pdRec.Size_of_the_Premises__c} data-field="Size_of_the_Premises__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Select condition of premises" name="Funded__c"
+                    value={pdRec.SelectConditionOfEmployerSPremises__c} placeholder="--Select--"
+                    options={constructionTypeOptions} onchange={handleChange}
+                    data-field="SelectConditionOfEmployerSPremises__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Type of Business premises" name="Funded__c"
+                    value={pdRec.Type_of_Business_premises__c} placeholder="--Select--" options={propertyTypeOptions}
+                    onchange={handleChange} data-field="Type_of_Business_premises__c"></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Stock Value observed during PD visit" name="Applicant__c"
+                    onchange={handleChange} value={pdRec.Stock_Value_observed_during_PD_visit__c}
+                    data-field="Stock_Value_observed_during_PD_visit__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Nature of Business ( Brief Description )" name="Applicant__c"
+                    onchange={handleChange} value={pdRec.Nature_of_Business__c} required=true
+                    data-field="Nature_of_Business__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+
+    </lightning-layout>
+
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Business Reference ( A reference each Supplier and Customer )
+    </div>
+
+    <div class="equal-cols slds-grid slds-wrap slds-gutters">
+        <!-- Suppliers -->
+        <div class="slds-col slds-size_1-of-1">
+            <section class="slds-card">
+                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Suppliers</h2>
+                        </div>
+                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                data-table="suppliers" onclick={addRow} title="Add row">
+                            </lightning-button-icon>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_fixed-layout" role="grid">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:18rem;">* Contact / Address Details</th>
+                                    <th scope="col" style="width:14rem;">* Nature of Transaction</th>
+                                    <th scope="col" style="width:12rem;">* Value of Transaction</th>
+                                    <th scope="col" style="width:14rem;">* Frequency of Transaction</th>
+                                    <th scope="col" style="width:16rem;">* Doing Business since when</th>
+                                    <th scope="col" style="width:12rem;">* Credit Period</th>
+                                    <th scope="col" style="width:6rem;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={suppliers} for:item="row" for:index="idx">
+                                    <tr key={row.sfId}>
+                                        <td>
+                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                data-field="contact" value={row.contact} onchange={handleInputChange}
+                                                variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="suppliers" data-index={idx} data-field="nature"
+                                                value={row.nature} onchange={handleInputChange} variant="label-hidden"
+                                                required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="suppliers" data-index={idx}
+                                                data-field="value" value={row.value} onchange={handleInputChange}
+                                                variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                data-field="frequency" value={row.frequency}
+                                                onchange={handleInputChange} variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                data-field="doingSince" value={row.doingSince} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="suppliers" data-index={idx}
+                                                data-field="creditPeriod" value={row.creditPeriod} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <!-- <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="suppliers" data-index={idx} data-id={row.sfId}
+                                                data-uid={row.uid} onclick={removeRow} title="Remove row"
+                                                disabled={disableRemoveSupplier}>
+                                            </lightning-button-icon>
+                                        </td> -->
+                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <!-- <lightning-button-icon icon-name="utility:close" alternative-text="Remove"
+                                                data-table="suppliers" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveSupplier}>
+                                            </lightning-button-icon> -->
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="suppliers" data-index={idx} data-id={row.sfId}
+                                                data-uid={row.uid} onclick={deleteRowRecord} title="Remove row">
+                                            </lightning-button-icon>
+                                        </td>
+
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Customers -->
+        <div class="slds-col slds-size_1-of-1">
+            <section class="slds-card">
+                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Customers</h2>
+                        </div>
+                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                data-table="customers" onclick={addRow} title="Add row">
+                            </lightning-button-icon>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_fixed-layout" role="grid">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:18rem;">* Contact / Address Details</th>
+                                    <th scope="col" style="width:14rem;">* Nature of Transaction</th>
+                                    <th scope="col" style="width:12rem;">* Value of Transaction</th>
+                                    <th scope="col" style="width:14rem;">* Frequency of Transaction</th>
+                                    <th scope="col" style="width:16rem;">* Doing Business since when</th>
+                                    <th scope="col" style="width:12rem;">* Credit Period</th>
+                                    <th scope="col" style="width:6rem;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={customers} for:item="row" for:index="idx">
+                                    <tr key={row.sfId}>
+                                        <td>
+                                            <lightning-input data-table="customers" data-index={idx} required=true
+                                                data-field="contact" value={row.contact} onchange={handleInputChange}
+                                                variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="customers" data-index={idx} data-field="nature"
+                                                value={row.nature} onchange={handleInputChange} variant="label-hidden"
+                                                required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="customers" data-index={idx}
+                                                data-field="value" value={row.value} onchange={handleInputChange}
+                                                variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="customers" data-index={idx}
+                                                data-field="frequency" value={row.frequency} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="customers" data-index={idx}
+                                                data-field="doingSince" value={row.doingSince} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="customers" data-index={idx}
+                                                data-field="creditPeriod" value={row.creditPeriod} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <!-- <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="customers" data-index={idx} data-id={row.sfId} data-uid={row.uid} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveCustomer}>
+                                            </lightning-button-icon>
+                                        </td> -->
+                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <!-- <lightning-button-icon icon-name="utility:close" alternative-text="Remove"
+                                                data-table="customers" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveCustomer}>
+                                            </lightning-button-icon> -->
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="customers" data-index={idx} data-id={row.sfId}
+                                                data-uid={row.uid} onclick={deleteRowRecord} title="Remove row">
+                                            </lightning-button-icon>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Business Income
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Profiles" name="profile" value={pdRec.Applicant__c} placeholder="--Select--"
+                    options={profileOptions} onchange={handleChange}>
+                </lightning-combobox>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <div if:true={isRetail_JobWork}>
+        <div class="slds-col slds-size_1-of-1">
+            <section class="slds-card">
+                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Retail / Job Work</h2>
+                        </div>
+                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                data-table="retails" onclick={addRow} title="Add row">
+                            </lightning-button-icon>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_fixed-layout" role="grid">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:18rem;">*Item</th>
+                                    <th scope="col" style="width:14rem;">*Daily Volume</th>
+                                    <th scope="col" style="width:12rem;">*Cost</th>
+                                    <th scope="col" style="width:14rem;">*Total Cost / Unit</th>
+                                    <th scope="col" style="width:16rem;">*Sale Value / Unit</th>
+                                    <th scope="col" style="width:12rem;">*Saving / Unit</th>
+                                    <th scope="col" style="width:6rem;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={retails} for:item="row" for:index="idx">
+                                    <tr key={row.sfId}>
+                                        <td>
+                                            <lightning-input data-table="retails" data-index={idx} data-field="item"
+                                                type="text" value={row.item} onchange={handleInputChange}
+                                                variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="retails" data-index={idx}
+                                                data-field="dailyVolume" value={row.dailyVolume}
+                                                onchange={handleInputChange} variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="retails" data-index={idx}
+                                                data-field="cost" value={row.cost} onchange={handleInputChange}
+                                                variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="retails" data-index={idx}
+                                                data-field="totalCost" value={row.totalCost}
+                                                onchange={handleInputChange} variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="retails" data-index={idx}
+                                                data-field="saleUnit" value={row.saleUnit} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="retails" data-index={idx}
+                                                data-field="savingUnit" value={row.savingUnit} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <!-- <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="retails" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveRetails}>
+                                            </lightning-button-icon>
+                                        </td> -->
+                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <!-- <lightning-button-icon icon-name="utility:close" alternative-text="Remove"
+                                                data-table="retails" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveRetails}>
+                                            </lightning-button-icon> -->
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="retails" data-index={idx} data-id={row.sfId}
+                                                data-uid={row.uid} onclick={deleteRowRecord} title="Remove row">
+                                            </lightning-button-icon>
+                                        </td>
+
+                                    </tr>
+
+                                </template>
+                                <tr class="slds-theme_shade">
+                                    <td class="slds-text-title_bold" colspan="6">
+                                        Gross Daily
+                                    </td>
+                                    <td class="slds-text-title_bold slds-text-align_right">
+                                        {retailgrossDaily}
+                                    </td>
+                                </tr>
+
+                                <tr class="slds-theme_shade">
+                                    <td class="slds-text-title_bold" colspan="6">
+                                        Gross Monthly
+                                    </td>
+                                    <td class="slds-text-title_bold slds-text-align_right">
+                                        {retailGrossMonthly}
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div if:true={isService_Provider}>
+        <div class="slds-col slds-size_1-of-1">
+            <section class="slds-card">
+                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Service Provider</h2>
+                        </div>
+                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                data-table="serviceProvider" onclick={addRow} title="Add row">
+                            </lightning-button-icon>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_fixed-layout" role="grid">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:24rem;">*Item</th>
+                                    <th scope="col" style="width:18rem;">*Daily Volume</th>
+                                    <!-- <th scope="col" style="width:12rem;">*Cost</th> -->
+                                    <!-- <th scope="col" style="width:14rem;">*Total Cost / Unit</th> -->
+                                    <th scope="col" style="width:23rem;">*Sale Value / Unit</th>
+                                    <th scope="col" style="width:20rem;">*Margin / Unit</th>
+                                    <th scope="col" style="width:18rem; text-align:center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={serviceProvider} for:item="row" for:index="idx">
+                                    <tr key={row.sfId}>
+                                        <td>
+                                            <lightning-input data-table="serviceProvider" data-index={idx} type="text"
+                                                data-field="item" value={row.item} onchange={handleInputChange}
+                                                variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="serviceProvider" data-index={idx}
+                                                data-field="dailyVolume" value={row.dailyVolume}
+                                                onchange={handleInputChange} variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <!-- <td>
+                                            <lightning-input type="number" data-table="serviceProvider" data-index={idx}
+                                                data-field="cost" value={row.cost} onchange={handleInputChange}
+                                                variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="serviceProvider" data-index={idx}
+                                                data-field="totalCost" value={row.totalCost}
+                                                onchange={handleInputChange} variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td> -->
+                                        <td>
+                                            <lightning-input type="number" data-table="serviceProvider" data-index={idx}
+                                                data-field="saleUnit" value={row.saleUnit} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="serviceProvider" data-index={idx}
+                                                data-field="savingUnit" value={row.savingUnit} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <!-- <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="serviceProvider" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveserviceProvider}>
+                                            </lightning-button-icon>
+                                        </td> -->
+                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <!-- <lightning-button-icon icon-name="utility:close" alternative-text="Remove"
+                                                data-table="serviceProvider" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveserviceProvider}>
+                                            </lightning-button-icon> -->
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="serviceProvider" data-index={idx} data-id={row.sfId}
+                                                data-uid={row.uid} onclick={deleteRowRecord} title="Remove row">
+                                            </lightning-button-icon>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr class="slds-theme_shade">
+                                    <td class="slds-text-title_bold" colspan="4">
+                                        Gross Daily
+                                    </td>
+                                    <td class="slds-text-title_bold slds-text-align_right">
+                                        {serProGrossDaily}
+                                    </td>
+                                </tr>
+
+                                <tr class="slds-theme_shade">
+                                    <td class="slds-text-title_bold" colspan="4">
+                                        Gross Monthly
+                                    </td>
+                                    <td class="slds-text-title_bold slds-text-align_right">
+                                        {serProGrossMonthly}
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div if:true={isContractor}>
+        <div class="slds-col slds-size_1-of-1">
+            <section class="slds-card">
+                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Contractor</h2>
+                        </div>
+                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                data-table="Contractor" onclick={addRow} title="Add row">
+                            </lightning-button-icon>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-scrollable_x contractor-wrapper">
+                        <table class="slds-table slds-table_bordered slds-table_fixed-layout" role="grid">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:18rem;">*Site Details</th>
+                                    <th scope="col" style="width:14rem;">*Status</th>
+                                    <th scope="col" style="width:12rem;">*Period of Service</th>
+                                    <th scope="col" style="width:14rem;">*Work Details</th>
+                                    <th scope="col" style="width:16rem;">*Contract Value</th>
+                                    <th scope="col" style="width:12rem;">*Remarks</th>
+                                    <th scope="col" style="width:6rem;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={contractor} for:item="row" for:index="idx">
+                                    <tr key={row.sfId}>
+                                        <td>
+                                            <lightning-input data-table="Contractor" data-index={idx} data-field="item"
+                                                value={row.item} onchange={handleInputChange} variant="label-hidden"
+                                                required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-combobox data-table="Contractor" data-index={idx}
+                                                variant="label-hidden" name="profile" data-field="dailyVolume"
+                                                value={row.dailyVolume} placeholder="--Select--"
+                                                options={profileStatusOptions} onchange={handleInputChange}
+                                                required=true>
+                                            </lightning-combobox>
+                                            
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="Contractor" data-index={idx} data-field="period_of_Service"
+                                                value={row.period_of_Service} onchange={handleInputChange} variant="label-hidden"
+                                                required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="Contractor" data-index={idx}
+                                                data-field="workDetails" value={row.workDetails}
+                                                onchange={handleInputChange} variant="label-hidden" required=true>
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input type="number" data-table="Contractor" data-index={idx}
+                                                data-field="saleUnit" value={row.saleUnit} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <lightning-input data-table="Contractor" data-index={idx}
+                                                data-field="remarks" value={row.remarks} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <!-- <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="Contractor" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveContractor}>
+                                            </lightning-button-icon>
+                                        </td> -->
+                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <!-- <lightning-button-icon icon-name="utility:close" alternative-text="Remove"
+                                                data-table="Contractor" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveserviceProvider}>
+                                            </lightning-button-icon> -->
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="Contractor" data-index={idx} data-id={row.sfId}
+                                                data-uid={row.uid} onclick={deleteRowRecord} title="Remove row">
+                                            </lightning-button-icon>
+                                        </td>
+
+                                    </tr>
+                                </template>
+                                <!-- <tr class="slds-theme_shade">
+                                    <td class="slds-text-title_bold" colspan="6">
+                                        Gross Daily
+                                    </td>
+                                    <td class="slds-text-title_bold slds-text-align_right">
+                                        {contractorGrossDaily}
+                                    </td>
+                                </tr>
+
+                                <tr class="slds-theme_shade">
+                                    <td class="slds-text-title_bold" colspan="6">
+                                        Gross Monthly
+                                    </td>
+                                    <td class="slds-text-title_bold slds-text-align_right">
+                                        {contractorGrossMonthly}
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div if:true={isOthersProfile}>
+        <div class="slds-col slds-size_1-of-1">
+            <section class="slds-card">
+                <div class="slds-card__header slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-text-heading_small">&nbsp;&nbsp;Others</h2>
+                        </div>
+                        <div class="slds-grid slds-grid_align-end slds-m-bottom_small">
+                            <lightning-button-icon icon-name="utility:add" alternative-text="Add Row"
+                                data-table="OthersProfile" onclick={addRow} title="Add row">
+                            </lightning-button-icon>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slds-card__body slds-card__body_inner">
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_fixed-layout" role="grid">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width:18rem;">Gross Monthly Income</th>
+                                    <th scope="col" style="width:6rem; text-align:center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={othersProfile} for:item="row" for:index="idx">
+                                    <tr key={row.sfId}>
+                                        <td>
+                                            <lightning-input data-table="OthersProfile" type="number" data-index={idx}
+                                                data-field="cost" value={row.cost} required=true
+                                                onchange={handleInputChange} variant="label-hidden">
+                                            </lightning-input>
+                                        </td>
+                                        <!-- <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="OthersProfile" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveOthersProfile}>
+                                            </lightning-button-icon>
+                                        </td> -->
+                                        <td class="slds-size_1-of-12 slds-text-align_center">
+                                            <!-- <lightning-button-icon icon-name="utility:close" alternative-text="Remove"
+                                                data-table="OthersProfile" data-index={idx} onclick={removeRow}
+                                                title="Remove row" disabled={disableRemoveserviceProvider}>
+                                            </lightning-button-icon> -->
+                                            <lightning-button-icon icon-name="utility:delete" alternative-text="Remove"
+                                                data-table="OthersProfile" data-index={idx} data-id={row.sfId}
+                                                data-uid={row.uid} onclick={deleteRowRecord} title="Remove row">
+                                            </lightning-button-icon>
+                                        </td>
+
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Business Expenses
+    </div>
+
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isRentedProperty}>
+            <div>
+                <lightning-input type="number" label="Shop rent if Business Premises is rented" name="Age__c"
+                    value={pdRec.shop_rent_business_premises__c} data-field="shop_rent_business_premises__c"
+                    onchange={handleChange}>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Avg amount of Electricity bill of last 3 month" name="Age__c"
+                    value={pdRec.Avg_amount_of_Electricity_bill_of_last_3__c}
+                    data-field="Avg_amount_of_Electricity_bill_of_last_3__c" onchange={handleChange}>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Other Fixed Expenses" name="Age__c"
+                    value={pdRec.other_fixed_expenses__c} onchange={handleChange} data-field="other_fixed_expenses__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Water / Tea Expense" name="Age__c"
+                    value={pdRec.water_tea_expense__c} onchange={handleChange} data-field="water_tea_expense__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Stationery Expense" name="stationery_expense__c"
+                    value={pdRec.stationery_expense__c} onchange={handleChange} data-field="stationery_expense__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Commision Paid to external parties" name="Age__c"
+                    value={pdRec.commission_paid_external_parties__c} data-field="commission_paid_external_parties__c"
+                    onchange={handleChange}>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="House Keeping Expense" name="house_keeping_expense__c"
+                    value={pdRec.house_keeping_expense__c} onchange={handleChange}
+                    data-field="house_keeping_expense__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Fixed Salary of all employees"
+                    name="fixed_salary_all_employees__c" value={pdRec.fixed_salary_all_employees__c}
+                    data-field="fixed_salary_all_employees__c" onchange={handleChange}>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+
+            <!-- <div>
+                <lightning-input type="number" label="Other" name="other__c" value={pdRec.other__c}
+                    onchange={handleChange} data-field="other__c"></lightning-input>
+            </div> -->
+        </lightning-layout-item>
+        <c-shf_-credit-p-d-senp-profile section-name="Business Expenses" record-id={recordId}
+            other-name="Business Expenses Other" rowdata={businessExpenseRows}>
+        </c-shf_-credit-p-d-senp-profile>
+    </lightning-layout>
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Household Expenses as per PD visit remarks
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Food Expense" name="food_expense__c" value={pdRec.food_expense__c}
+                    onchange={handleChange} data-field="food_expense__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Clothing Expense" name="clothing_expense__c"
+                    value={pdRec.clothing_expense__c} onchange={handleChange} data-field="clothing_expense__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Rent" name="rent__c" value={pdRec.rent__c} onchange={handleChange}
+                    data-field="rent__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Water & Electricity" name="Age__c"
+                    value={pdRec.water_electricity__c} onchange={handleChange} data-field="water_electricity__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Telephone" name="telephone__c" value={pdRec.telephone__c}
+                    onchange={handleChange} data-field="telephone__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Transport" name="transport__c" value={pdRec.transport__c}
+                    onchange={handleChange} data-field="transport__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Education" name="education__c" value={pdRec.education__c}
+                    onchange={handleChange} data-field="education__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Medical Expenditure" name="medical_expenditure__c"
+                    value={pdRec.medical_expenditure__c} onchange={handleChange} data-field="medical_expenditure__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Entertainment" name="entertainment__c"
+                    value={pdRec.entertainment__c} onchange={handleChange} data-field="entertainment__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Insurance" name="insurance__c" value={pdRec.insurance__c}
+                    onchange={handleChange} data-field="insurance__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Chits/ Pigmy" name="chits_pigmy__c" value={pdRec.chits_pigmy__c}
+                    onchange={handleChange} data-field="chits_pigmy__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <!-- <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Other" name="other__c" value={pdRec.other__c}
+                    onchange={handleChange} data-field="other__c"></lightning-input>
+            </div>
+        </lightning-layout-item> -->
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Total" name="total__c" value={pdRec.total__c} disabled
+                    data-field="total__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <c-shf_-credit-p-d-senp-profile section-name="House Hold" record-id={recordId} other-name="House Hold Other"
+            rowdata={householdExpenseRows}>
+        </c-shf_-credit-p-d-senp-profile>
+    </lightning-layout>
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Assets Creation Details
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-combobox label="Asset created in last 48 months" name="asset_created_last_48_months__c"
+                    value={pdRec.asset_created_last_48_months__c} placeholder="--Select--" options={yesNoOptions}
+                    onchange={handleChange} data-field="asset_created_last_48_months__c" required></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isAsset_created_last_48_months__c}>
+            <div>
+                <lightning-combobox label="Type of Asset declared" name="type_of_asset_declared__c"
+                    value={pdRec.type_of_asset_declared__c} placeholder="--Select--" options={purposeOptions}
+                    onchange={handleChange} data-field="type_of_asset_declared__c" required></lightning-combobox>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-textarea type="text" label="Description of the Assets" name="description_of_assets__c"
+                    value={pdRec.description_of_assets__c} onchange={handleChange} data-field="description_of_assets__c"
+                    required>
+                </lightning-textarea>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Asset Owner" name="asset_owner__c" value={pdRec.asset_owner__c}
+                    onchange={handleChange} data-field="asset_owner__c" required pattern="[A-Za-z ]+"
+                    message-when-pattern-mismatch="Only alphabets (A–Z) are allowed."></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="date" label="Date of Purchase" name="date_of_purchase__c" max={todayDate}
+                    value={pdRec.date_of_purchase__c} data-field="date_of_purchase__c" onchange={handleChange} required>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="Proof of Document" name="proof_of_document__c" pattern="[A-Za-z ]+"
+                    message-when-pattern-mismatch="Only alphabets (A–Z) are allowed." value={pdRec.proof_of_document__c}
+                    data-field="proof_of_document__c" onchange={handleChange} required></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Investment Value" name="investment_value__c"
+                    value={pdRec.investment_value__c} onchange={handleChange} data-field="investment_value__c" required>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+    <br/>
+    <div class="section slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Property Details
+    </div>
+    <div class="slds-box slds-theme_default">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Property Owner Name</th>
+                    <th scope="col">Estimate Value</th>
+                    <th scope="col">Property Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={rowsData} for:item="row">
+                    <tr key={row.id}>
+                        <td>
+                            <lightning-input value={row.ownerName} disabled>
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input type="number" value={row.estimateValue} disabled>
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input value={row.address} disabled>
+                            </lightning-input>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+    </div>
+    <div><br/></div>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        PD Remarks/Recommendation
+    </div>
+    <lightning-layout multiple-rows>
+
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="text" label="End use of Loan" name="end_use_of_loan__c"
+                    value={pdRec.end_use_of_loan__c} onchange={handleChange} data-field="end_use_of_loan__c" required>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-textarea type="text" label="PD Visit Remarks / Recommendation Note"
+                    name="PD_Visit_Remarks_Recommendation_Note__c" value={pdRec.PD_Visit_Remarks_Recommendation_Note__c}
+                    onchange={handleChange} data-field="PD_Visit_Remarks_Recommendation_Note__c" required>
+                </lightning-textarea>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:false={isMobile}>
+            <div>
+                <lightning-input type="file" label="PD Snaps / Video" name="Age__c" required={isRequired}
+                    onchange={handleFileChange}>
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small" if:true={isMobile}>
+            <div>
+                <a href={uploadUrl} target="_self" required={isRequired}>PD Snaps / Video</a>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <template if:true={showConfirm}>
+        <section class="slds-modal slds-fade-in-open" role="dialog" tabindex="-1" style="z-index:10001;">
+            <div class="slds-modal__container slds-modal_small">
+                <header class="slds-modal__header slds-theme_warning">
+                    <h2 class="slds-text-heading_medium">{confirmTitle}</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium slds-text-align_center">
+                    <p class="slds-text-heading_small slds-text-title_bold">
+                        Do you want to delete this record?
+                    </p>
+                </div>
+
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                    <lightning-button variant="neutral" label="No" onclick={handleConfirmNo}></lightning-button>
+                    <lightning-button variant="brand" class="slds-m-left_small" label="Yes" onclick={handleConfirmYes}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" style="z-index:10000;"></div>
+    </template>
+    </div>
+</template>

@@ -1,0 +1,47 @@
+.custom-container{
+	color : black;
+}
+.section {
+  background-color: #d7d7cf;
+  padding: 0.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+/* Fixed footer */
+.custom-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 10;
+    border-top: 1px solid #d8dde6;
+    width: 100% !important;
+}
+
+.custom-body {
+    max-height: 60vh; /* adjust as needed */
+    overflow-y: auto;
+    padding: 1rem;
+    bottom: 0;
+    padding-bottom: 0rem;
+}
+
+.slds-modal__container {
+    padding: 0 !important;
+}
+.slds-modal__content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.two-col-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;   /* Both columns take equal larger width */
+    column-gap: 1.5rem;               /* Space between the two fields */
+    row-gap: 1rem;
+    width: 100%;
+}
+.read-only-container {
+    pointer-events: none;
+    opacity: 0.5; 
+    cursor: not-allowed;       
+}

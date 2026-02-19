@@ -1,0 +1,437 @@
+<template>
+    <lightning-card title="Negotiation detail">
+        <div class="container slds-p-around_medium">
+            <lightning-spinner if:true={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
+
+            <!-- Editable Section -->
+            <div class="sectionBox slds-p-around_medium">
+                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <lightning-input
+                            label="Sanction Loan Amount"
+                            type="number"
+                            min="0.001"
+                            step="0.001"
+                            required
+                            data-field="sanctionLoanAmount"
+                            value={editableValues.sanctionLoanAmount}
+                            onchange={handleTopFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <lightning-input
+                            label="Tenure"
+                            type="number"
+                            min="1"
+                            step="1"
+                            required
+                            data-field="tenure"
+                            value={editableValues.tenure}
+                            onchange={handleTopFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <lightning-input
+                            label="ROI"
+                            type="number"
+                            min="0.001"
+                            max="100"
+                            step="0.001"
+                            required
+                            data-field="roi"
+                            value={editableValues.roi}
+                            onchange={handleTopFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <lightning-input
+                            label="Processing Fee"
+                            type="number"
+                            min="0.001"
+                            step="0.001"
+                            required
+                            data-field="processingFee"
+                            value={editableValues.processingFee}
+                            onchange={handleTopFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <lightning-input
+                            label="Processing Fee (%)"
+                            type="number"
+                            min="0.001"
+                            max="100"
+                            step="0.001"
+                            required
+                            data-field="processingFeePercent"
+                            value={editableValues.processingFeePercent}
+                            onchange={handleTopFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+
+                <!-- Insurance Table -->
+                <div class="slds-m-top_medium">
+                    <div class="subTitle slds-m-bottom_x-small">Insurance Details</div>
+
+                    <div class="tableWrapper">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col"><div class="slds-truncate">Applicant Name</div></th>
+                                    <th scope="col"><div class="slds-truncate">Insurance Amount</div></th>
+                                    <th scope="col"><div class="slds-truncate">Insurance Premium</div></th>
+                                    <th scope="col"><div class="slds-truncate">Insurance Tenure</div></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <!-- Applicant 1 -->
+                                <tr>
+                                    <td><div class="slds-truncate">Applicant 1</div></td>
+                                    <td>
+                                        <lightning-input
+                                            variant="label-hidden"
+                                            type="number"
+                                            min="0.001"
+                                            step="0.001"
+                                            required
+                                            data-row="insuranceApplicant1"
+                                            data-col="insuredAmount"
+                                            value={editableValues.insuranceApplicant1.insuredAmount}
+                                            onchange={handleInsuranceFieldChange}
+                                        ></lightning-input>
+                                    </td>
+                                    <td>
+                                        <lightning-input
+                                            variant="label-hidden"
+                                            type="number"
+                                            min="0.001"
+                                            step="0.001"
+                                            required
+                                            data-row="insuranceApplicant1"
+                                            data-col="insurancePremium"
+                                            value={editableValues.insuranceApplicant1.insurancePremium}
+                                            onchange={handleInsuranceFieldChange}
+                                        ></lightning-input>
+                                    </td>
+                                    <td>
+                                        <lightning-input
+                                            variant="label-hidden"
+                                            type="number"
+                                            min="1"
+                                            step="1"
+                                            required
+                                            data-row="insuranceApplicant1"
+                                            data-col="insuranceTenure"
+                                            value={editableValues.insuranceApplicant1.insuranceTenure}
+                                            onchange={handleInsuranceFieldChange}
+                                        ></lightning-input>
+                                    </td>
+                                </tr>
+
+                                <!-- Applicant 2 -->
+                                <tr>
+                                    <td><div class="slds-truncate">Applicant 2</div></td>
+                                    <td>
+                                        <lightning-input
+                                            variant="label-hidden"
+                                            type="number"
+                                            min="0.001"
+                                            step="0.001"
+                                            required
+                                            data-row="insuranceApplicant2"
+                                            data-col="insuredAmount"
+                                            value={editableValues.insuranceApplicant2.insuredAmount}
+                                            onchange={handleInsuranceFieldChange}
+                                        ></lightning-input>
+                                    </td>
+                                    <td>
+                                        <lightning-input
+                                            variant="label-hidden"
+                                            type="number"
+                                            min="0.001"
+                                            step="0.001"
+                                            required
+                                            data-row="insuranceApplicant2"
+                                            data-col="insurancePremium"
+                                            value={editableValues.insuranceApplicant2.insurancePremium}
+                                            onchange={handleInsuranceFieldChange}
+                                        ></lightning-input>
+                                    </td>
+                                    <td>
+                                        <lightning-input
+                                            variant="label-hidden"
+                                            type="number"
+                                            min="1"
+                                            step="1"
+                                            required
+                                            data-row="insuranceApplicant2"
+                                            data-col="insuranceTenure"
+                                            value={editableValues.insuranceApplicant2.insuranceTenure}
+                                            onchange={handleInsuranceFieldChange}
+                                        ></lightning-input>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="slds-m-top_large slds-align_absolute-center buttonRow">
+                    <lightning-button
+                        variant="brand"
+                        label="Save"
+                        onclick={handleSaveClick}
+                        class="slds-m-right_small"
+                        disabled={isSaveDisabled}
+                    ></lightning-button>
+
+                    <lightning-button
+                        variant="neutral"
+                        label="Reset"
+                        onclick={handleResetClick}
+                        class="slds-m-right_small"
+                        disabled={isResetDisabled}
+                    ></lightning-button>
+
+                    <lightning-button
+                        variant="success"
+                        label="Submit For Approval"
+                        onclick={handleSubmitClick}
+                        disabled={isSubmitDisabled}
+                    ></lightning-button>
+                </div>
+
+                <template if:true={showSubmitSuccessMessage}>
+                    <div class="slds-notify slds-notify_alert slds-alert_success slds-m-top_medium" role="alert">
+                        <span class="slds-assistive-text">success</span>
+                        <h2>Submitted successfully. Further changes are disabled.</h2>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Requested Values (Read-only) -->
+            <div class="sectionBox slds-p-around_medium slds-m-top_medium">
+                <div class="subTitle slds-m-bottom_small">Requested Values (Read-only)</div>
+
+                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <div class="roLabel">Sanction Loan Amount</div>
+                        <div class="roValue">{requestedValues.sanctionLoanAmount}</div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <div class="roLabel">Tenure</div>
+                        <div class="roValue">{requestedValues.tenure}</div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <div class="roLabel">ROI</div>
+                        <div class="roValue">{requestedValues.roi}</div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <div class="roLabel">Processing Fee</div>
+                        <div class="roValue">{requestedValues.processingFee}</div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="4" large-device-size="4" padding="around-small">
+                        <div class="roLabel">Processing Fee (%)</div>
+                        <div class="roValue">{requestedValues.processingFeePercent}</div>
+                    </lightning-layout-item>
+                </lightning-layout>
+
+                <div class="slds-m-top_medium">
+                    <div class="subTitle slds-m-bottom_x-small">Requested Insurance Values (Read-only)</div>
+
+                    <div class="tableWrapper">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col"><div class="slds-truncate">Applicant Name</div></th>
+                                    <th scope="col"><div class="slds-truncate">Insurance Amount</div></th>
+                                    <th scope="col"><div class="slds-truncate">Insurance Premium</div></th>
+                                    <th scope="col"><div class="slds-truncate">Insurance Tenure</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="slds-truncate">Applicant 1</div></td>
+                                    <td><div class="roValue">{requestedValues.insuranceApplicant1.insuredAmount}</div></td>
+                                    <td><div class="roValue">{requestedValues.insuranceApplicant1.insurancePremium}</div></td>
+                                    <td><div class="roValue">{requestedValues.insuranceApplicant1.insuranceTenure}</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="slds-truncate">Applicant 2</div></td>
+                                    <td><div class="roValue">{requestedValues.insuranceApplicant2.insuredAmount}</div></td>
+                                    <td><div class="roValue">{requestedValues.insuranceApplicant2.insurancePremium}</div></td>
+                                    <td><div class="roValue">{requestedValues.insuranceApplicant2.insuranceTenure}</div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </lightning-card>
+
+    <!-- Reason Modal (Only changed fields) -->
+    <template if:true={showReasonModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Reason for Change</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p class="slds-m-bottom_small">Please provide reason for the modified fields.</p>
+
+                    <!-- Top fields reasons -->
+                    <template if:true={showReasonSanctionLoanAmount}>
+                        <lightning-textarea
+                            label="Sanction Loan Amount - Reason for Change"
+                            required
+                            data-reason="sanctionLoanAmount"
+                            value={changeReasons.sanctionLoanAmount}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonTenure}>
+                        <lightning-textarea
+                            label="Tenure - Reason for Change"
+                            required
+                            data-reason="tenure"
+                            value={changeReasons.tenure}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonRoi}>
+                        <lightning-textarea
+                            label="ROI - Reason for Change"
+                            required
+                            data-reason="roi"
+                            value={changeReasons.roi}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonProcessingFee}>
+                        <lightning-textarea
+                            label="Processing Fee - Reason for Change"
+                            required
+                            data-reason="processingFee"
+                            value={changeReasons.processingFee}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonProcessingFeePercent}>
+                        <lightning-textarea
+                            label="Processing Fee (%) - Reason for Change"
+                            required
+                            data-reason="processingFeePercent"
+                            value={changeReasons.processingFeePercent}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <!-- Insurance reasons (Applicant 1) -->
+                    <template if:true={showReasonApplicant1InsuredAmount}>
+                        <lightning-textarea
+                            label="Applicant 1 - Insurance Amount - Reason for Change"
+                            required
+                            data-reason="applicant1_insuredAmount"
+                            value={changeReasons.applicant1_insuredAmount}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonApplicant1InsurancePremium}>
+                        <lightning-textarea
+                            label="Applicant 1 - Insurance Premium - Reason for Change"
+                            required
+                            data-reason="applicant1_insurancePremium"
+                            value={changeReasons.applicant1_insurancePremium}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonApplicant1InsuranceTenure}>
+                        <lightning-textarea
+                            label="Applicant 1 - Insurance Tenure - Reason for Change"
+                            required
+                            data-reason="applicant1_insuranceTenure"
+                            value={changeReasons.applicant1_insuranceTenure}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <!-- Insurance reasons (Applicant 2) -->
+                    <template if:true={showReasonApplicant2InsuredAmount}>
+                        <lightning-textarea
+                            label="Applicant 2 - Insurance Amount - Reason for Change"
+                            required
+                            data-reason="applicant2_insuredAmount"
+                            value={changeReasons.applicant2_insuredAmount}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonApplicant2InsurancePremium}>
+                        <lightning-textarea
+                            label="Applicant 2 - Insurance Premium - Reason for Change"
+                            required
+                            data-reason="applicant2_insurancePremium"
+                            value={changeReasons.applicant2_insurancePremium}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+
+                    <template if:true={showReasonApplicant2InsuranceTenure}>
+                        <lightning-textarea
+                            label="Applicant 2 - Insurance Tenure - Reason for Change"
+                            required
+                            data-reason="applicant2_insuranceTenure"
+                            value={changeReasons.applicant2_insuranceTenure}
+                            onchange={handleReasonTextChange}
+                        ></lightning-textarea>
+                    </template>
+                </div>
+
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeReasonModal}></lightning-button>
+                    <lightning-button class="slds-m-left_small" variant="brand" label="Proceed" onclick={proceedSaveWithReasons}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Submit Confirmation Modal -->
+    <template if:true={showSubmitConfirmModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Confirmation</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    Are you sure you want to submit for approval?
+                </div>
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeSubmitConfirmModal}></lightning-button>
+                    <lightning-button class="slds-m-left_small" variant="brand" label="OK" onclick={confirmSubmit}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

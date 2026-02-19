@@ -1,0 +1,38 @@
+.slds-modal__container {
+    max-width: 60rem !important;
+    width: 50%;
+}
+
+.custom-modal {
+    max-width: 70rem !important;
+    width: 65%;
+}
+
+
+.custom-header {
+    border-bottom: 1px solid #d8d8d8;
+}
+
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+}
+
+
+.input-spacing {
+    margin-top: 1.5rem;
+}
+
+
+.custom-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+}
+.error-text {
+    color: red;
+    font-size: 0.80rem;
+    margin-top: 0.25rem;
+}

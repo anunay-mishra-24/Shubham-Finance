@@ -1,0 +1,89 @@
+<template>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered" role="grid">
+        <tbody>
+            <template for:each={fieldList} for:item="f">
+                <tr key={f.order}>
+                    <!-- Header Row -->
+                    <template if:true={f.isHeader}>
+                        <td colspan="2" style="font-weight:600; text-align:center; background:#f4f6f9;">
+                            {f.label}
+                        </td>
+                    </template>
+
+                    <!-- Non-header Rows -->
+                    <template if:false={f.isHeader}>
+                        <!-- Label Column -->
+                        <td style="width:50%; font-weight:600;">
+                            <template if:true={f.required}>
+                                <abbr title="required" class="slds-required">*</abbr>
+                            </template>
+                            {f.label}
+                        </td>
+
+                        <!-- Input Column -->
+                        <td style="width:50%;">
+                            <!-- GST Type -->
+                            <template if:true={f.isGSTType}>
+                                <lightning-combobox
+                                    data-order={f.order}
+                                    value={f.value}
+                                    label={f.label} 
+                                    options={f.gstTypeOptions}
+                                    required={f.required}
+                                    disabled={f.disabled}
+                                    variant="label-hidden" 
+                                    onchange={handleChange}>
+                                </lightning-combobox>
+                            </template>
+
+                            <!-- Future Generic Picklist -->
+                            <template if:true={f.picklistOptions}>
+                                <lightning-combobox
+                                    data-order={f.order}
+                                    value={f.value}
+                                    label={f.label}
+                                    options={f.picklistOptions}
+                                    required={f.required}
+                                    disabled={f.disabled}
+                                    variant="label-hidden"
+                                    onchange={handleChange}>
+                                </lightning-combobox>
+                            </template>
+
+                            <!-- Number / Currency / Percentage -->
+                            <template if:false={f.isGSTType}>
+                                <template if:false={f.picklistOptions}>
+                                    <lightning-input
+                                        type="number"
+                                        data-order={f.order}
+                                        data-type={f.type}
+                                        value={f.value}
+                                        label={f.label}
+                                        step="0.01"
+                                        message-when-step-mismatch="Please enter a value with up to 2 decimal places (e.g., 100.50)."
+                                        required={f.required}
+                                        disabled={f.disabled}
+                                        formatter={f.type}
+                                        min=0
+                                        message-when-range-underflow="Value cannot be negative"
+                                        max-length=18
+                                        variant="label-hidden"
+                                        onchange={handleChange}>
+                                    </lightning-input>
+                                </template>
+                            </template>
+                        </td>
+                    </template>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+
+    <div class="slds-m-top_medium slds-align_absolute-center">
+        <lightning-button
+            label="Save"
+            variant="brand"
+            onclick={handleSave}>
+        </lightning-button>
+    </div>
+</template>

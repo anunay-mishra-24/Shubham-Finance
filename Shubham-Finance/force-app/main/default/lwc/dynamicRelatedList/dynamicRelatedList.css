@@ -1,0 +1,119 @@
+/*.customModal {
+    width: 95%;
+    max-width: 100rem; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.customModalContainer {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 22px rgba(0, 0, 0, 0.35);
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slds-modal__content {
+    overflow-y: auto;
+    max-height: 75vh; 
+}
+
+.spinner-container {
+    text-align: center;
+    color: white;
+}
+
+.message {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+}
+
+.slds-modal__content lightning-output-field {
+    font-size: 0.9rem;
+}
+
+.slds-form-element {
+    margin-bottom: 0.5rem;
+}
+
+.slds-form-element__label {
+    font-weight: 650;
+    font-size: 0.95rem;
+    color: #3e3e3c;
+    white-space: normal;
+}
+
+.slds-section__title {
+    background-color: #f3f2f2;
+    border-radius: 4px;
+}
+
+.slds-modal__header h2 {
+    font-weight: 700;
+    color: #1b5297;
+}
+/* ✅ Center the modal container
+.slds-modal__container {
+    max-width: 80% !important;   
+    width: 80% !important;
+    margin: 0 auto !important;   
+} *
+
+.slds-modal__container {
+    width: 70vw;               
+    max-width: 60rem;          
+    min-width: 40rem;           
+    max-height: 85vh;           
+    margin: 0 auto;
+    border-radius: 0.50rem;
+    background: #fff;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
+}
+
+
+
+.slds-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.slds-modal__content {
+    max-height: 70vh !important;
+    overflow-y: auto;
+}
+
+.divider {
+    border-bottom: 1px solid #e3e6ea;
+    margin: 8px 0;
+}
+.no-padding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+.slds-modal__content {
+    min-height: auto !important;
+    height: auto !important;
+} */

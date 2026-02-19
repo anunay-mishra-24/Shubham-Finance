@@ -1,0 +1,30 @@
+.custom-modal {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+}
+.custom-modal-container {
+    width: calc(100vw - 2rem);  
+    max-width: 1200px; 
+
+	 margin: 0 !important;         
+}
+@media (min-width: 768px) {
+    .custom-modal-container {
+        width: 90vw;
+    }
+}
+@media (min-width: 1024px) {
+    .custom-modal-container {
+        width: 80vw;
+    }
+}
+.custom-modal-body {
+    max-height: 75vh;
+    overflow: auto;
+}
+@media (max-width: 767px) {
+    .custom-modal-body {
+        max-height: 80vh;
+    }
+}

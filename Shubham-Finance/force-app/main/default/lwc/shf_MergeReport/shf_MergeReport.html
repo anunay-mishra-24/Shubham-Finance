@@ -1,0 +1,17 @@
+<template>
+    <template if:true={mergedPdfUrl}>
+        <div class="iframe-container">
+            <iframe src={mergedPdfUrl} class="pdf-viewer"></iframe>
+        </div>
+        <div class="button-footer slds-p-around_medium slds-text-align_right">
+            <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+        </div>
+    </template>
+    <template if:false={mergedPdfUrl}>
+        <lightning-card title="RCU Combined Report">
+            <lightning-spinner alternative-text="In Process..." size="small"></lightning-spinner>
+        </lightning-card>
+    </template>
+    <c-shf-upload-document application-id={applicationId} context="lwc" ondmsresponse={handleDmsResponse}
+        style="display:none"></c-shf-upload-document>
+</template>

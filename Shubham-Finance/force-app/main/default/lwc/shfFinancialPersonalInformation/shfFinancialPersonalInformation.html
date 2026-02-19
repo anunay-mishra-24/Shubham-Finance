@@ -1,0 +1,70 @@
+<template>
+    <lightning-card >
+        <div class="slds-p-around_medium">
+            <template if:true={applicantData}>
+                <div class="slds-grid slds-wrap">
+
+                    <!-- Row 1 -->
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Application Id</div>
+                        <div class="slds-text-body_regular">{applicantData.applicationId}</div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Name / Entity Name</div>
+                        <div class="slds-text-body_regular">{applicantData.displayName}</div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Type</div>
+                        <div class="slds-text-body_regular">{applicantData.applicantType}</div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Customer Type</div>
+                        <div class="slds-text-body_regular">{applicantData.customerType}</div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Financial Applicant</div>
+                        <div class="slds-text-body_regular">{applicantData.isFinancial}</div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">DOB / DOI</div>
+                        <div class="slds-text-body_regular">{applicantData.dobOrDoi}</div>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Customer Profile</div>
+                        <div class="slds-text-body_regular">{applicantData.customerProfile}</div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Risk Category</div>
+                        <div class="slds-text-body_regular">{applicantData.riskCategory}</div>
+                    </div>
+
+                    <!-- Row 5 -->
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Risk Score</div>
+                        <div class="slds-text-body_regular">{applicantData.riskScore}</div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Industry</div>
+                        <div class="slds-text-body_regular">{applicantData.industry}</div>
+                    </div>
+
+                    <!-- Row 6 -->
+                    <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                        <div class="slds-text-title_bold">Sub-Industry</div>
+                        <div class="slds-text-body_regular">{applicantData.subIndustry}</div>
+                    </div>
+
+                </div>
+            </template>
+            <template if:false={applicantData}>
+                Loading applicant data...
+            </template>
+        </div>
+    </lightning-card>
+</template>

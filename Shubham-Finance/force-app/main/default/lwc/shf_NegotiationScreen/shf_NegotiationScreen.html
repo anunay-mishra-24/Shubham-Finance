@@ -1,0 +1,60 @@
+<template>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Negotiation Details
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Sanctioned Loan Amount"
+                    name="Sanction_Amount__c" onchange={handleChange} value={pdRec.Sanction_Amount__c}
+                    data-field="Sanction_Amount__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Rate of Interest (ROI)" name="Rate_of_Interest__c"
+                    value={pdRec.Rate_of_Interest__c} onchange={handleChange}
+                    data-field="Rate_of_Interest__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Tenure" name="Tenure__c" value={pdRec.Tenure__c}
+                    onchange={handleChange} data-field="Tenure__c"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="LTV" name="LTV__c" onchange={handleChange}
+                    value={pdRec.LTV__c} data-field="LTV__c">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Processing Fee (%)" name="processingFee" value={pdRec.processingFee}
+                    onchange={handleChange} data-field="processingFee"></lightning-input>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="6"
+            class="slds-p-horizontal_x-small">
+            <div>
+                <lightning-input type="number" label="Processing Fee (INR)" name="processingFeeINR" onchange={handleChange}
+                    value={pdRec.processingFeeINR} data-field="processingFeeINR">
+                </lightning-input>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+    <br/>
+    <div class="slds-text-title_bold slds-p-vertical_small slds-m-bottom_small
+            slds-text-align_center" style="background:#f3f2f2;">
+        Insurance Details
+    </div>
+</template>

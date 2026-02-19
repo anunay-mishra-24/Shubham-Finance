@@ -1,0 +1,35 @@
+<template>
+    <lightning-card variant="Narrow" title={title}>
+        <!-- <lightning-spinner alternative-text="Loading" size="medium" if:true={showSpinner}></lightning-spinner> -->
+        <template if:true={showSpinner}>
+            <div class="backdrop">
+                <div class="spinner-container">
+                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                    <!-- <p class="message">{message}</p> -->
+                </div>
+            </div>
+        </template>
+
+        <template if:true={relatedRecords}>
+            <template for:each={relatedRecords.headerActions} for:item="action">
+                <template if:true={action.isEnable}>
+                    <lightning-button class="slds-p-right_medium" name={action.name} key={action.name}
+                        label={action.label} slot="actions" onclick={handleheaderAction}
+                        data-error-message={action.errorMessage} data-success-message={action.successMessage}
+                        data-type={action.type} data-s-object-a-p-i-name={action.sObjectAPIName}
+                        data-default-values={action.defaultValues} data-link={action.link}
+                        data-is-show-modal={action.isShowModal}></lightning-button>
+                </template>
+            </template>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="12">
+                    <template if:true={relatedRecords}>
+                        <c-generic-data-table-l-w-c result={relatedRecords} btns={rowAction}
+                            onselected={handleTableSelection} onrowselectionevent={handleRowSelection}>
+                        </c-generic-data-table-l-w-c>
+                    </template>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </lightning-card>
+</template>

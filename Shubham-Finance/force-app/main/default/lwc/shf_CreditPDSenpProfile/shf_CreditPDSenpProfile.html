@@ -1,0 +1,152 @@
+<template>
+    <lightning-card>
+        <div class="slds-grid slds-grid_vertical-align-center
+           slds-p-vertical_small slds-m-bottom_small" style="background:#f3f2f2; padding: 0.20rem 0;">
+
+            
+            <div class="slds-col slds-size_1-of-12"></div>
+
+            
+            <div class="slds-col slds-size_10-of-12 slds-text-align_center slds-text-title_bold"
+                style="line-height: 1.45rem;">
+                {otherName}
+            </div>
+
+            
+            <div class="slds-col slds-size_1-of-12 slds-text-align_right">
+                <lightning-button-icon icon-name="utility:add" variant="border" alternative-text="Add"
+                    title="Add Applicant" onclick={addRow} disabled = {isFiancialExpenseCalculator}>
+                </lightning-button-icon>
+            </div>
+
+        </div>
+
+
+        <!-- <div class="slds-grid slds-grid_vertical-align-center
+            slds-p-around_small slds-theme_shade">
+
+            <div class="slds-col slds-grow"></div>
+
+            <div class="slds-col slds-text-align_center">
+                <span class="slds-text-title_bold">Other</span>
+            </div>
+
+            <div class="slds-col slds-text-align_right">
+                <lightning-button label="Add Row" variant="brand" onclick={addRow}>
+                </lightning-button>
+            </div>
+
+        </div> -->
+
+
+
+        
+        <div class="slds-m-bottom_x-small slds-scrollable_x">
+            <table class="slds-table slds-table_bordered slds-table_fixed-layout">
+
+                <colgroup>
+                    <col style="width:45%" />
+                    <col style="width:45%" />
+                    <col style="width:10%" />
+                </colgroup>
+                <thead class="slds-theme_shade">
+                    <tr>
+                        <th style="padding: 0.75rem 0.5rem;">
+                            <abbr class="slds-required" title="required">*</abbr>
+                            Label
+                        </th>
+
+                        <th style="padding: 0.75rem 0.5rem;">
+                            <abbr class="slds-required" title="required">*</abbr>
+                            Value
+                        </th>
+
+                        <th class="slds-text-align_center" style="padding: 0.75rem 0.5rem;">
+                            Action
+                        </th>
+                    </tr>
+
+
+                </thead>
+
+                <tbody>
+
+                    
+                    <!-- <tr>
+                        <td>
+                            <lightning-input type="text" placeholder="Item Name" data-key="itemLabel"
+                                onchange={handleStaticInput}>
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input type="number" placeholder="Item Value" data-key="itemValue"
+                                onchange={handleStaticInput}>
+                            </lightning-input>
+                        </td>
+                        <td></td>
+                    </tr> -->
+
+                    
+                    <!-- <tr>
+                        <td>
+                            <lightning-input type="text" placeholder="Income Type" data-key="incomeType"
+                                onchange={handleStaticInput}>
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input type="number" placeholder="Income Value" data-key="incomeValue"
+                                onchange={handleStaticInput}>
+                            </lightning-input>
+                        </td>
+                        <td class="slds-text-align_center">
+                            <lightning-button-icon icon-name="utility:delete" disabled>
+                            </lightning-button-icon>
+                        </td>
+                    </tr> -->
+
+                    
+                    <template for:each={rows} for:item="row">
+                        <tr key={row.id}>
+                            <td>
+                                <lightning-input type="text" placeholder="Income Type" value={row.label} variant="label-hidden"
+                                    data-rowid={row.id} data-field="label" required=true onchange={handleRowChange} disabled={isFiancialExpenseCalculator}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="number" placeholder="Income Value" value={row.value} variant="label-hidden"
+                                    data-rowid={row.id} data-field="value" required=true onchange={handleRowChange} disabled={isFiancialExpenseCalculator}>
+                                </lightning-input>
+                            </td>
+                            <td class="slds-text-align_center">
+                                <lightning-button-icon icon-name="utility:delete" data-rowid={row.id}
+                                    onclick={removeRow} disabled={isFiancialExpenseCalculator}>
+                                </lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+
+                    
+                    <tr class="slds-theme_shade">
+                        <td class="slds-text-title_bold">Gross Daily</td>
+                        <td class="slds-text-title_bold">{grossDaily}</td>
+                        <td></td>
+                    </tr>
+
+                    
+                    <tr class="slds-theme_shade">
+                        <td class="slds-text-title_bold">Gross Monthly</td>
+                        <td class="slds-text-title_bold">{grossMonthly}</td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- <div class="slds-text-align_right slds-m-top_x-small">
+            <lightning-button label="Save" variant="success" onclick={handleSave}>
+            </lightning-button>
+        </div> -->
+
+    </lightning-card>
+</template>

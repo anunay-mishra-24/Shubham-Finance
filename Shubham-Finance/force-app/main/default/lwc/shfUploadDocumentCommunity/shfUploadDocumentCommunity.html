@@ -1,0 +1,45 @@
+<template>
+    <div class="slds-m-around_small">
+        <div class="slds-align_absolute-left">
+            <template if:true={uploadDocumentButton}> 
+                <lightning-button 
+                    variant="brand" 
+                    label="Document Upload" 
+                    title="Document Upload" 
+                    icon-name="utility:upload" 
+                    icon-position="right" 
+                    class="slds-m-left_x-small"
+                    onclick={openUploadModal}
+                    disabled={disabledUploadButton}
+                ></lightning-button>
+            </template>
+            <lightning-button 
+                variant="brand" 
+                label="View Document" 
+                title="View Document" 
+                icon-name="utility:preview" 
+                icon-position="right" 
+                class="slds-m-left_x-small"
+                onclick={openPreviewModal}
+                disabled={disabledViewButton}
+            ></lightning-button>
+        </div>
+    </div>
+
+    <template if:true={showUploadModal}>
+    <c-shf-upload-document
+        application-id={applicationId}
+		context="modal"
+        onclosemodal={closeUploadModal}
+        parent-object-name={objectApiName}
+        parent-record-id={recordId}>
+    </c-shf-upload-document>
+</template>
+
+    <template if:true={showPreviewModal}>
+        <c-shf_-file-preview-modal 
+             record-id={recordId}
+        onclosemodal={closePreviewModal}
+        ></c-shf_-file-preview-modal>
+    </template>
+</template>

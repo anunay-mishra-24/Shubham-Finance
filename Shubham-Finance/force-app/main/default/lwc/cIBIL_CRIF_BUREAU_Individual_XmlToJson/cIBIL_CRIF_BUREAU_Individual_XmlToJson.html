@@ -1,0 +1,19 @@
+<template>
+    <lightning-card title="CIBIL / HIGHMARK Fetcher">
+        <div class="slds-p-around_medium">
+            <lightning-input
+                type="text"
+                label="Aadhaar Number"
+                value={aadhaar}
+                onchange={handleAadhaarChange}>
+            </lightning-input>
+
+            <lightning-button
+                label="Fetch Bureau Data"
+                onclick={handleClick}
+                variant="brand"
+                class="slds-m-top_medium">
+            </lightning-button>
+        </div>
+    </lightning-card>
+</template>

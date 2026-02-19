@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="Collateral Details">
+        <div class="wrap">
+            <template if:true={isLoading}>
+                <div class="spinnerWrap">
+                    <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:true={hasData}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={rows}
+                    columns={columns}
+                    hide-checkbox-column
+                    show-row-number-column
+                >
+                </lightning-datatable>
+            </template>
+
+            <template if:false={hasData}>
+                <div class="slds-p-around_medium slds-text-color_weak">
+                    No collateral records found.
+                </div>
+            </template>
+
+            <template if:true={errorMessage}>
+                <div class="slds-p-around_medium slds-text-color_error">
+                    {errorMessage}
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

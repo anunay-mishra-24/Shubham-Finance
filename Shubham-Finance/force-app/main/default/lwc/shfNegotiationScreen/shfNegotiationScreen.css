@@ -1,0 +1,130 @@
+.container {
+    width: 100%;
+    max-width: 1600px; 
+    margin: 0 auto;
+}
+
+.sectionBox {
+    border: 1px solid #dddbda;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.subTitle {
+    font-weight: 700;
+}
+
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.buttonRow {
+    width: 100%;
+}
+
+.roLabel {
+    font-size: 12px;
+    color: #6b6d70;
+}
+
+.roValue {
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 4px;
+}
+/* Common wrapper: keeps table layout but makes it responsive by horizontal scrolling */
+.table-wrap {
+  border: 1px solid #d8dde6;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+/* Horizontal scroll on mobile + smooth scrolling */
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* Optional scroll hint (right side fade) */
+.table-scroll::after {
+  content: "";
+  position: sticky;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 24px;
+  display: block;
+  pointer-events: none;
+  background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+/* Base table */
+.custom-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Give tables minimum width so columns don't collapse on mobile */
+.two-col-table { min-width: 420px; }
+.ins-table     { min-width: 740px; }     /* editable insurance */
+.ins-ro-table  { min-width: 740px; }     /* read-only insurance */
+
+/* header sticky (works inside scroll container) */
+.custom-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f3f5f7;
+}
+
+/* sticky first column */
+.custom-table .sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: #fff;
+  box-shadow: 1px 0 0 #d8dde6;
+}
+
+/* ensure header sticky-col stays above */
+.custom-table thead .sticky-col {
+  background: #f3f5f7;
+  z-index: 4;
+}
+
+/* truncate by default */
+.custom-table td .slds-truncate,
+.custom-table th .slds-truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* allow wrapping where needed (names / field labels) */
+.custom-table td.wrap .slds-truncate {
+  white-space: normal;
+}
+
+/* insurance inputs: make them usable on small widths */
+.custom-table td.cell-input lightning-input {
+  width: 100%;
+  display: block;
+  min-width: 8rem; /* keeps input usable */
+}
+
+/* Comfortable spacing on small devices */
+@media (max-width: 768px) {
+  .custom-table td, .custom-table th {
+    padding: 0.5rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .two-col-table { min-width: 380px; }
+  .ins-table, .ins-ro-table { min-width: 700px; }
+  .custom-table td.cell-input lightning-input { min-width: 7.2rem; }
+}

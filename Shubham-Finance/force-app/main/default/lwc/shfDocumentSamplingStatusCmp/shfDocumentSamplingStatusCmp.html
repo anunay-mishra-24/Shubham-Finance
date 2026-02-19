@@ -1,0 +1,114 @@
+<template>
+	<lightning-card variant="Narrow" title="Customer Documents">
+		<div style="max-width: 100%;overflow-x: auto;">
+			<table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered"
+				aria-label="Example table of Opportunities with vertical borders">
+				<thead>
+					<tr class="slds-line-height_reset">
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Document Category">Document Category</div>
+						</th>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="File Name">File Name</div>
+						</th>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="RCU Required">RCU Required</div>
+						</th>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Upload Status">Upload Status</div>
+						</th>
+						<template if:false={hideOtherCoumns}>
+							<th class="" scope="col">
+								<div class="slds-truncate" title="RCU Verification Status">RCU Verification Status</div>
+							</th>
+							<th class="" scope="col">
+								<div class="slds-truncate" title="Decision">Decision</div>
+							</th>
+							<th class="" scope="col">
+								<div class="slds-truncate" title="Pick-up Criteria">Pick-up Criteria</div>
+							</th>
+							<th class="" scope="col">
+								<div class="slds-truncate" title="Referred By">Referred By</div>
+							</th>
+							<th class="" scope="col">
+								<div class="slds-truncate" title="Comments">Comments</div>
+							</th>
+						</template>
+						<th class="" scope="col">
+							<div class="slds-truncate" title="Comments">View</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<template if:true={documents} for:each={documents} for:item="item" for:index="index">
+						<tr class="slds-hint-parent" key={item}>
+							<td data-label="Document Category" style="overflow:initial;">
+								{item.Document__r.Document_Category__c}
+							</td>
+							<td data-label="File Name">
+								{item.Document__r.File_Name__c}
+							</td>
+							<td data-label="RCU Required">
+								{item.Document__r.RCU_Required__c}
+							</td>
+							<td data-label="Status">
+								{item.Document__r.Status__c}
+							</td>
+							<template if:false={hideOtherCoumns}>
+								<td data-label="RCU Verification Status">
+									<select class="slds-select" data-index={index} onchange={handleFormValues} name="RCU_Verification_Status__c" disabled>
+									<template for:each={statusRCUValues} for:item="listViewItem">
+										<option key={listViewItem.label} value={listViewItem.value}>
+											{listViewItem.label}
+										</option>
+									</template>
+								</select>
+								</td>
+								<td data-label="Decision">
+									<select class="slds-select" data-index={index} onchange={handleFormValues} name="Decision__c" required>
+									<template for:each={decisionValues} for:item="listViewItem">
+										<option key={listViewItem.label} value={listViewItem.value}>
+											{listViewItem.label}
+										</option>
+									</template>
+								</select>
+								</td>
+								<td data-label="Pick-up Criteria">
+									<select class="slds-select" data-index={index} onchange={handleFormValues} name="Pick_up_Criteria__c" required>
+									<template for:each={pickUpCriteriaValues} for:item="listViewItem">
+										<option key={listViewItem.label} value={listViewItem.value}>
+											{listViewItem.label}
+										</option>
+									</template>
+								</select>
+								</td>
+								<td data-label="Pick-up Criteria">
+									<select class="slds-select" data-index={index} onchange={handleFormValues} name="Referred_By__c" disabled={item.disableOtherFields}>
+									<template for:each={referredByValues} for:item="listViewItem">
+										<option key={listViewItem.label} value={listViewItem.value}>
+											{listViewItem.label}
+										</option>
+									</template>
+								</select>
+								</td>
+								<td data-label="Comments">
+									<lightning-textarea data-index={index} onchange={handleFormValues}
+										name="Comments__c" disabled={item.disableOtherFields} value={item.Comments__c}>
+									</lightning-textarea>
+								</td>
+							</template>
+							<th class="" scope="col">
+								<lightning-icon icon-name="utility:preview" data-id={item.Document__c} size="small"
+									alternative-text="Doc image" onclick={handleViewDocument}></lightning-icon>
+							</th>
+						</tr>
+					</template>
+				</tbody>
+			</table>
+		</div>
+		<p slot="footer" if:false={hideOtherCoumns}>
+			<lightning-button variant="brand" label="Save" title="Save" onclick={handleSave}></lightning-button>
+		</p>
+	</lightning-card>
+	<c-shf-preview-document></c-shf-preview-document>
+</template>

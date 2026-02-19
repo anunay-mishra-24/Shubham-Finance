@@ -1,0 +1,37 @@
+.slds-modal__container {
+    max-width: 60rem; 
+    width: 90%;
+}
+.create-collateral-btn {
+    color: red;
+    font-weight: 600;
+}
+.actionCol {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.actionCol .actionBtn + .actionBtn,
+.actionCol lightning-button + lightning-button {
+    margin-left: 0.5rem;
+}
+@media (max-width: 768px) {
+    /* mobile: buttons stack + full width */
+    .actionCol {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .actionCol .actionBtn,
+    .actionCol lightning-button {
+        width: 100%;
+    }
+
+    /* remove desktop spacing on mobile */
+    .actionCol lightning-button + lightning-button {
+        margin-left: 0;
+    }
+}

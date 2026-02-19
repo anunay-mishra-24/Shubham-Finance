@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="Select Action">
+        <div class="slds-p-around_medium slds-grid slds-grid_vertical slds-gap_medium">
+
+            <!-- Tag Geo Location -->
+            <lightning-button
+                variant="brand"
+                label="Tag Geo Location"
+                onclick={handleGeoLocation}>
+            </lightning-button>
+
+            <!-- Capture Image Form factor = phone -->
+            <template if:true={isPhone}>
+                <lightning-button
+                    variant="neutral"
+                    label="Capture Image"
+                    onclick={handleCaptureImage}>
+                </lightning-button>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

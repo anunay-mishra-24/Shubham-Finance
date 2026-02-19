@@ -1,0 +1,179 @@
+<template>
+    <template if:true={showModal}>
+        <lightning-card>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+            <h2 class="slds-modal__title slds-text-heading_medium slds-text-align_center slds-p-bottom_x-large">Loan
+                Details</h2>
+            <template if:true={wrapperData}>
+                <lightning-accordion allow-multiple-sections-open active-section-name="LoanSummary">
+                    <!-- Loan Summary -->
+                    <lightning-accordion-section name="LoanSummary" label="Loan Summary">
+                        <div class="two-column section-padding slds-p-left_large">
+                            <div class="field"><label>Application Number</label>
+                                <div>{wrapperData.applicationNumber}</div>
+                            </div>
+                            <div class="field"><label>Loan Status</label>
+                                <div>{wrapperData.loanStatus}</div>
+                            </div>
+                            <div class="field"><label>Financed Amount</label>
+                                <div><span>₹</span>{wrapperData.financedAmount}</div>
+                            </div>
+                            <div class="field"><label>Principal Outstanding</label>
+                                <div><span>₹</span>{wrapperData.principalOutstanding}</div>
+                            </div>
+                            <div class="field"><label>Sanctioned Amount</label>
+                                <div><span>₹</span>{wrapperData.sanctionedAmount}</div>
+                            </div>
+                            <div class="field"><label>Disbursed Amount</label>
+                                <div><span>₹</span>{wrapperData.disbursedAmount}</div>
+                            </div>
+                            <div class="field"><label>Contract Type</label>
+                                <div>{wrapperData.contractType}</div>
+                            </div>
+                            <div class="field"><label>Disbursal Status</label>
+                                <div>{wrapperData.disbursalStatus}</div>
+                            </div>
+                            <div class="field"><label>Product</label>
+                                <div>{wrapperData.Product}</div>
+                            </div>
+                            <div class="field"><label>Business Segment</label>
+                                <div>{wrapperData.businessSegment}</div>
+                            </div>
+                            <div class="field"><label>Original Tenure</label>
+                                <div><span>₹</span>{wrapperData.originalTenure}</div>
+                            </div>
+                            <div class="field"><label>Current Tenure</label>
+                                <div><span>₹</span>{wrapperData.currentTenure}</div>
+                            </div>
+                            <div class="field"><label>Balance Tenure</label>
+                                <div><span>₹</span>{wrapperData.balanceTenure}</div>
+                            </div>
+                            <div class="field"><label>Repayment Frequency</label>
+                                <div>{wrapperData.repaymentFrequency}</div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <!-- Account Details -->
+                    <lightning-accordion-section name="AccountDetails" label="Account Details">
+                        <div class="two-column section-padding slds-p-left_large">
+                            <div class="field"><label>Branch Code</label>
+                                <div>{wrapperData.loanBranchCode}</div>
+                            </div>
+                            <div class="field"><label>Branch Name</label>
+                                <div>{wrapperData.loanBranchName}</div>
+                            </div>
+                            <div class="field"><label>Agreement Date</label>
+                                <div>{wrapperData.agreementDate}</div>
+                            </div>
+                            <div class="field"><label>Next Installment Date</label>
+                                <div>{wrapperData.nextInstallmentDate}</div>
+                            </div>
+                            <div class="field"><label>Maturity Date</label>
+                                <div>{wrapperData.maturityDate}</div>
+                            </div>
+                            <div class="field"><label>Due Day</label>
+                                <div>{wrapperData.dueDay}</div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+
+                    <!-- Customer Profile -->
+                    <lightning-accordion-section name="CustomerProfile" label="Customer Profile">
+                        <div class="two-column section-padding slds-p-left_large">
+                            <div class="field"><label>Customer Name</label>
+                                <div>{wrapperData.customerName}</div>
+                            </div>
+                            <div class="field"><label>Customer ID</label>
+                                <div>{wrapperData.customerId}</div>
+                            </div>
+                            <div class="field"><label>Gender</label>
+                                <div>{wrapperData.gender}</div>
+                            </div>
+                            <div class="field"><label>PAN</label>
+                                <div>{wrapperData.pan}</div>
+                            </div>
+                            <div class="field"><label>Aadhaar</label>
+                                <div>{wrapperData.aadhar}</div>
+                            </div>
+                            <div class="field"><label>Date of Birth</label>
+                                <div>{wrapperData.dob}</div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <!-- Loan Viewer - Financials -->
+                    <lightning-accordion-section name="LoanViewer" label="Loan Viewer - Financials">
+                        <div class="two-column section-padding slds-p-left_large">
+                            <div class="field"><label>Total Outstanding Receivable</label>
+                                <div><span>₹</span>{wrapperData.totalOutstandingReceivableAmount}</div>
+                            </div>
+                            <div class="field"><label>Total Outstanding Payable</label>
+                                <div><span>₹</span>{wrapperData.totalOutstandingPayableAmount}</div>
+                            </div>
+                            <div class="field"><label>Net Overdue Amount</label>
+                                <div><span>₹</span>{wrapperData.netOverDueAmount}</div>
+                            </div>
+                            <div class="field"><label>Total Overdue</label>
+                                <div><span>₹</span>{wrapperData.totalOverdue}</div>
+                            </div>
+                            <div class="field"><label>Charge Code Description</label>
+                                <div>{wrapperData.chargeCodeDescription}</div>
+                            </div>
+                            <div class="field"><label>Anchor Type</label>
+                                <div>{wrapperData.anchorType}</div>
+                            </div>
+                            <div class="field"><label>Anchor Rate</label>
+                                <div>{wrapperData.anchorRate}</div>
+                            </div>
+                            <div class="field"><label>Anchor Markup</label>
+                                <div>{wrapperData.anchorMarkUp}</div>
+                            </div>
+                            <div class="field"><label>Rate Type</label>
+                                <div>{wrapperData.rateType}</div>
+                            </div>
+                            <div class="field"><label>Effective Interest Rate</label>
+                                <div>{wrapperData.effectiveInterestRate}</div>
+                            </div>
+                            <div class="field"><label>LTV Ratio</label>
+                                <div>{wrapperData.ltvRatio}</div>
+                            </div>
+                            <div class="field"><label>Future Principal</label>
+                                <div><span>₹</span>{wrapperData.futurePrincipal}</div>
+                            </div>
+                            <div class="field"><label>Number of Installments</label>
+                                <div>{wrapperData.numberOfInstallments}</div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+
+                    <!-- Co-borrower Details -->
+                    <lightning-accordion-section name="CoBorrowerDetails" label="Co-borrower Details">
+                        <div class="two-column section-padding slds-p-left_large">
+                            <div class="field full-width"><label>Co-applicant Name</label>
+                                <div>{wrapperData.coApplicantName}</div>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </template>
+
+            <template if:true={error}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error"
+                    role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>Error loading data: {error}</h2>
+                </div>
+            </template>
+
+
+            <!-- Button aligned right -->
+            <div class="slds-modal__footer slds-grid slds-grid_align-end slds-p-around_medium">
+                <button class="slds-button slds-button_neutral" onclick={closeModal}>Close</button>
+            </div>
+        </lightning-card>
+    </template>
+</template>

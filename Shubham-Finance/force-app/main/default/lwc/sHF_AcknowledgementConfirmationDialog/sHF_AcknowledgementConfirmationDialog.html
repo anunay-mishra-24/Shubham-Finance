@@ -1,0 +1,46 @@
+<template>
+
+    <template if:true={isOpen}>
+    <section role="dialog" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header slds-theme_alert-texture slds-theme_success">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCancel}>
+                    <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_medium">{title}</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+                <lightning-combobox
+                    name="status"
+                    label="Acknowledge Status"
+                    placeholder="Select"
+                    options={statusOptions}
+                    value={selectedStatus}
+                    onchange={handleStatusChange}
+                    message-when-value-missing="Please select Acknowledge Status."
+                    required>
+                </lightning-combobox>
+
+                <lightning-textarea
+                    name="comments"
+                    label="Comments"
+                    value={comments}
+                    onchange={handleCommentChange}
+                    message-when-value-missing="Comments are required."
+                    required>
+                </lightning-textarea>
+            </div>
+
+            <footer class="slds-modal__footer">
+                <lightning-button variant="neutral" label="Cancel" onclick={handleCancel}></lightning-button>
+                <lightning-button variant="brand" label="Confirm" onclick={handleConfirm} class="slds-m-left_x-small"></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+
+</template>
